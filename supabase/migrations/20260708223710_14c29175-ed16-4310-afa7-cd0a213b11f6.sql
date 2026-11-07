@@ -1,0 +1,1 @@
+ALTER TABLE public.patient_responses ADD COLUMN IF NOT EXISTS label text;

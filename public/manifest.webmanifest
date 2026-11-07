@@ -1,0 +1,18 @@
+{
+  "name": "ENT Senses",
+  "short_name": "ENT Senses",
+  "description": "Herramientas para otorrinolaringología: cuestionarios, voz y audición.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
