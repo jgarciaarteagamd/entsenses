@@ -5,6 +5,11 @@ export type Lang = "es" | "en";
 export type Dict = Record<string, { es: string; en: string }>;
 
 const DICT: Dict = {
+  "print.kicker.voice": { es: "Evaluación de la voz", en: "Voice assessment" },
+  "print.title.voice": { es: "Escanee el código con su teléfono", en: "Scan the code with your phone" },
+  "print.instructions.voice": { es: "Necesitará unos 3 minutos en un lugar silencioso. Siga las instrucciones en pantalla: le pediremos que diga «aaaa», que mantenga los sonidos «s» y «z» y que lea unas frases y un texto breve.", en: "You will need about 3 minutes in a quiet place. Follow the on-screen instructions: you will say “aaah”, hold the sounds “s” and “z”, and read a few sentences and a short text." },
+  "print.privacy.voice": { es: "Su voz se analiza en su propio teléfono y no se guarda. Su médico recibirá solo los resultados, de forma anónima.", en: "Your voice is analysed on your own phone and is not stored. Your doctor will receive only the results, anonymously." },
+  "panel.qr.desc.voice": { es: "El paciente escanea el código con la cámara del móvil, acepta las condiciones, activa el micrófono y realiza la prueba. Los resultados llegan a su bandeja de forma anónima.", en: "The patient scans the code with their phone camera, accepts the terms, enables the microphone and takes the test. Results reach your inbox anonymously." },
   "nav.invitations": { es: "Invitaciones", en: "Invitations" },
   "module.tinnitus.desc": { es: "Evaluación de acúfenos.", en: "Tinnitus assessment." },
   "module.scales.desc": { es: "Escalas clínicas de ORL.", en: "ENT clinical scales." },

@@ -14,7 +14,7 @@
 | Módulo | Origen | Qué hace | Estado |
 |---|---|---|---|
 | **ENT Senses Quest** | ENT Quest | Cuestionarios clínicos validados (SNOT-22, VHI, EAT-10…): QR, hoja imprimible, invitaciones por correo, rellenar en consulta | Hecho (etapa B) |
-| **ENT Senses Voice** | Vocalyzer | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer…), estimación GRBAS/CAPE-V | Migración (etapa C) |
+| **ENT Senses Voice** | Vocalyzer | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer…), estimación GRBAS/CAPE-V | Hecho (etapa C) |
 | **ENT Senses Hearing** | Auditone Test + AudiometricReport | Informes audiométricos (audiograma, impedanciometría, logoaudiometría); prueba auditiva informativa del paciente; audiometría tonal en consulta | Hecho (etapa A); fases 2–8 de su plan |
 | **ENT Senses Scales** | — | Escalas clínicas (por definir) | Futuro |
 | **ENT Senses Tinnitus** | — | Evaluación de acúfenos (por definir) | Futuro |

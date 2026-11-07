@@ -12,6 +12,7 @@ import { ensureProfile } from "@/lib/profile";
 import { MODULES, type ModuleId } from "@/modules/registry";
 import { useHearingUnseen } from "@/modules/hearing/components/HearingInbox";
 import { useQuestUnseen } from "@/modules/quest/components/QuestInbox";
+import { useVoiceUnseen } from "@/modules/voice/components/VoiceInbox";
 
 export const Route = createFileRoute("/_authenticated/panel")({
   component: PanelPage,
@@ -23,7 +24,7 @@ function PanelPage() {
   const qrModules = MODULES.filter((m) => m.status === "active" && m.patientLink);
   const [qrModule, setQrModule] = useState<ModuleId | undefined>(qrModules[0]?.id);
   const [copied, setCopied] = useState(false);
-  const unseen = useHearingUnseen() + useQuestUnseen();
+  const unseen = useHearingUnseen() + useQuestUnseen() + useVoiceUnseen();
   const url = qrModule ? patientUrl(user.id, qrModule) : "";
 
   useEffect(() => {

@@ -27,10 +27,13 @@ import { Route as AuthenticatedQuestIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedQuestSlugRouteImport } from './routes/_authenticated/quest.$slug'
 import { Route as AuthenticatedQuestBuscarRouteImport } from './routes/_authenticated/quest.buscar'
 import { Route as AuthenticatedQuestResultadosRouteImport } from './routes/_authenticated/quest.resultados'
+import { Route as AuthenticatedVoiceEvaluarRouteImport } from './routes/_authenticated/voice.evaluar'
 import { Route as PDoctorIdHearingRouteImport } from './routes/p.$doctorId.hearing'
+import { Route as PDoctorIdVoiceRouteImport } from './routes/p.$doctorId.voice'
 import { Route as AuthenticatedHearingInformeIdRouteImport } from './routes/_authenticated/hearing.informe.$id'
 import { Route as AuthenticatedQuestSlugIndexRouteImport } from './routes/_authenticated/quest.$slug.index'
 import { Route as AuthenticatedQuestSlugImprimirRouteImport } from './routes/_authenticated/quest.$slug.imprimir'
+import { Route as AuthenticatedVoiceInformeIdRouteImport } from './routes/_authenticated/voice.informe.$id'
 import { Route as PDoctorIdQuestSlugRouteImport } from './routes/p.$doctorId.quest.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -127,9 +130,20 @@ const AuthenticatedQuestResultadosRoute =
     path: '/resultados',
     getParentRoute: () => AuthenticatedQuestRoute,
   } as any)
+const AuthenticatedVoiceEvaluarRoute =
+  AuthenticatedVoiceEvaluarRouteImport.update({
+    id: '/voice/evaluar',
+    path: '/voice/evaluar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const PDoctorIdHearingRoute = PDoctorIdHearingRouteImport.update({
   id: '/p/$doctorId/hearing',
   path: '/p/$doctorId/hearing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PDoctorIdVoiceRoute = PDoctorIdVoiceRouteImport.update({
+  id: '/p/$doctorId/voice',
+  path: '/p/$doctorId/voice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedHearingInformeIdRoute =
@@ -149,6 +163,12 @@ const AuthenticatedQuestSlugImprimirRoute =
     id: '/imprimir',
     path: '/imprimir',
     getParentRoute: () => AuthenticatedQuestSlugRoute,
+  } as any)
+const AuthenticatedVoiceInformeIdRoute =
+  AuthenticatedVoiceInformeIdRouteImport.update({
+    id: '/voice/informe/$id',
+    path: '/voice/informe/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const PDoctorIdQuestSlugRoute = PDoctorIdQuestSlugRouteImport.update({
   id: '/p/$doctorId/quest/$slug',
@@ -173,10 +193,13 @@ export interface FileRoutesByFullPath {
   '/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
   '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
   '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
+  '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
   '/quest/': typeof AuthenticatedQuestIndexRoute
   '/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
   '/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/voice/informe/$id': typeof AuthenticatedVoiceInformeIdRoute
   '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
   '/quest/$slug/': typeof AuthenticatedQuestSlugIndexRoute
 }
@@ -195,10 +218,13 @@ export interface FileRoutesByTo {
   '/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
   '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
   '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
+  '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
   '/quest': typeof AuthenticatedQuestIndexRoute
   '/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
   '/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/voice/informe/$id': typeof AuthenticatedVoiceInformeIdRoute
   '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
   '/quest/$slug': typeof AuthenticatedQuestSlugIndexRoute
 }
@@ -221,10 +247,13 @@ export interface FileRoutesById {
   '/_authenticated/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
   '/_authenticated/quest/buscar': typeof AuthenticatedQuestBuscarRoute
   '/_authenticated/quest/resultados': typeof AuthenticatedQuestResultadosRoute
+  '/_authenticated/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
   '/_authenticated/quest/': typeof AuthenticatedQuestIndexRoute
   '/_authenticated/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
   '/_authenticated/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/_authenticated/voice/informe/$id': typeof AuthenticatedVoiceInformeIdRoute
   '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
   '/_authenticated/quest/$slug/': typeof AuthenticatedQuestSlugIndexRoute
 }
@@ -247,10 +276,13 @@ export interface FileRouteTypes {
     | '/quest/$slug'
     | '/quest/buscar'
     | '/quest/resultados'
+    | '/voice/evaluar'
     | '/p/$doctorId/hearing'
+    | '/p/$doctorId/voice'
     | '/quest/'
     | '/hearing/informe/$id'
     | '/quest/$slug/imprimir'
+    | '/voice/informe/$id'
     | '/p/$doctorId/quest/$slug'
     | '/quest/$slug/'
   fileRoutesByTo: FileRoutesByTo
@@ -269,10 +301,13 @@ export interface FileRouteTypes {
     | '/hearing/consulta'
     | '/quest/buscar'
     | '/quest/resultados'
+    | '/voice/evaluar'
     | '/p/$doctorId/hearing'
+    | '/p/$doctorId/voice'
     | '/quest'
     | '/hearing/informe/$id'
     | '/quest/$slug/imprimir'
+    | '/voice/informe/$id'
     | '/p/$doctorId/quest/$slug'
     | '/quest/$slug'
   id:
@@ -294,10 +329,13 @@ export interface FileRouteTypes {
     | '/_authenticated/quest/$slug'
     | '/_authenticated/quest/buscar'
     | '/_authenticated/quest/resultados'
+    | '/_authenticated/voice/evaluar'
     | '/p/$doctorId/hearing'
+    | '/p/$doctorId/voice'
     | '/_authenticated/quest/'
     | '/_authenticated/hearing/informe/$id'
     | '/_authenticated/quest/$slug/imprimir'
+    | '/_authenticated/voice/informe/$id'
     | '/p/$doctorId/quest/$slug'
     | '/_authenticated/quest/$slug/'
   fileRoutesById: FileRoutesById
@@ -311,6 +349,7 @@ export interface RootRouteChildren {
   LegalPrivacidadRoute: typeof LegalPrivacidadRoute
   LegalTerminosRoute: typeof LegalTerminosRoute
   PDoctorIdHearingRoute: typeof PDoctorIdHearingRoute
+  PDoctorIdVoiceRoute: typeof PDoctorIdVoiceRoute
   PDoctorIdQuestSlugRoute: typeof PDoctorIdQuestSlugRoute
 }
 
@@ -442,11 +481,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedQuestResultadosRouteImport
       parentRoute: typeof AuthenticatedQuestRoute
     }
+    '/_authenticated/voice/evaluar': {
+      id: '/_authenticated/voice/evaluar'
+      path: '/voice/evaluar'
+      fullPath: '/voice/evaluar'
+      preLoaderRoute: typeof AuthenticatedVoiceEvaluarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/p/$doctorId/hearing': {
       id: '/p/$doctorId/hearing'
       path: '/p/$doctorId/hearing'
       fullPath: '/p/$doctorId/hearing'
       preLoaderRoute: typeof PDoctorIdHearingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/p/$doctorId/voice': {
+      id: '/p/$doctorId/voice'
+      path: '/p/$doctorId/voice'
+      fullPath: '/p/$doctorId/voice'
+      preLoaderRoute: typeof PDoctorIdVoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/hearing/informe/$id': {
@@ -469,6 +522,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/quest/$slug/imprimir'
       preLoaderRoute: typeof AuthenticatedQuestSlugImprimirRouteImport
       parentRoute: typeof AuthenticatedQuestSlugRoute
+    }
+    '/_authenticated/voice/informe/$id': {
+      id: '/_authenticated/voice/informe/$id'
+      path: '/voice/informe/$id'
+      fullPath: '/voice/informe/$id'
+      preLoaderRoute: typeof AuthenticatedVoiceInformeIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/p/$doctorId/quest/$slug': {
       id: '/p/$doctorId/quest/$slug'
@@ -521,7 +581,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPanelRoute: typeof AuthenticatedPanelRoute
   AuthenticatedQuestRoute: typeof AuthenticatedQuestRouteWithChildren
   AuthenticatedHearingConsultaRoute: typeof AuthenticatedHearingConsultaRoute
+  AuthenticatedVoiceEvaluarRoute: typeof AuthenticatedVoiceEvaluarRoute
   AuthenticatedHearingInformeIdRoute: typeof AuthenticatedHearingInformeIdRoute
+  AuthenticatedVoiceInformeIdRoute: typeof AuthenticatedVoiceInformeIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -532,7 +594,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPanelRoute: AuthenticatedPanelRoute,
   AuthenticatedQuestRoute: AuthenticatedQuestRouteWithChildren,
   AuthenticatedHearingConsultaRoute: AuthenticatedHearingConsultaRoute,
+  AuthenticatedVoiceEvaluarRoute: AuthenticatedVoiceEvaluarRoute,
   AuthenticatedHearingInformeIdRoute: AuthenticatedHearingInformeIdRoute,
+  AuthenticatedVoiceInformeIdRoute: AuthenticatedVoiceInformeIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -547,6 +611,7 @@ const rootRouteChildren: RootRouteChildren = {
   LegalPrivacidadRoute: LegalPrivacidadRoute,
   LegalTerminosRoute: LegalTerminosRoute,
   PDoctorIdHearingRoute: PDoctorIdHearingRoute,
+  PDoctorIdVoiceRoute: PDoctorIdVoiceRoute,
   PDoctorIdQuestSlugRoute: PDoctorIdQuestSlugRoute,
 }
 export const routeTree = rootRouteImport
