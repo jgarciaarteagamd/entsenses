@@ -71,7 +71,7 @@ docs/                 planes por módulo y documentación regulatoria
 | **A. Núcleo + Hearing** | Repositorio `entsenses` desde Auditone: marca ENT Senses, panel con tarjetas de módulos, bandeja con pestañas, registro de módulos, Hearing como primer módulo | App funcionando con Hearing |
 | **B. Quest** | Cuestionarios, catálogo, hoja imprimible, invitaciones por correo (Gmail / app de correo / copiar / compartir), puntuaciones | Quest dentro de la suite |
 | **C. Voice** | Protocolo y análisis acústico, evaluación en consulta, informe, valoración perceptual | Voice dentro de la suite |
-| **D. Legal y puesta en marcha** | Términos y privacidad comunes con la finalidad de cada módulo; proyecto Supabase `entsenses`, sitio Netlify `entsenses`, dominio `entsenses.app` | Suite publicada |
+| **D. Legal y puesta en marcha** (textos legales hechos) | Términos y privacidad comunes con la finalidad de cada módulo; proyecto Supabase `entsenses`, sitio Netlify `entsenses`, dominio `entsenses.app` | Suite publicada |
 | **E. Transición** | Exportar/importar datos útiles de ENT Quest y Vocalyzer si los hay; redirigir `entquest.app` y `vocalyzer.app` a `entsenses.app`; pausar los proyectos antiguos | Una sola app |
 | **F. Hearing fases 2–8** | Motor de tonos, calibración, audiómetro manual y automático, enmascaramiento, prueba del paciente | Ver `docs/hearing/PLAN.md` |
 
@@ -82,8 +82,7 @@ docs/                 planes por módulo y documentación regulatoria
   proyecto pausado se puede restaurar durante 90 días) o pasar a Pro.
 - **Netlify**: sitio nuevo `entsenses` conectado a este repositorio; variables
   `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY`; dominio `entsenses.app`.
-- **Dominio**: comprobar disponibilidad de `entsenses.app` (y opcionalmente `entsenses.tools` como
-  redirección) y buscar marcas parecidas en TMview / OEPM antes de registrarlo.
+- **Dominio**: `entsenses.app` comprado. Pendiente: búsqueda de marcas parecidas en TMview / OEPM.
 
 ## 6. Pendiente de decidir
 
