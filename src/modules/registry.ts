@@ -19,7 +19,7 @@ export interface ModuleInfo {
 }
 
 export const MODULES: ModuleInfo[] = [
-  { id: "quest", name: "Quest", icon: BookOpen, status: "coming", accent: "text-violet-600 bg-violet-50 dark:bg-violet-950/40" },
+  { id: "quest", name: "Quest", icon: BookOpen, status: "active", home: "/quest", accent: "text-violet-600 bg-violet-50 dark:bg-violet-950/40" },
   { id: "voice", name: "Voice", icon: Mic, status: "coming", accent: "text-rose-600 bg-rose-50 dark:bg-rose-950/40" },
   { id: "hearing", name: "Hearing", icon: Ear, status: "active", home: "/hearing/consulta", patientLink: true, accent: "text-sky-600 bg-sky-50 dark:bg-sky-950/40" },
   { id: "scales", name: "Scales", icon: Ruler, status: "coming", accent: "text-amber-600 bg-amber-50 dark:bg-amber-950/40" },

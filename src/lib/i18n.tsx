@@ -2,9 +2,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 export type Lang = "es" | "en";
 
-type Dict = Record<string, { es: string; en: string }>;
+export type Dict = Record<string, { es: string; en: string }>;
 
 const DICT: Dict = {
+  "nav.invitations": { es: "Invitaciones", en: "Invitations" },
   "module.tinnitus.desc": { es: "Evaluación de acúfenos.", en: "Tinnitus assessment." },
   "module.scales.desc": { es: "Escalas clínicas de ORL.", en: "ENT clinical scales." },
   "module.hearing.desc": { es: "Informes audiométricos con audiograma, impedanciometría y logoaudiometría. Prueba auditiva informativa para pacientes.", en: "Audiometric reports with audiogram, impedance and speech audiometry. Informative hearing check for patients." },
@@ -254,6 +255,30 @@ interface LangContextValue {
 }
 
 const LangContext = createContext<LangContextValue | null>(null);
+
+function format(str: string, args: (string | number)[]) {
+  args.forEach((a, i) => {
+    str = str.replace(new RegExp(`\\{${i}\\}`, "g"), String(a));
+  });
+  return str;
+}
+
+/**
+ * Translator for a module: looks the key up in the module's own dictionary first, then in the
+ * core one. Lets each module keep its texts (and its key names) without clashing with others.
+ */
+export function createModuleLang(moduleDict: Dict) {
+  return function useModuleLang(): LangContextValue {
+    const core = useLang();
+    return {
+      ...core,
+      t: (key, ...args) => {
+        const e = moduleDict[key];
+        return e ? format(e[core.lang] ?? e.es, args) : core.t(key, ...args);
+      },
+    };
+  };
+}
 
 function translate(lang: Lang, key: string, args: (string | number)[]) {
   const entry = DICT[key];

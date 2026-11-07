@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Inbox, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { Inbox, LayoutDashboard, LogOut, Send, Settings } from "lucide-react";
 import { activeModules } from "@/modules/registry";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ const NAV: { to: string; icon: typeof Inbox; label?: string; key?: string }[] = 
     .filter((m) => m.home)
     .map((m) => ({ to: m.home!, icon: m.icon, label: `ENT Senses ${m.name}` })),
   { to: "/bandeja", icon: Inbox, key: "nav.inbox" },
+  { to: "/invitaciones", icon: Send, key: "nav.invitations" },
   { to: "/configuracion", icon: Settings, key: "nav.settings" },
 ];
 

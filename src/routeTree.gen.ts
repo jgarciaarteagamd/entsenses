@@ -12,15 +12,26 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AuthenticatedBandejaRouteImport } from './routes/_authenticated/bandeja'
 import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
 import { Route as AuthenticatedImprimirQrRouteImport } from './routes/_authenticated/imprimir-qr'
+import { Route as AuthenticatedInvitacionesRouteImport } from './routes/_authenticated/invitaciones'
 import { Route as AuthenticatedPanelRouteImport } from './routes/_authenticated/panel'
+import { Route as AuthenticatedQuestRouteImport } from './routes/_authenticated/quest'
+import { Route as ITokenRouteImport } from './routes/i.$token'
 import { Route as LegalPrivacidadRouteImport } from './routes/legal.privacidad'
 import { Route as LegalTerminosRouteImport } from './routes/legal.terminos'
 import { Route as AuthenticatedHearingConsultaRouteImport } from './routes/_authenticated/hearing.consulta'
+import { Route as AuthenticatedQuestIndexRouteImport } from './routes/_authenticated/quest.index'
+import { Route as AuthenticatedQuestSlugRouteImport } from './routes/_authenticated/quest.$slug'
+import { Route as AuthenticatedQuestBuscarRouteImport } from './routes/_authenticated/quest.buscar'
+import { Route as AuthenticatedQuestResultadosRouteImport } from './routes/_authenticated/quest.resultados'
 import { Route as PDoctorIdHearingRouteImport } from './routes/p.$doctorId.hearing'
 import { Route as AuthenticatedHearingInformeIdRouteImport } from './routes/_authenticated/hearing.informe.$id'
+import { Route as AuthenticatedQuestSlugIndexRouteImport } from './routes/_authenticated/quest.$slug.index'
+import { Route as AuthenticatedQuestSlugImprimirRouteImport } from './routes/_authenticated/quest.$slug.imprimir'
+import { Route as PDoctorIdQuestSlugRouteImport } from './routes/p.$doctorId.quest.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,6 +45,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedBandejaRoute = AuthenticatedBandejaRouteImport.update({
@@ -52,10 +68,26 @@ const AuthenticatedImprimirQrRoute = AuthenticatedImprimirQrRouteImport.update({
   path: '/imprimir-qr',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedInvitacionesRoute =
+  AuthenticatedInvitacionesRouteImport.update({
+    id: '/invitaciones',
+    path: '/invitaciones',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPanelRoute = AuthenticatedPanelRouteImport.update({
   id: '/panel',
   path: '/panel',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedQuestRoute = AuthenticatedQuestRouteImport.update({
+  id: '/quest',
+  path: '/quest',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ITokenRoute = ITokenRouteImport.update({
+  id: '/i/$token',
+  path: '/i/$token',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LegalPrivacidadRoute = LegalPrivacidadRouteImport.update({
   id: '/legal/privacidad',
@@ -73,6 +105,28 @@ const AuthenticatedHearingConsultaRoute =
     path: '/hearing/consulta',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedQuestIndexRoute = AuthenticatedQuestIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedQuestRoute,
+} as any)
+const AuthenticatedQuestSlugRoute = AuthenticatedQuestSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => AuthenticatedQuestRoute,
+} as any)
+const AuthenticatedQuestBuscarRoute =
+  AuthenticatedQuestBuscarRouteImport.update({
+    id: '/buscar',
+    path: '/buscar',
+    getParentRoute: () => AuthenticatedQuestRoute,
+  } as any)
+const AuthenticatedQuestResultadosRoute =
+  AuthenticatedQuestResultadosRouteImport.update({
+    id: '/resultados',
+    path: '/resultados',
+    getParentRoute: () => AuthenticatedQuestRoute,
+  } as any)
 const PDoctorIdHearingRoute = PDoctorIdHearingRouteImport.update({
   id: '/p/$doctorId/hearing',
   path: '/p/$doctorId/hearing',
@@ -84,98 +138,180 @@ const AuthenticatedHearingInformeIdRoute =
     path: '/hearing/informe/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedQuestSlugIndexRoute =
+  AuthenticatedQuestSlugIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedQuestSlugRoute,
+  } as any)
+const AuthenticatedQuestSlugImprimirRoute =
+  AuthenticatedQuestSlugImprimirRouteImport.update({
+    id: '/imprimir',
+    path: '/imprimir',
+    getParentRoute: () => AuthenticatedQuestSlugRoute,
+  } as any)
+const PDoctorIdQuestSlugRoute = PDoctorIdQuestSlugRouteImport.update({
+  id: '/p/$doctorId/quest/$slug',
+  path: '/p/$doctorId/quest/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/feedback': typeof FeedbackRoute
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/imprimir-qr': typeof AuthenticatedImprimirQrRoute
+  '/invitaciones': typeof AuthenticatedInvitacionesRoute
   '/panel': typeof AuthenticatedPanelRoute
+  '/quest': typeof AuthenticatedQuestRouteWithChildren
+  '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
   '/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
+  '/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
+  '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
+  '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/quest/': typeof AuthenticatedQuestIndexRoute
   '/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
+  '/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
+  '/quest/$slug/': typeof AuthenticatedQuestSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/feedback': typeof FeedbackRoute
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/imprimir-qr': typeof AuthenticatedImprimirQrRoute
+  '/invitaciones': typeof AuthenticatedInvitacionesRoute
   '/panel': typeof AuthenticatedPanelRoute
+  '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
   '/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
+  '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
+  '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/quest': typeof AuthenticatedQuestIndexRoute
   '/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
+  '/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
+  '/quest/$slug': typeof AuthenticatedQuestSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/feedback': typeof FeedbackRoute
   '/_authenticated/bandeja': typeof AuthenticatedBandejaRoute
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
   '/_authenticated/imprimir-qr': typeof AuthenticatedImprimirQrRoute
+  '/_authenticated/invitaciones': typeof AuthenticatedInvitacionesRoute
   '/_authenticated/panel': typeof AuthenticatedPanelRoute
+  '/_authenticated/quest': typeof AuthenticatedQuestRouteWithChildren
+  '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
   '/_authenticated/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
+  '/_authenticated/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
+  '/_authenticated/quest/buscar': typeof AuthenticatedQuestBuscarRoute
+  '/_authenticated/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
+  '/_authenticated/quest/': typeof AuthenticatedQuestIndexRoute
   '/_authenticated/hearing/informe/$id': typeof AuthenticatedHearingInformeIdRoute
+  '/_authenticated/quest/$slug/imprimir': typeof AuthenticatedQuestSlugImprimirRoute
+  '/p/$doctorId/quest/$slug': typeof PDoctorIdQuestSlugRoute
+  '/_authenticated/quest/$slug/': typeof AuthenticatedQuestSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/feedback'
     | '/bandeja'
     | '/configuracion'
     | '/imprimir-qr'
+    | '/invitaciones'
     | '/panel'
+    | '/quest'
+    | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
     | '/hearing/consulta'
+    | '/quest/$slug'
+    | '/quest/buscar'
+    | '/quest/resultados'
     | '/p/$doctorId/hearing'
+    | '/quest/'
     | '/hearing/informe/$id'
+    | '/quest/$slug/imprimir'
+    | '/p/$doctorId/quest/$slug'
+    | '/quest/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/feedback'
     | '/bandeja'
     | '/configuracion'
     | '/imprimir-qr'
+    | '/invitaciones'
     | '/panel'
+    | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
     | '/hearing/consulta'
+    | '/quest/buscar'
+    | '/quest/resultados'
     | '/p/$doctorId/hearing'
+    | '/quest'
     | '/hearing/informe/$id'
+    | '/quest/$slug/imprimir'
+    | '/p/$doctorId/quest/$slug'
+    | '/quest/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/feedback'
     | '/_authenticated/bandeja'
     | '/_authenticated/configuracion'
     | '/_authenticated/imprimir-qr'
+    | '/_authenticated/invitaciones'
     | '/_authenticated/panel'
+    | '/_authenticated/quest'
+    | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
     | '/_authenticated/hearing/consulta'
+    | '/_authenticated/quest/$slug'
+    | '/_authenticated/quest/buscar'
+    | '/_authenticated/quest/resultados'
     | '/p/$doctorId/hearing'
+    | '/_authenticated/quest/'
     | '/_authenticated/hearing/informe/$id'
+    | '/_authenticated/quest/$slug/imprimir'
+    | '/p/$doctorId/quest/$slug'
+    | '/_authenticated/quest/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  FeedbackRoute: typeof FeedbackRoute
+  ITokenRoute: typeof ITokenRoute
   LegalPrivacidadRoute: typeof LegalPrivacidadRoute
   LegalTerminosRoute: typeof LegalTerminosRoute
   PDoctorIdHearingRoute: typeof PDoctorIdHearingRoute
+  PDoctorIdQuestSlugRoute: typeof PDoctorIdQuestSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/bandeja': {
       id: '/_authenticated/bandeja'
       path: '/bandeja'
@@ -222,12 +365,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImprimirQrRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/invitaciones': {
+      id: '/_authenticated/invitaciones'
+      path: '/invitaciones'
+      fullPath: '/invitaciones'
+      preLoaderRoute: typeof AuthenticatedInvitacionesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/panel': {
       id: '/_authenticated/panel'
       path: '/panel'
       fullPath: '/panel'
       preLoaderRoute: typeof AuthenticatedPanelRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/quest': {
+      id: '/_authenticated/quest'
+      path: '/quest'
+      fullPath: '/quest'
+      preLoaderRoute: typeof AuthenticatedQuestRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/i/$token': {
+      id: '/i/$token'
+      path: '/i/$token'
+      fullPath: '/i/$token'
+      preLoaderRoute: typeof ITokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/legal/privacidad': {
       id: '/legal/privacidad'
@@ -250,6 +414,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHearingConsultaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/quest/': {
+      id: '/_authenticated/quest/'
+      path: '/'
+      fullPath: '/quest/'
+      preLoaderRoute: typeof AuthenticatedQuestIndexRouteImport
+      parentRoute: typeof AuthenticatedQuestRoute
+    }
+    '/_authenticated/quest/$slug': {
+      id: '/_authenticated/quest/$slug'
+      path: '/$slug'
+      fullPath: '/quest/$slug'
+      preLoaderRoute: typeof AuthenticatedQuestSlugRouteImport
+      parentRoute: typeof AuthenticatedQuestRoute
+    }
+    '/_authenticated/quest/buscar': {
+      id: '/_authenticated/quest/buscar'
+      path: '/buscar'
+      fullPath: '/quest/buscar'
+      preLoaderRoute: typeof AuthenticatedQuestBuscarRouteImport
+      parentRoute: typeof AuthenticatedQuestRoute
+    }
+    '/_authenticated/quest/resultados': {
+      id: '/_authenticated/quest/resultados'
+      path: '/resultados'
+      fullPath: '/quest/resultados'
+      preLoaderRoute: typeof AuthenticatedQuestResultadosRouteImport
+      parentRoute: typeof AuthenticatedQuestRoute
+    }
     '/p/$doctorId/hearing': {
       id: '/p/$doctorId/hearing'
       path: '/p/$doctorId/hearing'
@@ -264,14 +456,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHearingInformeIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/quest/$slug/': {
+      id: '/_authenticated/quest/$slug/'
+      path: '/'
+      fullPath: '/quest/$slug/'
+      preLoaderRoute: typeof AuthenticatedQuestSlugIndexRouteImport
+      parentRoute: typeof AuthenticatedQuestSlugRoute
+    }
+    '/_authenticated/quest/$slug/imprimir': {
+      id: '/_authenticated/quest/$slug/imprimir'
+      path: '/imprimir'
+      fullPath: '/quest/$slug/imprimir'
+      preLoaderRoute: typeof AuthenticatedQuestSlugImprimirRouteImport
+      parentRoute: typeof AuthenticatedQuestSlugRoute
+    }
+    '/p/$doctorId/quest/$slug': {
+      id: '/p/$doctorId/quest/$slug'
+      path: '/p/$doctorId/quest/$slug'
+      fullPath: '/p/$doctorId/quest/$slug'
+      preLoaderRoute: typeof PDoctorIdQuestSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AuthenticatedQuestSlugRouteChildren {
+  AuthenticatedQuestSlugImprimirRoute: typeof AuthenticatedQuestSlugImprimirRoute
+  AuthenticatedQuestSlugIndexRoute: typeof AuthenticatedQuestSlugIndexRoute
+}
+
+const AuthenticatedQuestSlugRouteChildren: AuthenticatedQuestSlugRouteChildren =
+  {
+    AuthenticatedQuestSlugImprimirRoute: AuthenticatedQuestSlugImprimirRoute,
+    AuthenticatedQuestSlugIndexRoute: AuthenticatedQuestSlugIndexRoute,
+  }
+
+const AuthenticatedQuestSlugRouteWithChildren =
+  AuthenticatedQuestSlugRoute._addFileChildren(
+    AuthenticatedQuestSlugRouteChildren,
+  )
+
+interface AuthenticatedQuestRouteChildren {
+  AuthenticatedQuestSlugRoute: typeof AuthenticatedQuestSlugRouteWithChildren
+  AuthenticatedQuestBuscarRoute: typeof AuthenticatedQuestBuscarRoute
+  AuthenticatedQuestResultadosRoute: typeof AuthenticatedQuestResultadosRoute
+  AuthenticatedQuestIndexRoute: typeof AuthenticatedQuestIndexRoute
+}
+
+const AuthenticatedQuestRouteChildren: AuthenticatedQuestRouteChildren = {
+  AuthenticatedQuestSlugRoute: AuthenticatedQuestSlugRouteWithChildren,
+  AuthenticatedQuestBuscarRoute: AuthenticatedQuestBuscarRoute,
+  AuthenticatedQuestResultadosRoute: AuthenticatedQuestResultadosRoute,
+  AuthenticatedQuestIndexRoute: AuthenticatedQuestIndexRoute,
+}
+
+const AuthenticatedQuestRouteWithChildren =
+  AuthenticatedQuestRoute._addFileChildren(AuthenticatedQuestRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBandejaRoute: typeof AuthenticatedBandejaRoute
   AuthenticatedConfiguracionRoute: typeof AuthenticatedConfiguracionRoute
   AuthenticatedImprimirQrRoute: typeof AuthenticatedImprimirQrRoute
+  AuthenticatedInvitacionesRoute: typeof AuthenticatedInvitacionesRoute
   AuthenticatedPanelRoute: typeof AuthenticatedPanelRoute
+  AuthenticatedQuestRoute: typeof AuthenticatedQuestRouteWithChildren
   AuthenticatedHearingConsultaRoute: typeof AuthenticatedHearingConsultaRoute
   AuthenticatedHearingInformeIdRoute: typeof AuthenticatedHearingInformeIdRoute
 }
@@ -280,7 +528,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedBandejaRoute: AuthenticatedBandejaRoute,
   AuthenticatedConfiguracionRoute: AuthenticatedConfiguracionRoute,
   AuthenticatedImprimirQrRoute: AuthenticatedImprimirQrRoute,
+  AuthenticatedInvitacionesRoute: AuthenticatedInvitacionesRoute,
   AuthenticatedPanelRoute: AuthenticatedPanelRoute,
+  AuthenticatedQuestRoute: AuthenticatedQuestRouteWithChildren,
   AuthenticatedHearingConsultaRoute: AuthenticatedHearingConsultaRoute,
   AuthenticatedHearingInformeIdRoute: AuthenticatedHearingInformeIdRoute,
 }
@@ -292,9 +542,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  FeedbackRoute: FeedbackRoute,
+  ITokenRoute: ITokenRoute,
   LegalPrivacidadRoute: LegalPrivacidadRoute,
   LegalTerminosRoute: LegalTerminosRoute,
   PDoctorIdHearingRoute: PDoctorIdHearingRoute,
+  PDoctorIdQuestSlugRoute: PDoctorIdQuestSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
