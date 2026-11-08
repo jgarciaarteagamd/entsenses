@@ -26,6 +26,7 @@ function LandingPage() {
         }
       />
       <main className="mx-auto max-w-3xl flex-1 px-4 py-16 text-center">
+        <img src="/brand/entsenses-vertical.png" alt="ENT Senses" className="mx-auto mb-10 h-40 w-auto dark:brightness-125" />
         <h1 className="text-4xl font-bold tracking-tight">{t("landing.title")}</h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">{t("landing.subtitle")}</p>
         <div className="mt-8 flex justify-center gap-3">

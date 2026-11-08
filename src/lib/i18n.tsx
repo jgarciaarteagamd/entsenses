@@ -5,6 +5,18 @@ export type Lang = "es" | "en";
 export type Dict = Record<string, { es: string; en: string }>;
 
 const DICT: Dict = {
+  "auth.forgot": { es: "¿Olvidó su contraseña?", en: "Forgot your password?" },
+  "auth.forgot_title": { es: "Restablecer contraseña", en: "Reset password" },
+  "auth.forgot_desc": { es: "Escriba el correo de su cuenta y le enviaremos un enlace para elegir una contraseña nueva.", en: "Enter your account e-mail and we will send you a link to choose a new password." },
+  "auth.send_link": { es: "Enviar enlace", en: "Send link" },
+  "auth.reset_sent": { es: "Si existe una cuenta con ese correo, le hemos enviado un enlace. Revise también la carpeta de spam.", en: "If an account exists for that e-mail, we have sent you a link. Please also check your spam folder." },
+  "auth.back_signin": { es: "Volver a iniciar sesión", en: "Back to sign in" },
+  "auth.reset_title": { es: "Nueva contraseña", en: "New password" },
+  "auth.reset_new": { es: "Nueva contraseña (mínimo 8 caracteres)", en: "New password (at least 8 characters)" },
+  "auth.reset_save": { es: "Guardar contraseña", en: "Save password" },
+  "auth.reset_done": { es: "Contraseña actualizada", en: "Password updated" },
+  "auth.reset_checking": { es: "Comprobando el enlace…", en: "Checking the link…" },
+  "auth.reset_invalid": { es: "El enlace no es válido o ha caducado. Solicite uno nuevo desde «¿Olvidó su contraseña?».", en: "The link is invalid or has expired. Request a new one from “Forgot your password?”." },
   "print.kicker.voice": { es: "Evaluación de la voz", en: "Voice assessment" },
   "print.title.voice": { es: "Escanee el código con su teléfono", en: "Scan the code with your phone" },
   "print.instructions.voice": { es: "Necesitará unos 3 minutos en un lugar silencioso. Siga las instrucciones en pantalla: le pediremos que diga «aaaa», que mantenga los sonidos «s» y «z» y que lea unas frases y un texto breve.", en: "You will need about 3 minutes in a quiet place. Follow the on-screen instructions: you will say “aaah”, hold the sounds “s” and “z”, and read a few sentences and a short text." },

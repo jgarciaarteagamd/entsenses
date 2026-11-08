@@ -16,7 +16,8 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const navigate = useNavigate();
   const { t } = useLang();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [fpEmail, setFpEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -53,6 +54,31 @@ function AuthPage() {
       setLoading(false);
     }
   }
+
+  async function handleForgot(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setInfo("");
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(fpEmail.trim(), {
+        redirectTo: `${window.location.origin}/restablecer`,
+      });
+      if (error) throw error;
+      // Same message whether or not the account exists (does not reveal registered e-mails).
+      setInfo(t("auth.reset_sent"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("auth.error"));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const go = (m: "signin" | "signup" | "forgot") => {
+    setMode(m);
+    setError("");
+    setInfo("");
+  };
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault();
@@ -97,20 +123,43 @@ function AuthPage() {
       <div className="flex flex-1 items-center justify-center px-4 py-6">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center text-xl">{mode === "signup" ? t("auth.signup") : t("auth.signin")}</CardTitle>
+            <CardTitle className="text-center text-xl">
+              {mode === "signup" ? t("auth.signup") : mode === "forgot" ? t("auth.forgot_title") : t("auth.signin")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {!isSupabaseConfigured && (
               <p className="mb-4 rounded border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">{t("setup.not_configured")}</p>
             )}
-            {mode === "signin" ? (
+            {mode === "forgot" ? (
+              <form onSubmit={handleForgot} className="space-y-4">
+                <p className="text-sm text-muted-foreground">{t("auth.forgot_desc")}</p>
+                <div className="space-y-2">
+                  <Label htmlFor="fp-email">{t("auth.email")}</Label>
+                  <Input id="fp-email" type="email" value={fpEmail} onChange={(e) => setFpEmail(e.target.value)} required autoComplete="email" />
+                </div>
+                {error && <p className="text-sm text-destructive">{error}</p>}
+                {info && <p className="text-sm text-emerald-600">{info}</p>}
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? t("auth.loading") : t("auth.send_link")}
+                </Button>
+                <Button type="button" variant="ghost" className="w-full text-sm" onClick={() => go("signin")}>
+                  {t("auth.back_signin")}
+                </Button>
+              </form>
+            ) : mode === "signin" ? (
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="si-email">{t("auth.email")}</Label>
                   <Input id="si-email" type="email" value={siEmail} onChange={(e) => setSiEmail(e.target.value)} required autoComplete="email" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="si-pass">{t("auth.password")}</Label>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="si-pass">{t("auth.password")}</Label>
+                    <button type="button" className="text-xs text-primary underline-offset-2 hover:underline" onClick={() => { setFpEmail(siEmail); go("forgot"); }}>
+                      {t("auth.forgot")}
+                    </button>
+                  </div>
                   <Input id="si-pass" type="password" value={siPass} onChange={(e) => setSiPass(e.target.value)} required autoComplete="current-password" />
                 </div>
                 {error && <p className="text-sm text-destructive">{error}</p>}

@@ -1,1 +1,23 @@
+# Old domains: when entquest.app / vocalyzer.app are added as domain aliases of this site, every
+# page redirects permanently (301) to its equivalent on entsenses.app. Query strings are kept.
+# Rules are checked in order; the first match wins.
+https://entquest.app/cuestionarios/*      https://entsenses.app/quest/:splat           301!
+https://entquest.app/cuestionarios        https://entsenses.app/quest                  301!
+https://entquest.app/dashboard            https://entsenses.app/quest/buscar           301!
+https://entquest.app/resultados           https://entsenses.app/quest/resultados       301!
+https://entquest.app/bandeja              https://entsenses.app/bandeja?m=quest        301!
+https://entquest.app/completar-perfil     https://entsenses.app/panel                  301!
+https://entquest.app/p/*                  https://entsenses.app/                       301!
+https://entquest.app/i/*                  https://entsenses.app/                       301!
+https://entquest.app/*                    https://entsenses.app/:splat                 301!
+https://www.entquest.app/*                https://entsenses.app/:splat                 301!
+https://vocalyzer.app/evaluar             https://entsenses.app/voice/evaluar          301!
+https://vocalyzer.app/informe/*           https://entsenses.app/bandeja?m=voice        301!
+https://vocalyzer.app/bandeja             https://entsenses.app/bandeja?m=voice        301!
+https://vocalyzer.app/imprimir-qr         https://entsenses.app/imprimir-qr?m=voice    301!
+https://vocalyzer.app/p/*                 https://entsenses.app/                       301!
+https://vocalyzer.app/*                   https://entsenses.app/:splat                 301!
+https://www.vocalyzer.app/*               https://entsenses.app/:splat                 301!
+
+# Single-page app fallback
 /*    /index.html   200

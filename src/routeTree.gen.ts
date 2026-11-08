@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as RestablecerRouteImport } from './routes/restablecer'
 import { Route as AuthenticatedBandejaRouteImport } from './routes/_authenticated/bandeja'
 import { Route as AuthenticatedConfiguracionRouteImport } from './routes/_authenticated/configuracion'
 import { Route as AuthenticatedImprimirQrRouteImport } from './routes/_authenticated/imprimir-qr'
@@ -53,6 +54,11 @@ const AuthRoute = AuthRouteImport.update({
 const FeedbackRoute = FeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RestablecerRoute = RestablecerRouteImport.update({
+  id: '/restablecer',
+  path: '/restablecer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedBandejaRoute = AuthenticatedBandejaRouteImport.update({
@@ -180,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/feedback': typeof FeedbackRoute
+  '/restablecer': typeof RestablecerRoute
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/imprimir-qr': typeof AuthenticatedImprimirQrRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/feedback': typeof FeedbackRoute
+  '/restablecer': typeof RestablecerRoute
   '/bandeja': typeof AuthenticatedBandejaRoute
   '/configuracion': typeof AuthenticatedConfiguracionRoute
   '/imprimir-qr': typeof AuthenticatedImprimirQrRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/feedback': typeof FeedbackRoute
+  '/restablecer': typeof RestablecerRoute
   '/_authenticated/bandeja': typeof AuthenticatedBandejaRoute
   '/_authenticated/configuracion': typeof AuthenticatedConfiguracionRoute
   '/_authenticated/imprimir-qr': typeof AuthenticatedImprimirQrRoute
@@ -263,6 +272,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/feedback'
+    | '/restablecer'
     | '/bandeja'
     | '/configuracion'
     | '/imprimir-qr'
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/feedback'
+    | '/restablecer'
     | '/bandeja'
     | '/configuracion'
     | '/imprimir-qr'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/feedback'
+    | '/restablecer'
     | '/_authenticated/bandeja'
     | '/_authenticated/configuracion'
     | '/_authenticated/imprimir-qr'
@@ -345,6 +357,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   FeedbackRoute: typeof FeedbackRoute
+  RestablecerRoute: typeof RestablecerRoute
   ITokenRoute: typeof ITokenRoute
   LegalPrivacidadRoute: typeof LegalPrivacidadRoute
   LegalTerminosRoute: typeof LegalTerminosRoute
@@ -381,6 +394,13 @@ declare module '@tanstack/react-router' {
       path: '/feedback'
       fullPath: '/feedback'
       preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/restablecer': {
+      id: '/restablecer'
+      path: '/restablecer'
+      fullPath: '/restablecer'
+      preLoaderRoute: typeof RestablecerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/bandeja': {
@@ -607,6 +627,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   FeedbackRoute: FeedbackRoute,
+  RestablecerRoute: RestablecerRoute,
   ITokenRoute: ITokenRoute,
   LegalPrivacidadRoute: LegalPrivacidadRoute,
   LegalTerminosRoute: LegalTerminosRoute,
