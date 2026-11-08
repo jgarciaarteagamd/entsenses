@@ -10,10 +10,9 @@
 
 
 > **Estado (noviembre 2026, en ENT Senses):** fases 1 (informes), 2 (motor de tonos), 3 (perfiles
-> de calibración y comprobación diaria) y 4 (audiómetro manual con pulsador) hechas. Siguientes:
-> 5 (procedimiento automático Hughson-Westlake), 6 (enmascaramiento) y 7 (validación clínica).
-> Código: `src/modules/hearing/audio/` (niveles, RETSPL, motor de tonos, pulsador),
-> `src/modules/hearing/lib/calibration.ts`, rutas `/hearing/calibracion` y `/hearing/audiometro`.
+> de calibración y comprobación diaria), 4 (audiómetro manual con pulsador) y 5 (procedimiento
+> automático Hughson-Westlake, `src/modules/hearing/audio/hughsonWestlake.ts`, verificado con
+> pacientes virtuales) hechas. Siguientes: 6 (enmascaramiento) y 7 (validación clínica).
 
 ---
 
