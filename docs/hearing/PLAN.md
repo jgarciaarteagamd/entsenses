@@ -8,6 +8,13 @@
 > Este documento es un plan técnico; los apartados regulatorios son orientativos y deben
 > confirmarse con la AEMPS, un consultor regulatorio y el seguro de responsabilidad civil.
 
+
+> **Estado (noviembre 2026, en ENT Senses):** fases 1 (informes), 2 (motor de tonos), 3 (perfiles
+> de calibración y comprobación diaria) y 4 (audiómetro manual con pulsador) hechas. Siguientes:
+> 5 (procedimiento automático Hughson-Westlake), 6 (enmascaramiento) y 7 (validación clínica).
+> Código: `src/modules/hearing/audio/` (niveles, RETSPL, motor de tonos, pulsador),
+> `src/modules/hearing/lib/calibration.ts`, rutas `/hearing/calibracion` y `/hearing/audiometro`.
+
 ---
 
 ## 1. Visión y dos modos de uso

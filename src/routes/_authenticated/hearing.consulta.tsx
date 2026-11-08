@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Headphones, Loader2, Tag } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
+import { HearingNav } from "@/modules/hearing/components/HearingNav";
 import { ReportEditor } from "@/modules/hearing/components/ReportEditor";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,6 +32,7 @@ function ClinicPage() {
     <div className="min-h-screen bg-muted/30">
       <Header />
       <main className="mx-auto max-w-6xl px-4 py-8">
+        <HearingNav />
         <h1 className="mb-1 flex items-center gap-2 text-2xl font-bold">
           <Headphones className="h-6 w-6" />
           {t("clinic.title")}

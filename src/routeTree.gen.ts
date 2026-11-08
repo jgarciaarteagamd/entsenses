@@ -23,6 +23,8 @@ import { Route as AuthenticatedQuestRouteImport } from './routes/_authenticated/
 import { Route as ITokenRouteImport } from './routes/i.$token'
 import { Route as LegalPrivacidadRouteImport } from './routes/legal.privacidad'
 import { Route as LegalTerminosRouteImport } from './routes/legal.terminos'
+import { Route as AuthenticatedHearingAudiometroRouteImport } from './routes/_authenticated/hearing.audiometro'
+import { Route as AuthenticatedHearingCalibracionRouteImport } from './routes/_authenticated/hearing.calibracion'
 import { Route as AuthenticatedHearingConsultaRouteImport } from './routes/_authenticated/hearing.consulta'
 import { Route as AuthenticatedQuestIndexRouteImport } from './routes/_authenticated/quest.index'
 import { Route as AuthenticatedQuestSlugRouteImport } from './routes/_authenticated/quest.$slug'
@@ -108,6 +110,18 @@ const LegalTerminosRoute = LegalTerminosRouteImport.update({
   path: '/legal/terminos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedHearingAudiometroRoute =
+  AuthenticatedHearingAudiometroRouteImport.update({
+    id: '/hearing/audiometro',
+    path: '/hearing/audiometro',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHearingCalibracionRoute =
+  AuthenticatedHearingCalibracionRouteImport.update({
+    id: '/hearing/calibracion',
+    path: '/hearing/calibracion',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedHearingConsultaRoute =
   AuthenticatedHearingConsultaRouteImport.update({
     id: '/hearing/consulta',
@@ -196,6 +210,8 @@ export interface FileRoutesByFullPath {
   '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
+  '/hearing/audiometro': typeof AuthenticatedHearingAudiometroRoute
+  '/hearing/calibracion': typeof AuthenticatedHearingCalibracionRoute
   '/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
   '/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
   '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
@@ -223,6 +239,8 @@ export interface FileRoutesByTo {
   '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
+  '/hearing/audiometro': typeof AuthenticatedHearingAudiometroRoute
+  '/hearing/calibracion': typeof AuthenticatedHearingCalibracionRoute
   '/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
   '/quest/buscar': typeof AuthenticatedQuestBuscarRoute
   '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
@@ -252,6 +270,8 @@ export interface FileRoutesById {
   '/i/$token': typeof ITokenRoute
   '/legal/privacidad': typeof LegalPrivacidadRoute
   '/legal/terminos': typeof LegalTerminosRoute
+  '/_authenticated/hearing/audiometro': typeof AuthenticatedHearingAudiometroRoute
+  '/_authenticated/hearing/calibracion': typeof AuthenticatedHearingCalibracionRoute
   '/_authenticated/hearing/consulta': typeof AuthenticatedHearingConsultaRoute
   '/_authenticated/quest/$slug': typeof AuthenticatedQuestSlugRouteWithChildren
   '/_authenticated/quest/buscar': typeof AuthenticatedQuestBuscarRoute
@@ -282,6 +302,8 @@ export interface FileRouteTypes {
     | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
+    | '/hearing/audiometro'
+    | '/hearing/calibracion'
     | '/hearing/consulta'
     | '/quest/$slug'
     | '/quest/buscar'
@@ -309,6 +331,8 @@ export interface FileRouteTypes {
     | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
+    | '/hearing/audiometro'
+    | '/hearing/calibracion'
     | '/hearing/consulta'
     | '/quest/buscar'
     | '/quest/resultados'
@@ -337,6 +361,8 @@ export interface FileRouteTypes {
     | '/i/$token'
     | '/legal/privacidad'
     | '/legal/terminos'
+    | '/_authenticated/hearing/audiometro'
+    | '/_authenticated/hearing/calibracion'
     | '/_authenticated/hearing/consulta'
     | '/_authenticated/quest/$slug'
     | '/_authenticated/quest/buscar'
@@ -465,6 +491,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/legal/terminos'
       preLoaderRoute: typeof LegalTerminosRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/hearing/audiometro': {
+      id: '/_authenticated/hearing/audiometro'
+      path: '/hearing/audiometro'
+      fullPath: '/hearing/audiometro'
+      preLoaderRoute: typeof AuthenticatedHearingAudiometroRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hearing/calibracion': {
+      id: '/_authenticated/hearing/calibracion'
+      path: '/hearing/calibracion'
+      fullPath: '/hearing/calibracion'
+      preLoaderRoute: typeof AuthenticatedHearingCalibracionRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/hearing/consulta': {
       id: '/_authenticated/hearing/consulta'
@@ -600,6 +640,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedInvitacionesRoute: typeof AuthenticatedInvitacionesRoute
   AuthenticatedPanelRoute: typeof AuthenticatedPanelRoute
   AuthenticatedQuestRoute: typeof AuthenticatedQuestRouteWithChildren
+  AuthenticatedHearingAudiometroRoute: typeof AuthenticatedHearingAudiometroRoute
+  AuthenticatedHearingCalibracionRoute: typeof AuthenticatedHearingCalibracionRoute
   AuthenticatedHearingConsultaRoute: typeof AuthenticatedHearingConsultaRoute
   AuthenticatedVoiceEvaluarRoute: typeof AuthenticatedVoiceEvaluarRoute
   AuthenticatedHearingInformeIdRoute: typeof AuthenticatedHearingInformeIdRoute
@@ -613,6 +655,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedInvitacionesRoute: AuthenticatedInvitacionesRoute,
   AuthenticatedPanelRoute: AuthenticatedPanelRoute,
   AuthenticatedQuestRoute: AuthenticatedQuestRouteWithChildren,
+  AuthenticatedHearingAudiometroRoute: AuthenticatedHearingAudiometroRoute,
+  AuthenticatedHearingCalibracionRoute: AuthenticatedHearingCalibracionRoute,
   AuthenticatedHearingConsultaRoute: AuthenticatedHearingConsultaRoute,
   AuthenticatedVoiceEvaluarRoute: AuthenticatedVoiceEvaluarRoute,
   AuthenticatedHearingInformeIdRoute: AuthenticatedHearingInformeIdRoute,

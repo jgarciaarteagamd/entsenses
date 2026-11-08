@@ -6,7 +6,7 @@ Ver [`PLAN.md`](PLAN.md).
 
 | Módulo | Qué hace | Estado |
 |---|---|---|
-| **Hearing** | Informes audiométricos (audiograma, impedanciometría, logoaudiometría) con el motor de AudiometricReport; prueba auditiva informativa del paciente (fase 8); audiometría tonal en consulta (fases 2–6, [`docs/hearing/PLAN.md`](docs/hearing/PLAN.md)) | Activo |
+| **Hearing** | Informes audiométricos (audiograma, impedanciometría, logoaudiometría) con el motor de AudiometricReport; **audiómetro manual por vía aérea** con perfiles de calibración, comprobación diaria y pulsador del paciente; próximamente procedimiento automático, enmascaramiento y prueba del paciente ([`docs/hearing/PLAN.md`](docs/hearing/PLAN.md)) | Activo |
 | **Quest** | Cuestionarios clínicos validados (catálogo, buscador por diagnóstico), QR e impresión por cuestionario, rellenar en consulta, invitaciones por correo (Gmail, app de correo, copiar, compartir) | Activo |
 | **Voice** | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer, HNR, TMF, s/z), estimación GRBAS/CAPE-V, evaluación en consulta con valoración perceptual, QR del paciente | Activo |
 | **Scales**, **Tinnitus** | — | Futuro |
