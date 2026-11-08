@@ -88,3 +88,32 @@ describe("keepalive", () => {
     expect(r.rows).toHaveLength(1);
   });
 });
+
+describe("calibration profiles and daily checks", () => {
+  const profile = (doctor: string, extra = "") =>
+    `INSERT INTO public.hearing_calibration_profiles (doctor_id, name, zero_hl${extra ? ", " + extra.split("=")[0] : ""})
+     VALUES ('${doctor}', 'DD45 consulta', '{"right":{"1000":-95}}'${extra ? ", " + extra.split("=")[1] : ""}) RETURNING id`;
+
+  it("doctors manage only their own profiles", async () => {
+    const r = await as("authenticated", D1, profile(D1));
+    expect(r.ok).toBe(true);
+    expect((await as("authenticated", D1, profile(D2))).ok).toBe(false);
+    expect((await as("anon", null, "SELECT * FROM public.hearing_calibration_profiles")).ok).toBe(false);
+    expect((await as("authenticated", D2, "SELECT id FROM public.hearing_calibration_profiles")).rows).toHaveLength(0);
+    expect((await as("authenticated", D2, "UPDATE public.hearing_calibration_profiles SET name = 'x' RETURNING id")).rows).toHaveLength(0);
+    expect((await as("authenticated", D1, profile(D1, "max_dbfs=5"))).ok).toBe(false);
+    expect(
+      (await as("authenticated", D1, `INSERT INTO public.hearing_calibration_profiles (name, calibrated_at, valid_until) VALUES ('x', '2026-01-02', '2026-01-01')`)).ok,
+    ).toBe(false);
+  });
+
+  it("daily checks only for own profiles", async () => {
+    const mine = (await as("authenticated", D1, "SELECT id FROM public.hearing_calibration_profiles LIMIT 1")).rows[0].id;
+    const ins = (doctor: string, id: unknown) =>
+      as("authenticated", doctor, `INSERT INTO public.hearing_daily_checks (doctor_id, profile_id, ok) VALUES ('${doctor}', '${id}', true)`);
+    expect((await ins(D1, mine)).ok).toBe(true);
+    expect((await ins(D2, mine)).ok).toBe(false);
+    expect((await as("authenticated", D2, "SELECT id FROM public.hearing_daily_checks")).rows).toHaveLength(0);
+    expect((await as("authenticated", D1, "UPDATE public.hearing_daily_checks SET ok = false")).ok).toBe(false);
+  });
+});
