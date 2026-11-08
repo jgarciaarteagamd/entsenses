@@ -106,3 +106,17 @@ describe("automated Hughson-Westlake", () => {
     expect(r.presentations).toBeLessThan(250);
   });
 });
+
+describe("explicit sequence (biological calibration)", () => {
+  it("tests every listed frequency once per ear, no retest or inter-octaves", () => {
+    const seq = [1000, 2000, 3000, 4000, 6000, 8000, 750, 500, 250, 125, 1500];
+    const hw = new HughsonWestlake({ ears: ["right", "left"], frequencies: FREQS, maxLevel: () => 100, catchRate: 0, sequence: seq });
+    while (!hw.done) {
+      const s = hw.next()!;
+      hw.record(s.level >= 30);
+    }
+    expect(Object.keys(hw.results.thresholds.right).length).toBe(11);
+    expect(Object.values(hw.results.thresholds.left).every((t) => t && "level" in t && t.level === 30)).toBe(true);
+    expect(hw.results.retest).toEqual({});
+  });
+});

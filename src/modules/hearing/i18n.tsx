@@ -3,6 +3,20 @@
 import { createModuleLang, type Dict } from "@/lib/i18n";
 
 export const HEARING_DICT: Dict = {
+  "cal.method.biological": { es: "Biológico (personas con audición normal)", en: "Biological (normal-hearing listeners)" },
+  "cal.levels_hint": { es: "Nivel de referencia y máximo digital: déjelos como están (−20 y −3 dBFS) salvo que el técnico indique otra cosa.", en: "Reference level and digital maximum: leave them as they are (−20 and −3 dBFS) unless the technician says otherwise." },
+  "bio.help": { es: "Sin técnico ni sonómetro: varias personas jóvenes (18–30 años) sin problemas de oído hacen la prueba con estos auriculares y este volumen fijo, en una sala silenciosa. La app busca automáticamente el sonido más débil que oye cada una en cada frecuencia y oído, y toma ese punto (la mediana) como 0 dB HL. Lo ideal son 3 o más personas.", en: "No technician or sound level meter: several young people (18–30) with no ear problems take the test with these headphones and this fixed volume, in a quiet room. The app automatically finds the faintest sound each one hears at each frequency and ear, and takes that point (the median) as 0 dB HL. Ideally 3 or more people." },
+  "bio.accuracy": { es: "Calibración aproximada (±5–10 dB): sirve para aprender, probar la app y orientar; para informes clínicos fiables hace falta la calibración objetiva de un técnico.", en: "Approximate calibration (±5–10 dB): fine for learning, testing the app and orientation; reliable clinical reports need an objective calibration by a technician." },
+  "bio.add": { es: "Añadir oyente", en: "Add listener" },
+  "bio.initials": { es: "Iniciales", en: "Initials" },
+  "bio.assumed": { es: "Audición supuesta (dB HL)", en: "Assumed hearing (dB HL)" },
+  "bio.start": { es: "Empezar", en: "Start" },
+  "bio.cancel": { es: "Cancelar prueba", en: "Cancel test" },
+  "bio.listener_instructions": { es: "Póngase los auriculares (rojo = derecho). Oirá pitidos cada vez más débiles: pulse el botón grande (o la barra espaciadora) en cuanto oiga uno, aunque sea muy débil. Dura unos 10 minutos.", en: "Put the headphones on (red = right). You will hear beeps that get fainter: press the big button (or the space bar) as soon as you hear one, however faint. It takes about 10 minutes." },
+  "bio.hear_button": { es: "Lo oigo", en: "I hear it" },
+  "bio.progress": { es: "{0} de {1} frecuencias", en: "{0} of {1} frequencies" },
+  "bio.listener_done": { es: "Oyente añadido: guarde el perfil para conservarlo", en: "Listener added: save the profile to keep it" },
+  "bio.listener_summary": { es: "{0} · audición supuesta {1} dB HL · {2} umbrales", en: "{0} · assumed hearing {1} dB HL · {2} thresholds" },
   "auto.tab.manual": { es: "Manual", en: "Manual" },
   "auto.tab.auto": { es: "Automático", en: "Automatic" },
   "auto.help": { es: "Procedimiento automático (Hughson-Westlake modificado, ISO 8253-1): la app presenta los tonos y ajusta el nivel según las respuestas del pulsador. Octavas 1–8 kHz, retest a 1 kHz y 125–500 Hz; añade 750, 1500, 3000 o 6000 Hz si las octavas vecinas difieren ≥ 20 dB. Supervise siempre la prueba.", en: "Automatic procedure (modified Hughson-Westlake, ISO 8253-1): the app presents the tones and adjusts the level from the button responses. Octaves 1–8 kHz, 1 kHz retest and 125–500 Hz; adds 750, 1500, 3000 or 6000 Hz when neighbouring octaves differ by ≥ 20 dB. Always supervise the test." },

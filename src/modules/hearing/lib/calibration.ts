@@ -1,6 +1,6 @@
 // ENT Senses Hearing — calibration profiles and daily checks (Supabase, RLS: own rows only).
 import { supabase } from "@/lib/supabase";
-import { emptyPerEar, type PerEar } from "../audio/levels";
+import { emptyPerEar, type BiologicalListener, type PerEar } from "../audio/levels";
 
 export interface CalibrationProfile {
   id: string;
@@ -10,12 +10,14 @@ export interface CalibrationProfile {
   interface_model: string | null;
   technician: string | null;
   notes: string | null;
-  method: "objective" | "manual";
+  method: "objective" | "manual" | "biological";
   reference_dbfs: number;
   max_dbfs: number;
   retspl: Partial<Record<number, number>>;
   measured_spl: PerEar;
   zero_hl: PerEar;
+  /** Biological calibration: the listeners measured (thresholds in dBFS). */
+  biological: BiologicalListener[];
   calibrated_at: string;
   valid_until: string;
   archived: boolean;
@@ -51,6 +53,9 @@ function normalize(row: Record<string, unknown>): CalibrationProfile {
     retspl: Object.fromEntries(Object.entries((row.retspl as Record<string, number>) ?? {}).map(([k, v]) => [Number(k), Number(v)])),
     measured_spl: perEar(row.measured_spl),
     zero_hl: perEar(row.zero_hl),
+    biological: Array.isArray(row.biological)
+      ? (row.biological as BiologicalListener[]).map((l) => ({ ...l, thresholds: perEar(l.thresholds) }))
+      : [],
   };
 }
 
