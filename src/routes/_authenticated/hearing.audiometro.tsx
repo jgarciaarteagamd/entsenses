@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, CheckCircle2, Headphones, Loader2, Minus, Play, Plus, Save, Tag, XCircle } from "lucide-react";
+import { AlertTriangle, Bot, CheckCircle2, Hand, Headphones, Loader2, Minus, Pause, Play, Plus, Save, Square, Tag, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,7 @@ import AudiogramChart from "@/modules/hearing/audiometric/components/AudiogramCh
 import { Ear as EarEnum } from "@/modules/hearing/audiometric/types";
 import { HIGH_LEVEL_HL, HL_STEP, calibratedFrequencies, hlToDbfs, isProfileUsable, maxHl, stepLevel, type EarSide } from "@/modules/hearing/audio/levels";
 import { ToneEngine, type ToneMode } from "@/modules/hearing/audio/toneEngine";
+import { HughsonWestlake, type AutoResults, type AutoStep } from "@/modules/hearing/audio/hughsonWestlake";
 import { loadPatientKey, savePatientKey, usePatientButton } from "@/modules/hearing/audio/patientButton";
 import { checkedOkToday, lastDailyCheck, listProfiles, recordDailyCheck, type CalibrationProfile } from "@/modules/hearing/lib/calibration";
 import { compactAudiogram, emptyAudiogram } from "@/modules/hearing/lib/report";
@@ -30,6 +31,12 @@ type Thresholds = Record<EarSide, Partial<Record<number, Threshold>>>;
 /** Octave order recommended by ISO 8253-1; "1000r" is the 1 kHz retest. */
 const ORDER = [1000, 2000, 4000, 8000, "1000r", 500, 250, 125] as const;
 const RESPONSE_WINDOW_MS = 1500;
+/** Random pause between automatic presentations, so the patient cannot predict the rhythm. */
+const ISI_MIN_MS = 1200;
+const ISI_MAX_MS = 2800;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+/** Duration of a presentation (used for silent catch trials). */
+const toneMs = (mode: ToneMode) => (mode === "pulsed" ? 1350 : 1500);
 const CHECK_LEVEL_HL = 30;
 
 function AudiometerPage() {
@@ -168,6 +175,17 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
   const [saving, setSaving] = useState(false);
   const windowOpen = useRef(false);
   const responded = useRef(false);
+  // Automatic procedure
+  const [tab, setTab] = useState<"manual" | "auto">("manual");
+  const [autoFirstEar, setAutoFirstEar] = useState<EarSide>("right");
+  const [autoCatch, setAutoCatch] = useState(true);
+  const [autoRunning, setAutoRunning] = useState(false);
+  const [autoPaused, setAutoPaused] = useState(false);
+  const [autoStep, setAutoStep] = useState<AutoStep | null>(null);
+  const [autoResults, setAutoResults] = useState<AutoResults | null>(null);
+  const stopRef = useRef(false);
+  const pauseRef = useRef(false);
+  const runningRef = useRef(false);
 
   const zero = profile.zero_hl[ear][freq];
   const max = maxHl(zero, profile.max_dbfs);
@@ -194,19 +212,73 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
     return () => window.removeEventListener("keydown", h);
   }, [capturing]);
 
+  /** Presents a tone (or silence, for a catch trial) and reports whether the patient responded. */
+  const listen = useCallback(
+    async (e: EarSide, f: number, l: number, silent = false): Promise<boolean> => {
+      const z = profile.zero_hl[e][f];
+      responded.current = false;
+      windowOpen.current = true;
+      if (silent || z === undefined) await sleep(toneMs(mode));
+      else await engine.present({ frequency: f, ear: e, dbfs: hlToDbfs(l, z), maxDbfs: profile.max_dbfs, mode });
+      await sleep(RESPONSE_WINDOW_MS);
+      windowOpen.current = false;
+      return responded.current;
+    },
+    [engine, mode, profile],
+  );
+
   const present = useCallback(async () => {
     if (presenting || zero === undefined) return;
     setPresenting(true);
     setLastResult(null);
-    responded.current = false;
-    windowOpen.current = true;
     setPresentations((n) => n + 1);
-    await engine.present({ frequency: freq, ear, dbfs: hlToDbfs(level, zero), maxDbfs: profile.max_dbfs, mode });
-    await new Promise((r) => setTimeout(r, RESPONSE_WINDOW_MS));
-    windowOpen.current = false;
-    setLastResult(responded.current);
+    setLastResult(await listen(ear, freq, level));
     setPresenting(false);
-  }, [presenting, zero, engine, freq, ear, level, profile.max_dbfs, mode]);
+  }, [presenting, zero, listen, freq, ear, level]);
+
+  const toThresholds = (r: AutoResults): Thresholds => ({
+    right: Object.fromEntries(Object.entries(r.thresholds.right).map(([f, x]) => [f, x && "level" in x ? { level: x.level } : { noResponse: true as const }])),
+    left: Object.fromEntries(Object.entries(r.thresholds.left).map(([f, x]) => [f, x && "level" in x ? { level: x.level } : { noResponse: true as const }])),
+  });
+
+  async function runAuto() {
+    const runner = new HughsonWestlake({
+      ears: autoFirstEar === "right" ? ["right", "left"] : ["left", "right"],
+      frequencies: freqs,
+      maxLevel: (e, f) => maxHl(profile.zero_hl[e][f], profile.max_dbfs),
+      catchRate: autoCatch ? 0.12 : 0,
+    });
+    stopRef.current = false;
+    pauseRef.current = false;
+    runningRef.current = true;
+    setAutoRunning(true);
+    setAutoPaused(false);
+    setAutoResults(runner.results);
+    setThresholds({ right: {}, left: {} });
+    setRetest({});
+    while (!runner.done && !stopRef.current) {
+      while (pauseRef.current && !stopRef.current) await sleep(200);
+      if (stopRef.current) break;
+      const step = runner.next()!;
+      setAutoStep(step);
+      setEar(step.ear);
+      setFreq(step.frequency);
+      setLevel(step.level);
+      const answer = await listen(step.ear, step.frequency, step.level, step.catchTrial);
+      if (stopRef.current) break;
+      runner.record(answer);
+      setLastResult(step.catchTrial ? null : answer);
+      setAutoResults({ ...runner.results });
+      setThresholds(toThresholds(runner.results));
+      setRetest({ ...runner.results.retest });
+      await sleep(ISI_MIN_MS + Math.random() * (ISI_MAX_MS - ISI_MIN_MS));
+    }
+    engine.stop();
+    runningRef.current = false;
+    setAutoRunning(false);
+    setAutoStep(null);
+    if (runner.done) toast.success(t("auto.finished"));
+  }
 
   function advance(currentEar: EarSide, currentFreq: number, wasRetest: boolean) {
     const key = wasRetest ? "1000r" : currentFreq;
@@ -243,7 +315,7 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
   useEffect(() => {
     const h = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement | null;
-      if (capturing || e.code === patientKey || (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName))) return;
+      if (runningRef.current || capturing || e.code === patientKey || (el && ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName))) return;
       const i = freqs.indexOf(freq as (typeof freqs)[number]);
       if (e.key === "ArrowRight" && i < freqs.length - 1) setFreq(freqs[i + 1]);
       else if (e.key === "ArrowLeft" && i > 0) setFreq(freqs[i - 1]);
@@ -292,7 +364,8 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
     if (!any) return toast.error(t("aud.empty"));
     setSaving(true);
     try {
-      const warnings = maskingFreqs.map((f) => `masking_needed_${f}`);
+      const warnings = [...maskingFreqs.map((f) => `masking_needed_${f}`), ...(autoResults?.warnings ?? [])];
+      if (autoResults) warnings.push("procedure_automatic");
       const id = await submitDoctorSession(
         {
           info: { sex: "unspecified", ageGroup: "unspecified", lang },
@@ -306,7 +379,12 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
           audiogram: compactAudiogram(audiogram),
           quality: {
             retest1kDb: retestDiffs.length ? Math.max(...retestDiffs) : undefined,
-            falsePositiveRate: presentations ? Math.round((falsePositives / presentations) * 100) / 100 : undefined,
+            falsePositiveRate:
+              autoResults && autoResults.catchTrials > 0
+                ? Math.round((autoResults.falsePositives / autoResults.catchTrials) * 100) / 100
+                : presentations
+                  ? Math.round((falsePositives / presentations) * 100) / 100
+                  : undefined,
             warnings,
           },
         },
@@ -333,8 +411,113 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
         <CheckCircle2 className="h-4 w-4" />
         {t("check.done")} · {profile.name}
       </p>
+      <div className="flex flex-wrap gap-1 rounded-lg border bg-background p-1 sm:w-fit">
+        {(["manual", "auto"] as const).map((m) => (
+          <Button key={m} size="sm" variant={tab === m ? "default" : "ghost"} onClick={() => !autoRunning && setTab(m)} disabled={autoRunning && tab !== m}>
+            {m === "manual" ? <Hand className="mr-1.5 h-4 w-4" /> : <Bot className="mr-1.5 h-4 w-4" />}
+            {t(`auto.tab.${m}`)}
+          </Button>
+        ))}
+      </div>
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
         <Card>
+          {tab === "auto" ? (
+            <CardContent className="space-y-5 pt-6">
+              <p className="text-sm text-muted-foreground">{t("auto.help")}</p>
+              <p className="rounded border border-sky-200 bg-sky-50 p-3 text-sm text-sky-950">{t("auto.patient_instructions")}</p>
+              <div className="space-y-1.5">
+                <Label>{t("auto.first_ear")}</Label>
+                <div className="flex gap-2">
+                  {(["right", "left"] as const).map((e) => (
+                    <Button key={e} size="sm" disabled={autoRunning} variant={autoFirstEar === e ? "default" : "outline"} onClick={() => setAutoFirstEar(e)}>
+                      {t(e === "right" ? "hearing.ear.right" : "hearing.ear.left")}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <Label>{t("aud.mode")}</Label>
+                {(["pulsed", "warble"] as const).map((m) => (
+                  <Button key={m} size="sm" disabled={autoRunning} variant={mode === m ? "default" : "outline"} onClick={() => setMode(m)}>
+                    {t(`aud.mode.${m}`)}
+                  </Button>
+                ))}
+              </div>
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={autoCatch} disabled={autoRunning} onChange={(e) => setAutoCatch(e.target.checked)} />
+                {t("auto.catch")}
+              </label>
+              <div className="flex flex-wrap items-center gap-2">
+                {!autoRunning ? (
+                  <Button size="lg" onClick={() => void runAuto()}>
+                    <Play className="mr-2 h-4 w-4" />
+                    {autoResults ? t("auto.restart") : t("auto.start")}
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={() => {
+                        pauseRef.current = !pauseRef.current;
+                        setAutoPaused(pauseRef.current);
+                      }}
+                    >
+                      {autoPaused ? <Play className="mr-2 h-4 w-4" /> : <Pause className="mr-2 h-4 w-4" />}
+                      {autoPaused ? t("auto.resume") : t("auto.pause")}
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="destructive"
+                      onClick={() => {
+                        stopRef.current = true;
+                        engine.stop();
+                      }}
+                    >
+                      <Square className="mr-2 h-4 w-4" />
+                      {t("auto.stop")}
+                    </Button>
+                  </>
+                )}
+                <span
+                  className={`h-10 w-10 rounded-full border-4 transition ${pressed ? "border-emerald-600 bg-emerald-400" : "border-muted bg-background"}`}
+                  title={t("aud.button")}
+                />
+              </div>
+              {autoStep && (
+                <div className="rounded border p-3">
+                  <p className={`text-sm font-semibold ${autoStep.ear === "right" ? "text-red-600" : "text-blue-600"}`}>
+                    {t(autoStep.ear === "right" ? "hearing.ear.right" : "hearing.ear.left")} · {autoStep.frequency} Hz
+                    {autoStep.retest ? ` · ${t("aud.retest")}` : ""}
+                  </p>
+                  <p className="text-3xl font-bold tabular-nums">
+                    {autoStep.catchTrial ? t("auto.catch_trial") : `${autoStep.level} dB HL`}
+                  </p>
+                  {autoPaused && <Badge variant="outline">{t("auto.paused")}</Badge>}
+                </div>
+              )}
+              {autoResults && (
+                <div className="space-y-1 rounded border bg-muted/40 p-3 text-xs text-muted-foreground">
+                  <p>{t("auto.stats", autoResults.presentations, autoResults.catchTrials, autoResults.falsePositives)}</p>
+                  {retestDiffs.length > 0 && <p>{t("aud.retest_diff", Math.max(...retestDiffs))}</p>}
+                  {autoResults.warnings.map((w) => (
+                    <p key={w} className="font-medium text-amber-800">
+                      {t(
+                        `auto.warn.${w.startsWith("unreliable") ? "unreliable" : w.startsWith("retest") ? "retest" : w}`,
+                        w
+                          .split("_")
+                          .slice(1)
+                          .map((x) => (x === "right" ? t("hearing.ear.right_short") : x === "left" ? t("hearing.ear.left_short") : x === "high" || x === "positives" ? "" : `${x} Hz`))
+                          .join(" ")
+                          .trim(),
+                      )}
+                    </p>
+                  ))}
+                  <p>{t("aud.button_key", patientKey)}</p>
+                </div>
+              )}
+            </CardContent>
+          ) : (
           <CardContent className="space-y-5 pt-6">
             <div className="flex gap-2">
               {(["right", "left"] as const).map((e) => (
@@ -437,6 +620,7 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
               <p>{t("aud.shortcuts")}</p>
             </div>
           </CardContent>
+          )}
         </Card>
 
         <div className="space-y-4">
