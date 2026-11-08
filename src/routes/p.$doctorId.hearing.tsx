@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicHeader } from "@/components/PublicHeader";
 import { useLang } from "@/lib/i18n";
 import { isUuid } from "@/lib/ids";
 import { isSupabaseConfigured } from "@/lib/supabase";
+import { PatientCheck } from "@/modules/hearing/components/PatientCheck";
 
-// Patient page opened from the doctor's QR. The informative remote test (questionnaire, device
-// choice, tones and digits-in-noise) is built in phase 8; the submission helper already exists
-// (submitPatientSession).
+// Patient page opened from the doctor's QR: informative remote hearing check (not calibrated).
 export const Route = createFileRoute("/p/$doctorId/hearing")({
+  head: () => ({ meta: [{ name: "robots", content: "noindex" }] }),
   component: PatientPage,
 });
 
@@ -21,7 +21,7 @@ function PatientPage() {
   return (
     <div className="min-h-screen bg-muted/30">
       <PublicHeader suffix={t("patient.header")} linkHome={false} />
-      <main className="mx-auto max-w-2xl px-4 py-8">
+      <main className="mx-auto max-w-xl px-4 py-6">
         {!valid || !isSupabaseConfigured ? (
           <Card>
             <CardContent className="flex gap-3 py-8 text-sm">
@@ -30,16 +30,7 @@ function PatientPage() {
             </CardContent>
           </Card>
         ) : (
-          <Card>
-            <CardContent className="space-y-4 pt-6">
-              <h1 className="text-xl font-bold">{t("patient.header")}</h1>
-              <div className="flex gap-3 rounded border border-amber-300 bg-amber-50 p-3 text-sm leading-6 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
-                <Info className="h-5 w-5 shrink-0" />
-                <span>{t("patient.disclaimer")}</span>
-              </div>
-              <p className="text-sm text-muted-foreground">{t("patient.coming")}</p>
-            </CardContent>
-          </Card>
+          <PatientCheck doctorId={doctorId} />
         )}
       </main>
     </div>

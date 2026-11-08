@@ -12,8 +12,10 @@
 > **Estado (noviembre 2026, en ENT Senses):** fases 1 (informes), 2 (motor de tonos), 3 (perfiles
 > de calibración y comprobación diaria), 4 (audiómetro manual con pulsador) y 5 (procedimiento
 > automático Hughson-Westlake, `src/modules/hearing/audio/hughsonWestlake.ts`, verificado con
-> pacientes virtuales) hechas, más calibración biológica. Siguientes: 6 (enmascaramiento), 8 (prueba
-> del paciente) y 7 (validación clínica). Guía práctica y plantillas: [`GUIA.md`](GUIA.md).
+> pacientes virtuales) hechas, más calibración biológica y fase 8 (prueba informativa del paciente,
+> `src/modules/hearing/components/PatientCheck.tsx` + `lib/remoteCheck.ts`; pendiente: dígitos en
+> ruido). Siguientes: 6 (enmascaramiento) y 7 (validación clínica). Guía práctica y plantillas:
+> [`GUIA.md`](GUIA.md).
 
 ---
 

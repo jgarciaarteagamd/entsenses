@@ -35,6 +35,8 @@ import {
   type SessionRow,
 } from "@/modules/hearing/lib/sessions";
 import { supabase } from "@/lib/supabase";
+import { estimatedPta, readRemoteAudiogram } from "@/modules/hearing/lib/remoteCheck";
+import { RemoteCheckDetails } from "./RemoteCheckDetails";
 
 type Filter = "all" | "patient" | "doctor";
 
@@ -119,6 +121,9 @@ function ResultCard({ r, onChanged }: { r: SessionRow; onChanged: () => void }) 
 
   const audiogram = normalizeAudiogram(r.audiogram);
   const pta = ptaSummary(r.audiogram, fromStoredReport(r.report).standard);
+  const remote = readRemoteAudiogram(r.audiogram);
+  const remotePta = remote ? { right: estimatedPta(remote.right), left: estimatedPta(remote.left) } : null;
+  const redFlags = ((r.questionnaire as { redFlags?: unknown[] })?.redFlags ?? []).length;
 
   async function act(fn: () => Promise<void>) {
     try {
@@ -172,6 +177,11 @@ function ResultCard({ r, onChanged }: { r: SessionRow; onChanged: () => void }) 
                 </Badge>
               )}
               {!r.seen && <Badge className="text-xs">{t("inbox.new_badge")}</Badge>}
+              {redFlags > 0 && (
+                <Badge variant="outline" className="gap-1 border-rose-300 bg-rose-50 text-xs text-rose-800 dark:bg-rose-950/40 dark:text-rose-300">
+                  {t("inbox.red_flags")}
+                </Badge>
+              )}
               {r.label && !editing && (
                 <Badge variant="outline" className="gap-1 text-xs">
                   <Tag className="h-3 w-3" />
@@ -238,8 +248,17 @@ function ResultCard({ r, onChanged }: { r: SessionRow; onChanged: () => void }) 
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Metric label={t("inbox.origin")} value={t(`inbox.origin.${r.device?.entry ?? (r.source === "patient" ? "remote" : "manual")}`)} />
           <Metric label={t("inbox.calibration")} value={r.calibrated ? t("inbox.calibrated") : t("inbox.not_calibrated")} />
-          <Metric label={t("inbox.pta_right")} value={pta.right ? `${pta.right} dB` : "—"} />
-          <Metric label={t("inbox.pta_left")} value={pta.left ? `${pta.left} dB` : "—"} />
+          {remotePta ? (
+            <>
+              <Metric label={t("inbox.pta_right_est")} value={remotePta.right !== null ? `≈ ${remotePta.right} dB` : "—"} />
+              <Metric label={t("inbox.pta_left_est")} value={remotePta.left !== null ? `≈ ${remotePta.left} dB` : "—"} />
+            </>
+          ) : (
+            <>
+              <Metric label={t("inbox.pta_right")} value={pta.right ? `${pta.right} dB` : "—"} />
+              <Metric label={t("inbox.pta_left")} value={pta.left ? `${pta.left} dB` : "—"} />
+            </>
+          )}
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
@@ -255,7 +274,12 @@ function ResultCard({ r, onChanged }: { r: SessionRow; onChanged: () => void }) 
           </Button>
         </div>
 
-        {open && (
+        {open && remote && (
+          <div className="mt-4">
+            <RemoteCheckDetails r={r} />
+          </div>
+        )}
+        {open && !remote && (
           <div className="mt-4 space-y-5">
             <div className="grid gap-4 text-slate-900 md:grid-cols-2">
               <div className="aspect-[4/3] overflow-hidden rounded-xl border border-red-200 bg-white sm:aspect-auto sm:h-[300px]">

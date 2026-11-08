@@ -97,7 +97,34 @@ Objetivo orientativo: diferencias de **≤ 5 dB** en la mayoría de las frecuenc
 Objetivo del plan: **diferencia media ≤ 5 dB** y **≥ 90 % de los umbrales dentro de ±10 dB**, en
 30–50 pacientes (60–100 oídos).
 
-## 6. Preguntas frecuentes
+## 6. Prueba informativa del paciente (QR)
+
+El paciente abre el QR de Hearing en su móvil y, sin dar su nombre: responde 7 preguntas y los
+signos de alarma, elige sus auriculares, **ajusta el volumen** con un tono de referencia hasta que
+le resulte cómodo «como una conversación», comprueba izquierda/derecha y hace la búsqueda
+automática en 1000, 2000, 4000 y 500 Hz de cada oído pulsando «Lo oigo» (unos 4–5 minutos).
+
+- **Qué ve el paciente**: por oído, «probablemente buena audición / posible pérdida / probable
+  pérdida importante», y un mensaje: «no se observan alteraciones llamativas», «recomendable
+  revisión», «resultado poco fiable» o, si marcó signos de alarma, «consulte con un médico pronto».
+  Nunca ve números.
+- **Qué ve usted en la bandeja**: niveles **estimados** (±15–20 dB, nunca como vía aérea
+  calibrada), PTA estimado, asimetría, cuestionario (0–20), signos de alarma, auriculares y
+  respuestas sin tono.
+- **Lo más fiable**: la diferencia entre oídos y la forma de la curva. **No descarta una pérdida
+  simétrica**, porque el paciente ajusta el volumen a su propia audición.
+
+| Criterio | Regla actual |
+|---|---|
+| Buena / posible / probable pérdida | PTA estimado (500–4000 Hz) ≤ 30 / ≤ 50 / > 50 dB |
+| Asimetría | Diferencia de PTA ≥ 15 dB o ≥ 25 dB en una frecuencia |
+| Quejas en el cuestionario | Puntuación ≥ 8 de 20 |
+| Poco fiable | > 30 % de pulsaciones sin tono o frecuencias sin resultado claro |
+
+Para analizarla, compare en la plantilla 5.5 la prueba del paciente con su audiometría en consulta
+(columna «Modo»: «paciente»); con 30–50 casos se podrán ajustar estos umbrales.
+
+## 7. Preguntas frecuentes
 
 - **¿Puedo usar cualquier auricular?** Para aprender, sí, con calibración biológica. Para informes
   clínicos, auriculares audiométricos homologados (DD45) con calibración objetiva.
