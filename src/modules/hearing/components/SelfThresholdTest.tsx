@@ -68,15 +68,21 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
       catchRate: 0.1,
     });
     const eng = engine.current;
+    // Per-run flag: React may mount, clean up and mount again (StrictMode); only the latest run
+    // keeps going. `stop` is the user's Cancel.
+    let cancelled = false;
+    const halted = () => cancelled || stop.current;
     void (async () => {
-      while (!runner.done && !stop.current) {
+      while (!runner.done && !halted()) {
         const s = runner.next()!;
         setStep(s);
         responded.current = false;
         windowOpen.current = true;
         if (s.catchTrial) await sleep(1350);
         else await eng.present({ frequency: s.frequency, ear: s.ear, dbfs: p.toDbfs(s.level, s.frequency), maxDbfs: p.maxDbfs, mode: "pulsed" });
+        if (cancelled) return;
         await sleep(WINDOW_MS);
+        if (cancelled) return;
         windowOpen.current = false;
         if (stop.current) break;
         runner.record(responded.current);
@@ -84,11 +90,12 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
         setDone(Object.keys(r.right).length + Object.keys(r.left).length);
         await sleep(800 + Math.random() * 1000);
       }
+      if (cancelled) return;
       eng.stop();
       if (!stop.current) p.onDone(runner.results);
     })();
     return () => {
-      stop.current = true;
+      cancelled = true;
       eng.stop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
