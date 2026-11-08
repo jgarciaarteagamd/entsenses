@@ -5,8 +5,8 @@ export function Brand({ suffix }: { suffix?: string }) {
   const { t } = useLang();
   return (
     <span className="flex items-center gap-2">
-      <img src="/brand/entsenses-symbol.png" alt="" className="h-8 w-auto" />
-      <img src="/brand/entsenses-wordmark.png" alt={t("app.name")} className="h-[15px] w-auto dark:brightness-150" />
+      <img src="/brand/entsenses-symbol.svg" alt="" className="h-8 w-auto" />
+      <img src="/brand/entsenses-wordmark.svg" alt={t("app.name")} className="h-[15px] w-auto dark:brightness-150" />
       {suffix && <span className="hidden text-sm font-normal text-muted-foreground sm:inline">· {suffix}</span>}
     </span>
   );
