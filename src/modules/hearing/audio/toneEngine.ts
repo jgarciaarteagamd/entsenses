@@ -58,7 +58,12 @@ export class ToneEngine {
   private active: { stop: () => void } | null = null;
 
   async context(): Promise<AudioContext> {
-    if (!this.ctx) this.ctx = new AudioContext({ latencyHint: "interactive" });
+    if (!this.ctx) {
+      // iOS 17+: play through the headphones even with the silent switch on.
+      const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+      if (session) session.type = "playback";
+      this.ctx = new AudioContext({ latencyHint: "interactive" });
+    }
     if (this.ctx.state === "suspended") await this.ctx.resume();
     return this.ctx;
   }
@@ -67,7 +72,7 @@ export class ToneEngine {
     return this.ctx?.sampleRate ?? null;
   }
 
-  private build(ctx: BaseAudioContext, req: Pick<ToneRequest, "frequency" | "ear" | "mode">) {
+  private build(ctx: BaseAudioContext, req: Pick<ToneRequest, "frequency" | "mode"> & { ear: EarSide | "both" }) {
     const osc = ctx.createOscillator();
     osc.type = "sine";
     osc.frequency.value = req.frequency;
@@ -83,7 +88,8 @@ export class ToneEngine {
     env.gain.value = 0;
     const merger = ctx.createChannelMerger(2);
     osc.connect(env);
-    env.connect(merger, 0, req.ear === "left" ? 0 : 1);
+    if (req.ear !== "right") env.connect(merger, 0, 0);
+    if (req.ear !== "left") env.connect(merger, 0, 1);
     merger.connect(ctx.destination);
     const nodes = [osc, lfo].filter(Boolean) as OscillatorNode[];
     const dispose = () => {
@@ -128,7 +134,7 @@ export class ToneEngine {
   }
 
   /** Continuous reference tone for calibration measurements; runs until stop(). */
-  async startReference(req: Omit<ToneRequest, "mode">): Promise<void> {
+  async startReference(req: Omit<ToneRequest, "mode" | "ear"> & { ear: EarSide | "both" }): Promise<void> {
     this.stop();
     const ctx = await this.context();
     const amp = dbfsToGain(Math.min(req.dbfs, req.maxDbfs));

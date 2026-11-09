@@ -117,3 +117,17 @@ describe("calibration profiles and daily checks", () => {
     expect((await as("authenticated", D1, "UPDATE public.hearing_daily_checks SET ok = false")).ok).toBe(false);
   });
 });
+
+describe("biological calibration", () => {
+  it("accepts the biological method with listener data, rejects unknown methods", async () => {
+    const ok = await as(
+      "authenticated",
+      D1,
+      `INSERT INTO public.hearing_calibration_profiles (doctor_id, name, method, biological)
+       VALUES ('${D1}', 'HD 280 biológica', 'biological', '[{"initials":"JG","assumedHl":0,"thresholds":{"right":{"1000":-98}}}]') RETURNING method`,
+    );
+    expect(ok.rows).toEqual([{ method: "biological" }]);
+    expect((await as("authenticated", D1, `INSERT INTO public.hearing_calibration_profiles (doctor_id, name, method) VALUES ('${D1}', 'x', 'magic')`)).ok).toBe(false);
+    expect((await as("authenticated", D1, `INSERT INTO public.hearing_calibration_profiles (doctor_id, name, biological) VALUES ('${D1}', 'x', '{}')`)).ok).toBe(false);
+  });
+});

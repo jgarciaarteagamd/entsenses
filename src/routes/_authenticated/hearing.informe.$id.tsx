@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/lib/i18n";
 import { getSession, isManualEntry, updateAudiogram, updateReport } from "@/modules/hearing/lib/sessions";
 import { getProfessionalDefaults } from "@/lib/profile";
+import { RemoteCheckDetails } from "@/modules/hearing/components/RemoteCheckDetails";
 import { compactAudiogram, fromStoredReport, normalizeAudiogram, recallIdentity, rememberIdentity } from "@/modules/hearing/lib/report";
 
 export const Route = createFileRoute("/_authenticated/hearing/informe/$id")({
@@ -73,6 +74,11 @@ function ReportPage() {
                     <AlertTriangle className="h-4 w-4 shrink-0" />
                     {t("report.not_calibrated")}
                   </p>
+                )}
+                {r.source === "patient" && (
+                  <div className="print:hidden">
+                    <RemoteCheckDetails r={r} />
+                  </div>
                 )}
               </div>
             }

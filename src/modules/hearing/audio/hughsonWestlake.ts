@@ -37,6 +37,11 @@ export interface AutoOptions {
   /** Random number generator in [0, 1) (seedable for tests). */
   random?: () => number;
   firstStartLevel?: number;
+  /**
+   * Explicit frequency order (e.g. biological calibration): every listed frequency is tested,
+   * without the 1 kHz retest or automatic inter-octaves.
+   */
+  sequence?: number[];
 }
 
 export interface AutoResults {
@@ -73,7 +78,8 @@ interface Search {
 }
 
 export class HughsonWestlake {
-  private opts: Required<Omit<AutoOptions, "random" | "catchRate" | "firstStartLevel">> & {
+  private opts: Required<Omit<AutoOptions, "random" | "catchRate" | "firstStartLevel" | "sequence">> & {
+    sequence?: number[];
     random: () => number;
     catchRate: number;
     firstStartLevel: number;
@@ -99,6 +105,12 @@ export class HughsonWestlake {
       firstStartLevel: options.firstStartLevel ?? 40,
     };
     for (const ear of options.ears) {
+      if (options.sequence) {
+        for (const f of options.sequence) {
+          if (options.maxLevel(ear, f) !== null) this.queue.push({ ear, frequency: f, retest: false });
+        }
+        continue;
+      }
       for (const f of OCTAVE_ORDER) {
         const freq = f === "1000r" ? 1000 : f;
         if (!options.frequencies.includes(freq) || options.maxLevel(ear, freq) === null) continue;
@@ -186,7 +198,7 @@ export class HughsonWestlake {
     } else {
       this.results.thresholds[s.ear][s.frequency] = t;
       if ("level" in t && t.unreliable) this.results.warnings.push(`unreliable_${tag}`);
-      this.addInterOctaves(s.ear);
+      if (!this.opts.sequence) this.addInterOctaves(s.ear);
     }
     this.startNext();
   }

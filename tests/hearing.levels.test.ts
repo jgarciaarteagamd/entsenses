@@ -57,3 +57,15 @@ describe("hearing levels", () => {
     expect(isProfileUsable({ valid_until: "2027-11-08", zero_hl: { right: { 1000: -95 }, left: {} } }, today)).toBe(false);
   });
 });
+
+import { zerosFromListeners } from "../src/modules/hearing/audio/levels";
+
+describe("biological calibration", () => {
+  it("0 dB HL = median of (listener threshold − assumed HL)", () => {
+    const L = (assumedHl: number, r1k: number) => ({ initials: "x", assumedHl, date: "2026-11-09", thresholds: { right: { 1000: r1k }, left: {} } });
+    const z = zerosFromListeners([L(0, -100), L(0, -96), L(5, -90)]); // −100, −96, −95 → median −96
+    expect(z.right[1000]).toBe(-96);
+    expect(z.left[1000]).toBeUndefined();
+    expect(zerosFromListeners([L(0, -100), L(0, -94)]).right[1000]).toBe(-97);
+  });
+});

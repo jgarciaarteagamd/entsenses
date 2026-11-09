@@ -20,12 +20,14 @@ import {
   emptyPerEar,
   isProfileUsable,
   maxHl,
+  zerosFromListeners,
   zerosFromMeasurements,
   type EarSide,
   type PerEar,
 } from "@/modules/hearing/audio/levels";
 import { RETSPL_PRESETS } from "@/modules/hearing/audio/retspl";
 import { ToneEngine } from "@/modules/hearing/audio/toneEngine";
+import { BiologicalListenerTest } from "@/modules/hearing/components/BiologicalListenerTest";
 import { listProfiles, saveProfile, setArchived, type CalibrationProfile } from "@/modules/hearing/lib/calibration";
 
 export const Route = createFileRoute("/_authenticated/hearing/calibracion")({
@@ -42,17 +44,18 @@ const inAYear = () => {
 function newProfile(): Omit<CalibrationProfile, "id"> & { id?: string } {
   return {
     name: "",
-    transducer_model: RETSPL_PRESETS.dd45.label,
+    transducer_model: "",
     transducer_serial: "",
     interface_model: "",
     technician: "",
     notes: "",
-    method: "objective",
+    method: "biological",
     reference_dbfs: DEFAULT_REFERENCE_DBFS,
     max_dbfs: DEFAULT_MAX_DBFS,
     retspl: { ...RETSPL_PRESETS.dd45.values },
     measured_spl: emptyPerEar(),
     zero_hl: emptyPerEar(),
+    biological: [],
     calibrated_at: today(),
     valid_until: inAYear(),
     archived: false,
@@ -188,9 +191,16 @@ function ProfileEditor({
   useEffect(() => () => engine.current?.stop(), []);
 
   const zero: PerEar = useMemo(
-    () => (p.method === "objective" ? zerosFromMeasurements(p.reference_dbfs, p.measured_spl, p.retspl) : p.zero_hl),
-    [p.method, p.reference_dbfs, p.measured_spl, p.retspl, p.zero_hl],
+    () =>
+      p.method === "objective"
+        ? zerosFromMeasurements(p.reference_dbfs, p.measured_spl, p.retspl)
+        : p.method === "biological"
+          ? zerosFromListeners(p.biological)
+          : p.zero_hl,
+    [p.method, p.reference_dbfs, p.measured_spl, p.retspl, p.zero_hl, p.biological],
   );
+  const [listenerForm, setListenerForm] = useState<{ initials: string; assumedHl: number } | null>(null);
+  const [testing, setTesting] = useState<{ initials: string; assumedHl: number } | null>(null);
 
   async function toggleTone(ear: EarSide, f: number) {
     engine.current ??= new ToneEngine();
@@ -275,7 +285,7 @@ function ProfileEditor({
           <div className="space-y-1.5">
             <Label>{t("cal.method")}</Label>
             <div className="flex gap-1 rounded-lg border p-1">
-              {(["objective", "manual"] as const).map((m) => (
+              {(["biological", "objective", "manual"] as const).map((m) => (
                 <Button key={m} size="sm" variant={p.method === m ? "default" : "ghost"} onClick={() => set("method", m)}>
                   {t(`cal.method.${m}`)}
                 </Button>
@@ -300,7 +310,58 @@ function ProfileEditor({
             ))}
         </div>
 
-        <p className="text-sm text-muted-foreground">{p.method === "objective" ? t("cal.objective_help") : t("cal.manual_help")}</p>
+        {p.method === "objective" && <p className="text-xs text-muted-foreground">{t("cal.levels_hint")}</p>}
+        <p className="text-sm text-muted-foreground">
+          {p.method === "objective" ? t("cal.objective_help") : p.method === "biological" ? t("bio.help") : t("cal.manual_help")}
+        </p>
+        {p.method === "biological" && (
+          <div className="space-y-3">
+            <p className="text-xs text-amber-800">{t("bio.accuracy")}</p>
+            {p.biological.map((l, i) => (
+              <div key={i} className="flex flex-wrap items-center gap-3 rounded border p-2 text-sm">
+                <span className="font-medium">{l.initials}</span>
+                <span className="text-muted-foreground">{t("bio.listener_summary", l.date, l.assumedHl, Object.keys(l.thresholds.right).length + Object.keys(l.thresholds.left).length)}</span>
+                <Button size="sm" variant="ghost" onClick={() => set("biological", p.biological.filter((_, j) => j !== i))}>
+                  {t("aud.clear")}
+                </Button>
+              </div>
+            ))}
+            {testing ? (
+              <BiologicalListenerTest
+                maxDbfs={p.max_dbfs}
+                onCancel={() => setTesting(null)}
+                onDone={(thresholds) => {
+                  set("biological", [...p.biological, { ...testing, date: today(), thresholds }]);
+                  setTesting(null);
+                  toast.success(t("bio.listener_done"));
+                }}
+              />
+            ) : listenerForm ? (
+              <div className="flex flex-wrap items-end gap-3 rounded border p-3">
+                <div className="space-y-1.5">
+                  <Label>{t("bio.initials")}</Label>
+                  <Input className="h-8 w-28" value={listenerForm.initials} maxLength={10} onChange={(e) => setListenerForm({ ...listenerForm, initials: e.target.value })} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label>{t("bio.assumed")}</Label>
+                  <NumberCell value={listenerForm.assumedHl} step={5} width="w-20" onChange={(v) => setListenerForm({ ...listenerForm, assumedHl: v ?? 0 })} />
+                </div>
+                <Button size="sm" disabled={!listenerForm.initials.trim()} onClick={() => { setTesting({ initials: listenerForm.initials.trim(), assumedHl: listenerForm.assumedHl }); setListenerForm(null); }}>
+                  <Play className="mr-1 h-3.5 w-3.5" />
+                  {t("bio.start")}
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setListenerForm(null)}>
+                  {t("cal.cancel")}
+                </Button>
+              </div>
+            ) : (
+              <Button size="sm" variant="outline" onClick={() => setListenerForm({ initials: "", assumedHl: 0 })}>
+                <Plus className="mr-1 h-3.5 w-3.5" />
+                {t("bio.add")}
+              </Button>
+            )}
+          </div>
+        )}
         {p.method === "objective" && <p className="text-xs text-amber-800">{t("cal.retspl_note")}</p>}
 
         <div className="overflow-x-auto">

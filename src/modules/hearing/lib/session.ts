@@ -29,6 +29,12 @@ export interface QualityInfo {
   retest1kDb?: number;
   falsePositiveRate?: number;
   warnings?: string[];
+  /** Remote check: procedure counters, left/right check and the assessment shown to the patient. */
+  presentations?: number;
+  catchTrials?: number;
+  falsePositives?: number;
+  channelCheck?: boolean;
+  assessment?: JsonObject;
 }
 
 export type JsonObject = Record<string, unknown>;

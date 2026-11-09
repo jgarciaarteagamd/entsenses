@@ -75,3 +75,30 @@ export function isProfileUsable(p: { valid_until: string; archived?: boolean; ze
   const day = today.toISOString().slice(0, 10);
   return p.valid_until >= day && calibratedFrequencies(p.zero_hl).includes(1000);
 }
+
+/** A normal-hearing listener measured for a biological calibration (thresholds in dBFS). */
+export interface BiologicalListener {
+  initials: string;
+  /** Hearing level assumed for this listener (dB HL), usually 0 for young otologically normal adults. */
+  assumedHl: number;
+  date: string;
+  thresholds: PerEar;
+}
+
+const median = (xs: number[]) => {
+  const s = [...xs].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+};
+
+/** Biological calibration: 0 dB HL = median over listeners of (threshold dBFS − assumed HL). */
+export function zerosFromListeners(listeners: BiologicalListener[]): PerEar {
+  const out = emptyPerEar();
+  for (const ear of ["right", "left"] as const) {
+    for (const f of FREQUENCIES) {
+      const xs = listeners.map((l) => l.thresholds[ear][f]).flatMap((t, i) => (typeof t === "number" ? [t - listeners[i].assumedHl] : []));
+      if (xs.length) out[ear][f] = Math.round(median(xs) * 10) / 10;
+    }
+  }
+  return out;
+}
