@@ -229,6 +229,15 @@ const DICT: Dict = {
   "settings.title": { es: "Configuración", en: "Settings" },
   "settings.profile": { es: "Datos profesionales", en: "Professional details" },
   "settings.language": { es: "Idioma", en: "Language" },
+  "settings.notifications": { es: "Avisos por correo", en: "E-mail notifications" },
+  "settings.notify_submissions": {
+    es: "Recibir un correo cuando un paciente envíe un cuestionario, un análisis de voz o una prueba de audición",
+    en: "Get an e-mail when a patient sends a questionnaire, a voice analysis or a hearing check",
+  },
+  "settings.notify_hint": {
+    es: "Solo resultados enviados por pacientes (QR, enlaces e invitaciones), no los guardados en consulta. Se envían a",
+    en: "Only results sent by patients (QR codes, links and invitations), not those saved in clinic. Sent to",
+  },
   "settings.password": { es: "Cambio de contraseña", en: "Change password" },
   "settings.new_password": { es: "Nueva contraseña", en: "New password" },
   "settings.change_pass": { es: "Actualizar contraseña", en: "Update password" },

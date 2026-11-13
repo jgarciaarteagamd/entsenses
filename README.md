@@ -35,6 +35,26 @@ Voice y Hearing). Tras añadir una migración: `npm run db:setup`.
 **Netlify:** sitio conectado a este repositorio con las variables `VITE_SUPABASE_URL` y
 `VITE_SUPABASE_PUBLISHABLE_KEY` (`netlify.toml` y la función `keepalive` ya están configurados).
 
+**Avisos por correo** (opcional): cuando un paciente envía un cuestionario, un análisis de voz o
+una prueba de audición, el médico recibe un correo con enlace a la bandeja (se desactiva en
+Configuración). Lo dispara un trigger de la base de datos (pg_net) que llama a la función de
+Netlify `notify-submission`, que envía el correo con [Resend](https://resend.com).
+
+1. Resend: crear cuenta, verificar el dominio `entsenses.app` (registros DNS que indica) y crear una API key.
+2. Netlify → Environment variables: `RESEND_API_KEY`, `NOTIFY_FROM` (p. ej.
+   `ENT Senses <avisos@entsenses.app>`) y `NOTIFY_SECRET` (cadena aleatoria de 32+ caracteres:
+   `openssl rand -hex 24`). Volver a desplegar.
+3. Supabase → SQL Editor, una vez, con el mismo secreto:
+
+```sql
+INSERT INTO private.notification_settings (endpoint, secret)
+VALUES ('https://entsenses.app/.netlify/functions/notify-submission', '<NOTIFY_SECRET>')
+ON CONFLICT (id) DO UPDATE SET endpoint = excluded.endpoint, secret = excluded.secret;
+```
+
+Solo avisan los resultados enviados por pacientes (QR, enlaces, invitaciones), con un máximo de
+30 correos por médico y hora.
+
 ## Comprobaciones
 
 ```bash

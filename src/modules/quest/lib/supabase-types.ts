@@ -57,6 +57,7 @@ export type Database = {
           language: string
           last_name: string | null
           license_number: string | null
+          notify_submissions: boolean
           postal_code: string | null
           professional_declaration_at: string | null
           profile_completed: boolean
@@ -73,6 +74,7 @@ export type Database = {
           language?: string
           last_name?: string | null
           license_number?: string | null
+          notify_submissions?: boolean
           postal_code?: string | null
           professional_declaration_at?: string | null
           profile_completed?: boolean
@@ -89,6 +91,7 @@ export type Database = {
           language?: string
           last_name?: string | null
           license_number?: string | null
+          notify_submissions?: boolean
           postal_code?: string | null
           professional_declaration_at?: string | null
           profile_completed?: boolean
