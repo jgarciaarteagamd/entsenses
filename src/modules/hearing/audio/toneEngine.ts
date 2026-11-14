@@ -64,8 +64,17 @@ export class ToneEngine {
       if (session) session.type = "playback";
       this.ctx = new AudioContext({ latencyHint: "interactive" });
     }
-    if (this.ctx.state === "suspended") await this.ctx.resume();
+    if (this.ctx.state !== "running") {
+      // resume() can stay pending forever (iOS "interrupted" state, or no user gesture): never let
+      // it block the caller. wake() retries from the next tap.
+      await Promise.race([this.ctx.resume().catch(() => undefined), new Promise((r) => setTimeout(r, 1000))]);
+    }
     return this.ctx;
+  }
+
+  /** Call from a user gesture (tap, key press): restarts audio the browser paused or interrupted. */
+  wake() {
+    if (this.ctx && this.ctx.state !== "running") void this.ctx.resume().catch(() => undefined);
   }
 
   get sampleRate(): number | null {

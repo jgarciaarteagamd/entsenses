@@ -10,6 +10,10 @@ import { ToneEngine } from "@/modules/hearing/audio/toneEngine";
 import type { EarSide } from "@/modules/hearing/audio/levels";
 
 const WINDOW_MS = 1500;
+/** A beep never takes this long: past it the run goes on (audio blocked by the browser). */
+const PRESENT_TIMEOUT_MS = 4000;
+/** Typical presentations per threshold, for the progress bar between finished tones. */
+const PER_TONE = 9;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export interface SelfThresholdTestProps {
@@ -24,7 +28,7 @@ export interface SelfThresholdTestProps {
   instructions: string;
   buttonLabel: string;
   cancelLabel: string;
-  /** Progress text from (done, total). */
+  /** Progress text from (tone being tested, 1-based; total). */
   progress: (done: number, total: number) => string;
   /** Shows the ear and frequency being tested (technical users only). */
   showStep?: (step: AutoStep) => string;
@@ -36,6 +40,7 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
   const ears = p.ears ?? ["right", "left"];
   const [step, setStep] = useState<AutoStep | null>(null);
   const [done, setDone] = useState(0);
+  const [presented, setPresented] = useState(0);
   const [pressed, setPressed] = useState(false);
   const engine = useRef(p.engine ?? new ToneEngine());
   const stop = useRef(false);
@@ -44,6 +49,7 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
   const total = p.sequence.length * ears.length;
 
   const respond = () => {
+    engine.current.wake();
     if (windowOpen.current) responded.current = true;
     setPressed(true);
     setTimeout(() => setPressed(false), 150);
@@ -55,8 +61,15 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
       e.preventDefault();
       respond();
     };
+    const visible = () => {
+      if (document.visibilityState === "visible") engine.current.wake();
+    };
     window.addEventListener("keydown", down);
-    return () => window.removeEventListener("keydown", down);
+    document.addEventListener("visibilitychange", visible);
+    return () => {
+      window.removeEventListener("keydown", down);
+      document.removeEventListener("visibilitychange", visible);
+    };
   }, []);
 
   useEffect(() => {
@@ -79,7 +92,11 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
         responded.current = false;
         windowOpen.current = true;
         if (s.catchTrial) await sleep(1350);
-        else await eng.present({ frequency: s.frequency, ear: s.ear, dbfs: p.toDbfs(s.level, s.frequency), maxDbfs: p.maxDbfs, mode: "pulsed" });
+        else
+          await Promise.race([
+            eng.present({ frequency: s.frequency, ear: s.ear, dbfs: p.toDbfs(s.level, s.frequency), maxDbfs: p.maxDbfs, mode: "pulsed" }),
+            sleep(PRESENT_TIMEOUT_MS),
+          ]);
         if (cancelled) return;
         await sleep(WINDOW_MS);
         if (cancelled) return;
@@ -88,6 +105,7 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
         runner.record(responded.current);
         const r = runner.results.thresholds;
         setDone(Object.keys(r.right).length + Object.keys(r.left).length);
+        setPresented((n) => n + 1);
         await sleep(800 + Math.random() * 1000);
       }
       if (cancelled) return;
@@ -101,7 +119,9 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pct = Math.round((done / total) * 100);
+  // Moves with every beep, not only when a tone is finished (a tone takes several beeps).
+  const pct = Math.round(Math.min(0.97, Math.max(done / total, presented / (total * PER_TONE))) * 100);
+  const current = Math.min(done + 1, total);
 
   return (
     <div className="space-y-5">
@@ -127,7 +147,7 @@ export function SelfThresholdTest(p: SelfThresholdTestProps) {
           <div className="h-2 overflow-hidden rounded-full bg-muted">
             <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
           </div>
-          <p className="mt-1 text-center text-xs text-muted-foreground">{p.progress(done, total)}</p>
+          <p className="mt-1 text-center text-xs text-muted-foreground">{p.progress(current, total)}</p>
         </div>
       </div>
       <Button
