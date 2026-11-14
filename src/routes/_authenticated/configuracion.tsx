@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -30,16 +31,18 @@ function SettingsPage() {
   const { user } = Route.useRouteContext();
   const [profile, setProfile] = useState({ first_name: "", last_name: "", license_number: "" });
   const [saving, setSaving] = useState(false);
+  const [notify, setNotify] = useState(true);
   const [newPass, setNewPass] = useState("");
   const [confirm, setConfirm] = useState("");
 
   useEffect(() => {
     supabase
       .from("doctor_profiles")
-      .select("first_name,last_name,license_number")
+      .select("first_name,last_name,license_number,notify_submissions")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
+        if (data) setNotify(data.notify_submissions !== false);
         if (data)
           setProfile({
             first_name: data.first_name ?? "",
@@ -55,6 +58,15 @@ function SettingsPage() {
     setSaving(false);
     if (error) toast.error(error.message);
     else toast.success(t("settings.saved"));
+  }
+
+  async function saveNotify(value: boolean) {
+    setNotify(value);
+    const { error } = await supabase.from("doctor_profiles").update({ notify_submissions: value }).eq("id", user.id);
+    if (error) {
+      setNotify(!value);
+      toast.error(error.message);
+    } else toast.success(t("settings.saved"));
   }
 
   async function changePassword() {
@@ -112,6 +124,23 @@ function SettingsPage() {
                 {t("settings.save")}
               </Button>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("settings.notifications")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <label className="flex items-start gap-3 text-sm">
+              <Checkbox className="mt-0.5" checked={notify} onCheckedChange={(v) => saveNotify(v === true)} />
+              <span>
+                {t("settings.notify_submissions")}
+                <span className="mt-1 block text-muted-foreground">
+                  {t("settings.notify_hint")} <strong>{user.email}</strong>
+                </span>
+              </span>
+            </label>
           </CardContent>
         </Card>
 
