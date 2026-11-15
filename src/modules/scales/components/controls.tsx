@@ -177,11 +177,14 @@ export function GradeList({
   value,
   onChange,
   disabled,
+  marker,
 }: {
   grades: { value: number; text: { es: string; en: string } }[];
   value: number | null | undefined;
   onChange: (v: number | null) => void;
   disabled?: boolean;
+  /** Label shown before each definition (defaults to the value); null hides it. */
+  marker?: ((v: number) => string) | null;
 }) {
   const { lang } = useLang();
   return (
@@ -200,7 +203,7 @@ export function GradeList({
               active ? "border-primary bg-primary text-primary-foreground" : "bg-background hover:bg-muted",
             )}
           >
-            <span className="w-5 shrink-0 text-sm font-bold tabular-nums">{g.value}</span>
+            {marker !== null && <span className="w-5 shrink-0 text-sm font-bold tabular-nums">{marker ? marker(g.value) : g.value}</span>}
             <span>{g.text[lang]}</span>
           </button>
         );

@@ -33,6 +33,7 @@ import { Route as AuthenticatedQuestResultadosRouteImport } from './routes/_auth
 import { Route as AuthenticatedScalesIndexRouteImport } from './routes/_authenticated/scales.index'
 import { Route as AuthenticatedScalesEvolucionRouteImport } from './routes/_authenticated/scales.evolucion'
 import { Route as AuthenticatedScalesLaringeRouteImport } from './routes/_authenticated/scales.laringe'
+import { Route as AuthenticatedScalesOtologiaRouteImport } from './routes/_authenticated/scales.otologia'
 import { Route as AuthenticatedScalesRinologiaRouteImport } from './routes/_authenticated/scales.rinologia'
 import { Route as AuthenticatedVoiceEvaluarRouteImport } from './routes/_authenticated/voice.evaluar'
 import { Route as PDoctorIdHearingRouteImport } from './routes/p.$doctorId.hearing'
@@ -173,6 +174,12 @@ const AuthenticatedScalesLaringeRoute =
     path: '/scales/laringe',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedScalesOtologiaRoute =
+  AuthenticatedScalesOtologiaRouteImport.update({
+    id: '/scales/otologia',
+    path: '/scales/otologia',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedScalesRinologiaRoute =
   AuthenticatedScalesRinologiaRouteImport.update({
     id: '/scales/rinologia',
@@ -253,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/scales/evolucion': typeof AuthenticatedScalesEvolucionRoute
   '/scales/laringe': typeof AuthenticatedScalesLaringeRoute
+  '/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
   '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
@@ -286,6 +294,7 @@ export interface FileRoutesByTo {
   '/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/scales/evolucion': typeof AuthenticatedScalesEvolucionRoute
   '/scales/laringe': typeof AuthenticatedScalesLaringeRoute
+  '/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
   '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
@@ -323,6 +332,7 @@ export interface FileRoutesById {
   '/_authenticated/quest/resultados': typeof AuthenticatedQuestResultadosRoute
   '/_authenticated/scales/evolucion': typeof AuthenticatedScalesEvolucionRoute
   '/_authenticated/scales/laringe': typeof AuthenticatedScalesLaringeRoute
+  '/_authenticated/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/_authenticated/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
   '/_authenticated/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/quest/resultados'
     | '/scales/evolucion'
     | '/scales/laringe'
+    | '/scales/otologia'
     | '/scales/rinologia'
     | '/voice/evaluar'
     | '/p/$doctorId/hearing'
@@ -393,6 +404,7 @@ export interface FileRouteTypes {
     | '/quest/resultados'
     | '/scales/evolucion'
     | '/scales/laringe'
+    | '/scales/otologia'
     | '/scales/rinologia'
     | '/voice/evaluar'
     | '/p/$doctorId/hearing'
@@ -429,6 +441,7 @@ export interface FileRouteTypes {
     | '/_authenticated/quest/resultados'
     | '/_authenticated/scales/evolucion'
     | '/_authenticated/scales/laringe'
+    | '/_authenticated/scales/otologia'
     | '/_authenticated/scales/rinologia'
     | '/_authenticated/voice/evaluar'
     | '/p/$doctorId/hearing'
@@ -627,6 +640,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedScalesLaringeRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/scales/otologia': {
+      id: '/_authenticated/scales/otologia'
+      path: '/scales/otologia'
+      fullPath: '/scales/otologia'
+      preLoaderRoute: typeof AuthenticatedScalesOtologiaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/scales/rinologia': {
       id: '/_authenticated/scales/rinologia'
       path: '/scales/rinologia'
@@ -745,6 +765,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHearingConsultaRoute: typeof AuthenticatedHearingConsultaRoute
   AuthenticatedScalesEvolucionRoute: typeof AuthenticatedScalesEvolucionRoute
   AuthenticatedScalesLaringeRoute: typeof AuthenticatedScalesLaringeRoute
+  AuthenticatedScalesOtologiaRoute: typeof AuthenticatedScalesOtologiaRoute
   AuthenticatedScalesRinologiaRoute: typeof AuthenticatedScalesRinologiaRoute
   AuthenticatedVoiceEvaluarRoute: typeof AuthenticatedVoiceEvaluarRoute
   AuthenticatedScalesIndexRoute: typeof AuthenticatedScalesIndexRoute
@@ -765,6 +786,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHearingConsultaRoute: AuthenticatedHearingConsultaRoute,
   AuthenticatedScalesEvolucionRoute: AuthenticatedScalesEvolucionRoute,
   AuthenticatedScalesLaringeRoute: AuthenticatedScalesLaringeRoute,
+  AuthenticatedScalesOtologiaRoute: AuthenticatedScalesOtologiaRoute,
   AuthenticatedScalesRinologiaRoute: AuthenticatedScalesRinologiaRoute,
   AuthenticatedVoiceEvaluarRoute: AuthenticatedVoiceEvaluarRoute,
   AuthenticatedScalesIndexRoute: AuthenticatedScalesIndexRoute,

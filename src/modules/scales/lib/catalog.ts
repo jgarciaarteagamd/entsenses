@@ -49,10 +49,12 @@ export const CATALOG: CatalogArea[] = [
   {
     id: "otology",
     name: { es: "Otología y base de cráneo", en: "Otology and skull base" },
+    route: "/scales/otologia",
     scales: [
       { name: "House-Brackmann · Sunnybrook", desc: { es: "Parálisis facial", en: "Facial palsy" } },
       { name: "Sadé · Tos", desc: { es: "Retracciones timpánicas", en: "Tympanic membrane retraction" } },
       { name: "Ménière AAO-HNS 1995", desc: { es: "Estadio desde el audiograma de Hearing", en: "Stage from the Hearing audiogram" } },
+      { name: "Bárány 2015", desc: { es: "Criterios de Ménière definida y probable", en: "Definite and probable Menière’s criteria" } },
       { name: "EAONO/JOS · Koos", desc: { es: "Colesteatoma y schwannoma vestibular", en: "Cholesteatoma and vestibular schwannoma" } },
     ],
   },

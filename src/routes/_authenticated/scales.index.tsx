@@ -51,6 +51,12 @@ function ScalesHome() {
                 {t("pack.larynx")}
               </Link>
             </Button>
+            <Button asChild>
+              <Link to="/scales/otologia">
+                <Plus className="mr-1 h-4 w-4" />
+                {t("pack.otology")}
+              </Link>
+            </Button>
           </div>
         </div>
 

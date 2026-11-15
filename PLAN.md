@@ -16,7 +16,7 @@
 | **ENT Senses Quest** | ENT Quest | Cuestionarios clínicos validados (SNOT-22, VHI, EAT-10…): QR, hoja imprimible, invitaciones por correo, rellenar en consulta | Hecho (etapa B) |
 | **ENT Senses Voice** | Vocalyzer | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer…), estimación GRBAS/CAPE-V | Hecho (etapa C) |
 | **ENT Senses Hearing** | Auditone Test + AudiometricReport | Informes audiométricos (audiograma, impedanciometría, logoaudiometría); prueba auditiva informativa del paciente; audiometría tonal en consulta | Hecho (etapa A); fases 2–8 de su plan |
-| **ENT Senses Scales** | — | Escalas que puntúa el médico; paquetes de Rinología (NPS, Lund-Kennedy, Lund-Mackay, EPOS 2020, biológicos EPOS/EUFOREA 2023) y Laringe y deglución (RFS, Reinke, NBI, Myer-Cotton, FEES) | Hecho (fases 1–2 de su plan) |
+| **ENT Senses Scales** | — | Escalas que puntúa el médico; paquetes de Rinología (NPS, Lund-Kennedy, Lund-Mackay, EPOS 2020, biológicos EPOS/EUFOREA 2023) Laringe y deglución (RFS, Reinke, NBI, Myer-Cotton, FEES) y Otología (House-Brackmann, Sunnybrook, Sadé/Tos, EAONO/JOS, Ménière, Koos) | Hecho (fases 1–3 de su plan) |
 | **ENT Senses Tinnitus** | — | Evaluación de acúfenos (por definir) | Futuro |
 
 El plan técnico y regulatorio del módulo Hearing (audiometría calibrada, normas IEC/ISO, Clase IIa)

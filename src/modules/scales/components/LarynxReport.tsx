@@ -76,7 +76,10 @@ export function LarynxReport({ row: r }: { row: RowOf<"larynx"> }) {
           </table>
           {sum.packYears != null && (
             <p className="text-sm">
-              {t("reinke.packYears")}: <strong>{n(sum.packYears, 0)}</strong>
+              {t("reinke.packYears")}: <strong>{n(sum.packYears)}</strong>
+              {s.reinke.cigsPerDay != null && s.reinke.yearsSmoked != null && (
+                <span className="text-neutral-600"> ({t("reinke.packYears.detail", n(s.reinke.cigsPerDay, 0), n(s.reinke.yearsSmoked, 0))})</span>
+              )}
             </p>
           )}
         </ReportSection>

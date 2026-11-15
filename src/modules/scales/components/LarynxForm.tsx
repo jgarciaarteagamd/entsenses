@@ -30,6 +30,7 @@ import {
   YALE_PYRIFORM,
   YALE_VALLECULA,
   incompleteLarynxScales,
+  packYearsOf,
   summarizeLarynx,
   type BolusInput,
   type Consistency,
@@ -231,7 +232,7 @@ function RfsFields({ value, onChange }: { value: RfsInput; onChange: (v: RfsInpu
 }
 
 function ReinkeFields({ value, onChange }: { value: ReinkeInput; onChange: (v: ReinkeInput) => void }) {
-  const { t } = useLang();
+  const { lang, t } = useLang();
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -252,9 +253,19 @@ function ReinkeFields({ value, onChange }: { value: ReinkeInput; onChange: (v: R
           );
         })}
       </div>
-      <FieldRow label={t("reinke.packYears")}>
-        <NumberInput ariaLabel={t("reinke.packYears")} value={value.packYears} max={200} onChange={(v) => onChange({ ...value, packYears: v })} />
-      </FieldRow>
+      <div>
+        <p className="text-sm font-medium">{t("reinke.smoking")}</p>
+        <FieldRow label={t("reinke.cigsPerDay")}>
+          <NumberInput ariaLabel={t("reinke.cigsPerDay")} value={value.cigsPerDay} max={200} onChange={(v) => onChange({ ...value, cigsPerDay: v, packYears: null })} />
+        </FieldRow>
+        <FieldRow label={t("reinke.yearsSmoked")}>
+          <NumberInput ariaLabel={t("reinke.yearsSmoked")} value={value.yearsSmoked} max={100} onChange={(v) => onChange({ ...value, yearsSmoked: v, packYears: null })} />
+        </FieldRow>
+        <p className="mt-1 text-xs tabular-nums">
+          {t("reinke.packYears")}: <strong>{fmtNum(packYearsOf(value), lang)}</strong>{" "}
+          <span className="text-muted-foreground">{t("reinke.packYears.formula")}</span>
+        </p>
+      </div>
       <p className="text-[11px] text-muted-foreground">{t("reinke.yonekawa")}</p>
     </div>
   );

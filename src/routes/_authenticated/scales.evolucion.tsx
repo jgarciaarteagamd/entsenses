@@ -11,6 +11,8 @@ import { useLang } from "@/modules/scales/i18n";
 import { PACKS, byLabel, distinctLabels, listSnot22ByLabel, sanitizeLabel, type Pack, type RowOf } from "@/modules/scales/lib/assessments";
 import { formatDay, useAssessments } from "@/modules/scales/components/ScalesInbox";
 import { Segmented } from "@/modules/scales/components/controls";
+import { PackLink } from "@/modules/scales/components/PackLink";
+import { roman } from "@/modules/scales/lib/otology";
 
 export const Route = createFileRoute("/_authenticated/scales/evolucion")({
   validateSearch: (s: Record<string, unknown>): { label?: string; pack?: Pack } => ({
@@ -86,15 +88,9 @@ function RowActions({ id, pack }: { id: string; pack: Pack }) {
   return (
     <td className="whitespace-nowrap py-2 pl-2 text-right">
       <Button size="icon" variant="ghost" className="h-7 w-7" asChild aria-label={t("list.edit")}>
-        {pack === "larynx" ? (
-          <Link to="/scales/laringe" search={{ id }}>
-            <Pencil className="h-3.5 w-3.5" />
-          </Link>
-        ) : (
-          <Link to="/scales/rinologia" search={{ id }}>
-            <Pencil className="h-3.5 w-3.5" />
-          </Link>
-        )}
+        <PackLink pack={pack} id={id}>
+          <Pencil className="h-3.5 w-3.5" />
+        </PackLink>
       </Button>
       <Button size="icon" variant="ghost" className="h-7 w-7" asChild aria-label={t("list.print")}>
         <Link to="/scales/informe/$id" params={{ id }}>
@@ -288,6 +284,82 @@ function LarynxFollowup({ rows }: { rows: RowOf<"larynx">[] }) {
   );
 }
 
+function OtologyFollowup({ rows }: { rows: RowOf<"otology">[] }) {
+  const { lang, t } = useLang();
+  const points = useMemo(
+    () =>
+      pointsFrom(
+        rows.map((r) => ({
+          day: r.assessed_on,
+          values: { sb: r.summary.sunnybrook?.composite, hb: r.summary.houseBrackmann?.grade, pta: r.summary.meniere?.pta },
+        })),
+      ),
+    [rows],
+  );
+  const n = (x: number | null | undefined) => (x == null ? "—" : x.toLocaleString(lang === "en" ? "en-GB" : "es-ES", { maximumFractionDigits: 1 }));
+  return (
+    <>
+      <TimeChart title={`${t("follow.chart.facial")} · Sunnybrook (0–100)`} points={points} domain={[0, 100]} ticks={[0, 20, 40, 60, 80, 100]} series={[{ key: "sb", name: "Sunnybrook" }]} />
+      <TimeChart
+        title={`${t("follow.chart.facial")} · House-Brackmann (I–VI)`}
+        height="h-56"
+        points={points}
+        domain={[1, 6]}
+        ticks={[1, 2, 3, 4, 5, 6]}
+        series={[{ key: "hb", name: "House-Brackmann" }]}
+      />
+      <TimeChart
+        title={`${t("follow.chart.hearing")} · dB HL`}
+        height="h-56"
+        points={points}
+        domain={[0, 120]}
+        ticks={[0, 25, 40, 70, 100, 120]}
+        series={[{ key: "pta", name: `${t("men.pta")} (dB)` }]}
+      />
+      {rows.length > 0 && (
+        <Card>
+          <CardHeader className="pb-0">
+            <CardTitle className="text-base">{t("follow.table")}</CardTitle>
+          </CardHeader>
+          <CardContent className="overflow-x-auto pt-4">
+            <table className="w-full min-w-[680px] text-sm">
+              <thead>
+                <tr className="border-b text-left text-xs text-muted-foreground">
+                  <th className="py-1.5 pr-2 font-medium">{t("follow.date")}</th>
+                  <th className={th}>H-B</th>
+                  <th className={th}>Sunnybrook</th>
+                  <th className={th}>EAONO/JOS</th>
+                  <th className={th}>Ménière</th>
+                  <th className={th}>Koos</th>
+                  <th className="py-1.5 pl-2" />
+                </tr>
+              </thead>
+              <tbody>
+                {[...rows].reverse().map((r) => {
+                  const s = r.summary;
+                  return (
+                    <tr key={r.id} className="border-b last:border-b-0">
+                      <td className="whitespace-nowrap py-2 pr-2">{formatDay(r.assessed_on, lang)}</td>
+                      <td className={td}>{s.houseBrackmann ? roman(s.houseBrackmann.grade) : "—"}</td>
+                      <td className={td}>{s.sunnybrook?.composite ?? "—"}</td>
+                      <td className={td}>{s.cholesteatoma ? roman(s.cholesteatoma.stage) : "—"}</td>
+                      <td className="px-2 py-2 text-xs tabular-nums">
+                        {s.meniere ? [s.meniere.pta != null ? `${n(s.meniere.pta)} dB · ${t("oto.stage")} ${s.meniere.stage}` : null, s.meniere.barany ? t(`men.result.${s.meniere.barany}`) : null].filter(Boolean).join(" · ") : "—"}
+                      </td>
+                      <td className={td}>{s.koos ? roman(s.koos.grade) : "—"}</td>
+                      <RowActions id={r.id} pack="otology" />
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      )}
+    </>
+  );
+}
+
 function FollowupPage() {
   const { t } = useLang();
   const navigate = useNavigate();
@@ -302,7 +374,9 @@ function FollowupPage() {
   const pack: Pack = packParam ?? latest?.pack ?? "rhinology";
   const rhino = useMemo(() => (clean ? byLabel(all, clean, "rhinology") : []), [all, clean]);
   const larynx = useMemo(() => (clean ? byLabel(all, clean, "larynx") : []), [all, clean]);
-  const count = pack === "larynx" ? larynx.length : rhino.length;
+  const otology = useMemo(() => (clean ? byLabel(all, clean, "otology") : []), [all, clean]);
+  const counts: Record<Pack, number> = { rhinology: rhino.length, larynx: larynx.length, otology: otology.length };
+  const count = counts[pack];
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -348,26 +422,19 @@ function FollowupPage() {
                 <h1 className="text-2xl font-bold">
                   {t("follow.title")} · {clean}
                 </h1>
-                <p className="text-sm text-muted-foreground">{t(pack === "larynx" ? "follow.subtitle.larynx" : "follow.subtitle", clean)}</p>
+                <p className="text-sm text-muted-foreground">{t(pack === "larynx" ? "follow.subtitle.larynx" : pack === "otology" ? "follow.subtitle.otology" : "follow.subtitle", clean)}</p>
               </div>
               <Button asChild>
-                {pack === "larynx" ? (
-                  <Link to="/scales/laringe" search={{ label: clean }}>
-                    <Plus className="mr-1 h-4 w-4" />
-                    {t("scales.new")}
-                  </Link>
-                ) : (
-                  <Link to="/scales/rinologia" search={{ label: clean }}>
-                    <Plus className="mr-1 h-4 w-4" />
-                    {t("scales.new")}
-                  </Link>
-                )}
+                <PackLink pack={pack} label={clean}>
+                  <Plus className="mr-1 h-4 w-4" />
+                  {t("scales.new")}
+                </PackLink>
               </Button>
             </div>
 
             <Segmented<Pack>
               ariaLabel={t("follow.pack")}
-              options={PACKS.map((p) => ({ value: p, label: `${t(`pack.${p}`)} (${p === "larynx" ? larynx.length : rhino.length})` }))}
+              options={PACKS.map((p) => ({ value: p, label: `${t(`pack.${p}`)} (${counts[p]})` }))}
               value={pack}
               onChange={(p) => p && navigate({ to: "/scales/evolucion", search: { label: clean, pack: p } })}
             />
@@ -379,7 +446,13 @@ function FollowupPage() {
               </Card>
             )}
 
-            {pack === "larynx" ? <LarynxFollowup rows={larynx} /> : <RhinologyFollowup rows={rhino} label={clean} />}
+            {pack === "larynx" ? (
+              <LarynxFollowup rows={larynx} />
+            ) : pack === "otology" ? (
+              <OtologyFollowup rows={otology} />
+            ) : (
+              <RhinologyFollowup rows={rhino} label={clean} />
+            )}
           </>
         )}
       </main>

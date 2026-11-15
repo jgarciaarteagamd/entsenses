@@ -86,9 +86,21 @@ export function scoreRfs(input: RfsInput | undefined): RfsScore | null {
 // Reinke's oedema — clinical grading of Tan et al. 2017 (per vocal fold, by glottic airway occupied)
 
 export type ReinkeInput = Partial<Record<Side, number | null>> & {
-  /** Smoking history in pack-years (optional context). */
+  /** Smoking history (optional context): cigarettes per day and years smoked. */
+  cigsPerDay?: number | null;
+  yearsSmoked?: number | null;
+  /** Pack-years typed directly (rows saved before the calculator existed). */
   packYears?: number | null;
 };
+
+/** Pack-years = (cigarettes per day ÷ 20) × years smoked; one pack = 20 cigarettes. */
+export function packYearsOf(input: ReinkeInput | undefined): number | null {
+  if (!input) return null;
+  const cigs = finite(input.cigsPerDay);
+  const years = finite(input.yearsSmoked);
+  if (cigs !== null && years !== null && cigs >= 0 && years >= 0) return Math.round((cigs / 20) * years * 10) / 10;
+  return finite(input.packYears);
+}
 
 /** 0 = no oedema on that fold (not a Tan grade); 1–4 = Tan grades. */
 export const REINKE_GRADES: Grade[] = [
@@ -416,7 +428,7 @@ export function summarizeLarynx(s: LarynxScales): LarynxSummary {
   if (s.rfs) out.rfs = scoreRfs(s.rfs);
   if (s.reinke) {
     out.reinke = scoreReinke(s.reinke);
-    const py = finite(s.reinke.packYears);
+    const py = packYearsOf(s.reinke);
     if (py !== null) out.packYears = py;
   }
   if (s.nbi) out.nbi = scoreNbi(s.nbi);

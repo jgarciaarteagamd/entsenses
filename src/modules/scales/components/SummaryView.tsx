@@ -2,6 +2,7 @@
 import { useLang } from "@/modules/scales/i18n";
 import type { RhinologySummary, SidedScore } from "@/modules/scales/lib/rhinology";
 import type { LarynxSummary } from "@/modules/scales/lib/larynx";
+import { roman, type OtologySummary } from "@/modules/scales/lib/otology";
 import type { ScaleAssessmentRow } from "@/modules/scales/lib/assessments";
 import { cn } from "@/lib/utils";
 
@@ -84,7 +85,7 @@ export function useLarynxTiles(s: LarynxSummary): Tile[] {
       key: "reinke",
       label: "Reinke (Tan)",
       value: r ? `${t("reinke.max")} ${r.max}` : inc,
-      detail: r ? `${t("form.right").charAt(0)} ${side(r.right)} · ${t("form.left").charAt(0)} ${side(r.left)}${s.packYears != null ? ` · ${n(s.packYears, 0)} p-a` : ""}` : undefined,
+      detail: r ? `${t("form.right").charAt(0)} ${side(r.right)} · ${t("form.left").charAt(0)} ${side(r.left)}${s.packYears != null ? ` · ${n(s.packYears)} p-a` : ""}` : undefined,
     });
   }
   if ("nbi" in s) {
@@ -123,6 +124,50 @@ export function useLarynxTiles(s: LarynxSummary): Tile[] {
   return tiles;
 }
 
+export function useOtologyTiles(s: OtologySummary): Tile[] {
+  const { lang, t } = useLang();
+  const inc = t("form.incomplete");
+  const sideTxt = (v: "right" | "left" | null | undefined) => (v ? t(`form.${v}`) : undefined);
+  const n = (v: number) => v.toLocaleString(lang === "en" ? "en-GB" : "es-ES", { maximumFractionDigits: 1 });
+  const tiles: Tile[] = [];
+  if ("houseBrackmann" in s) {
+    const h = s.houseBrackmann;
+    tiles.push({ key: "hb", label: "House-Brackmann", value: h ? roman(h.grade) : inc, detail: sideTxt(h?.side), tone: h ? (h.grade === 1 ? "good" : h.grade >= 4 ? "bad" : "mid") : undefined });
+  }
+  if ("sunnybrook" in s) {
+    const b = s.sunnybrook;
+    tiles.push({ key: "sb", label: "Sunnybrook", value: b ? `${b.composite}/100` : inc, detail: b ? `${b.voluntary} − ${b.resting} − ${b.synkinesis}` : undefined });
+  }
+  if ("retraction" in s) {
+    const r = s.retraction;
+    const ear = (e: { sade: number | null; tos: number | null }) => [e.sade !== null ? `Sadé ${e.sade}` : null, e.tos !== null ? `Tos ${e.tos}` : null].filter(Boolean).join(" · ") || "—";
+    tiles.push({
+      key: "ret",
+      label: "Sadé · Tos",
+      value: r ? `${t("form.right").charAt(0)}: ${ear(r.right)}` : inc,
+      detail: r ? `${t("form.left").charAt(0)}: ${ear(r.left)}` : undefined,
+    });
+  }
+  if ("cholesteatoma" in s) {
+    const c = s.cholesteatoma;
+    tiles.push({ key: "chole", label: "EAONO/JOS", value: c ? `${t("oto.stage")} ${roman(c.stage)}` : inc, detail: c?.sites.length ? c.sites.join(" ") : undefined, tone: c ? (c.stage >= 3 ? "bad" : undefined) : undefined });
+  }
+  if ("meniere" in s) {
+    const m = s.meniere;
+    tiles.push({
+      key: "meniere",
+      label: "Ménière",
+      value: m ? (m.stage ? `${t("oto.stage")} ${m.stage}` : m.barany ? t(`men.result.${m.barany}`) : "—") : inc,
+      detail: m ? [m.pta != null ? `${n(m.pta)} dB` : null, m.stage && m.barany ? t(`men.result.${m.barany}`) : null].filter(Boolean).join(" · ") : undefined,
+    });
+  }
+  if ("koos" in s) {
+    const k = s.koos;
+    tiles.push({ key: "koos", label: "Koos", value: k ? roman(k.grade) : inc, detail: sideTxt(k?.side) });
+  }
+  return tiles;
+}
+
 export function TileGrid({ tiles, compact = false }: { tiles: Tile[]; compact?: boolean }) {
   if (!tiles.length) return null;
   return (
@@ -148,7 +193,13 @@ export function LarynxSummaryView({ summary, compact = false }: { summary: Laryn
   return <TileGrid tiles={useLarynxTiles(summary)} compact={compact} />;
 }
 
+export function OtologySummaryView({ summary, compact = false }: { summary: OtologySummary; compact?: boolean }) {
+  return <TileGrid tiles={useOtologyTiles(summary)} compact={compact} />;
+}
+
 /** Summary tiles of any saved assessment. */
 export function AssessmentSummary({ row, compact = false }: { row: ScaleAssessmentRow; compact?: boolean }) {
-  return row.pack === "larynx" ? <LarynxSummaryView summary={row.summary} compact={compact} /> : <RhinologySummaryView summary={row.summary} compact={compact} />;
+  if (row.pack === "larynx") return <LarynxSummaryView summary={row.summary} compact={compact} />;
+  if (row.pack === "otology") return <OtologySummaryView summary={row.summary} compact={compact} />;
+  return <RhinologySummaryView summary={row.summary} compact={compact} />;
 }

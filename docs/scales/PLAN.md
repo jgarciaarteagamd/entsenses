@@ -8,8 +8,8 @@
 > Este documento es un plan de trabajo. Las definiciones de cada escala deben comprobarse contra
 > la publicación original antes de activarla (columna «Verificada» del catálogo).
 
-> **Estado (noviembre 2026):** fases 1 (núcleo + **Rinología**) y 2 (**Laringe y deglución**) hechas.
-> Siguiente: fase 3 (Otología).
+> **Estado (noviembre 2026):** fases 1 (núcleo + **Rinología**), 2 (**Laringe y deglución**) y 3
+> (**Otología**) hechas. Siguiente: fase 4 (Sueño y orofaringe).
 
 ---
 
@@ -43,7 +43,7 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 | `doctor_id` | Médico propietario (RLS: cada médico solo ve, crea, edita y borra lo suyo) |
 | `assessed_on` | Fecha de la exploración (puede ser anterior a hoy, para registrar una basal) |
 | `label` | Etiqueta del paciente (≤60 caracteres) |
-| `pack`, `pack_version` | Paquete (`rhinology`, `larynx`) y versión de sus definiciones (`rhinology-1`, `larynx-1`) |
+| `pack`, `pack_version` | Paquete (`rhinology`, `larynx`, `otology`) y versión de sus definiciones (`rhinology-1`, `larynx-1`, `otology-1`) |
 | `scales` | Lo que el médico marcó, por escala (jsonb, <20 kB) |
 | `summary` | Puntuaciones y categorías calculadas, para listar y dibujar la evolución sin recalcular (jsonb, <10 kB) |
 
@@ -58,6 +58,7 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 | `/scales` | Catálogo por áreas (activas y previstas), últimas valoraciones, buscar por etiqueta |
 | `/scales/rinologia` | Nueva valoración (o edición con `?id=`): escalas activables, cálculo en vivo, SNOT-22 desde Quest |
 | `/scales/laringe` | Ídem para laringe y deglución, con el análisis de Voice de la misma etiqueta |
+| `/scales/otologia` | Ídem para otología, con los umbrales de la audiometría de Hearing de la misma etiqueta |
 | `/scales/evolucion?label=&pack=` | Evolución de un paciente por paquete: gráficas (NPS, Lund-Kennedy, Lund-Mackay, SNOT-22 · RFS, AVQI, Reinke, PAS, FOIS, Murray) y tabla |
 | `/scales/informe/$id` | Informe A4 imprimible con las escalas y sus referencias |
 | Bandeja → pestaña Scales | Lista de valoraciones con sus puntuaciones principales |
@@ -125,20 +126,38 @@ Leyenda: ✅ hecha · ⏳ prevista · 🔍 hay que comprobar la definición en l
 - **Voice:** la sección «Voz» adjunta un resumen (fecha, AVQI, CPPS, F0, TMF y G de GRBAS, del clínico si lo
   valoró o estimado si no) del análisis de Voice elegido con la misma etiqueta. Se guarda una copia del
   resumen, así que la valoración no cambia si después se borra el análisis en Voice.
-- **Paquetes-año** en la sección de Reinke, como dato de contexto.
+- **Paquetes-año** en la sección de Reinke, como dato de contexto: se calculan como cigarrillos al día ÷ 20 ×
+  años de consumo (las filas antiguas con paquetes-año escritos a mano se siguen leyendo).
 
-### 3.3 Otología y base de cráneo (fase 3)
+### 3.3 Otología y base de cráneo (fase 3, hecha)
 
-| Escala | Qué mide | Estado |
-|---|---|---|
-| **House-Brackmann** | Parálisis facial, I–VI | ⏳ |
-| **Sunnybrook** | Parálisis facial, 0–100 | ⏳ |
-| Sadé / Tos | Retracción de pars tensa / pars flaccida | ⏳ |
-| EAONO/JOS | Estadiaje del colesteatoma | ⏳ |
-| **Ménière AAO-HNS 1995** | Estadio por la media de 0,5-1-2-3 kHz, **desde el audiograma de Hearing** | ⏳ |
-| Koos | Schwannoma vestibular, I–IV | ⏳ |
-| Fisch / Glasscock-Jackson | Paragangliomas | ⏳ |
-| Jahrsdoerfer | Atresia aural, 0–10 | ⏳ |
+| Escala | Qué mide | Rango | Referencia | Estado |
+|---|---|---|---|---|
+| **House-Brackmann** | Función del nervio facial | I–VI | House JW, Brackmann DE. *Otolaryngol Head Neck Surg* 1985;93:146-7. [10.1177/019459988509300202](https://doi.org/10.1177/019459988509300202) | ✅ |
+| **Sunnybrook** | Reposo (×5), movimiento voluntario en 5 expresiones (×4) y sincinesias | 0–100 (movimiento − reposo − sincinesias) | Ross BG, et al. *Otolaryngol Head Neck Surg* 1996;114:380-6. [10.1016/S0194-59989670206-1](https://doi.org/10.1016/S0194-59989670206-1) | ✅ |
+| **Sadé** | Retracción de la pars tensa, por oído | 1–4 | Sadé J, Berco E. *Ann Otol Rhinol Laryngol* 1976;85(Suppl 25):66-72. [10.1177/00034894760850S214](https://doi.org/10.1177/00034894760850S214) | ✅ |
+| **Tos** | Retracción de la pars flaccida, por oído | 1–4 | Tos M, Poulsen G. *Acta Otolaryngol* 1980;89:479-86. [10.3109/00016488009127165](https://doi.org/10.3109/00016488009127165) | ✅ 🔍 |
+| **EAONO/JOS** | Colesteatoma de oído medio: sitios S1, S2, T, A, M y complicaciones | Estadios I–IV | Yung M, et al. *J Int Adv Otol* 2017;13:1-8. [10.5152/iao.2017.3363](https://doi.org/10.5152/iao.2017.3363) | ✅ 🔍 |
+| **Ménière AAO-HNS 1995** | Media de 0,5-1-2-3 kHz del oído afectado, **desde la audiometría de Hearing** o escrita | Estadio 1 ≤25 · 2 26–40 · 3 41–70 · 4 >70 dB | *Otolaryngol Head Neck Surg* 1995;113:181-5. [10.1016/S0194-5998(95)70102-8](https://doi.org/10.1016/S0194-5998(95)70102-8) | ✅ |
+| **Bárány 2015** | Criterios de Ménière definida y probable | Definida · probable · no cumple | Lopez-Escamez JA, et al. *J Vestib Res* 2015;25:1-7. [10.3233/VES-150549](https://doi.org/10.3233/VES-150549) | ✅ |
+| **Koos** | Schwannoma vestibular | I–IV | Koos WT, et al. *J Neurosurg* 1998;88:506-12. [10.3171/jns.1998.88.3.0506](https://doi.org/10.3171/jns.1998.88.3.0506) | ✅ |
+| Fisch / Glasscock-Jackson | Paragangliomas | — | 🔍 | ⏳ |
+| Jahrsdoerfer | Atresia aural, 0–10 | — | 🔍 | ⏳ |
+
+**Decisiones de la fase 3:**
+
+- **Ménière desde Hearing:** la sección busca las audiometrías de Hearing con la misma etiqueta, calcula la
+  media de 0,5-1-2-3 kHz por oído (usa el umbral enmascarado si existe) y copia los cuatro umbrales a la
+  valoración. Si una frecuencia falta o figura «sin respuesta», no se calcula. Las audiometrías no calibradas
+  (prueba del paciente) se marcan como orientativas.
+- **EAONO/JOS:** estadio I con un solo sitio, II con dos o más, III con complicaciones extracraneales o
+  alteraciones intratemporales, IV con complicaciones intracraneales. 🔍 La lista exacta de complicaciones de
+  estadio III (parálisis facial, fístula laberíntica, abscesos…) se muestra como ejemplo; conviene cotejarla
+  con el consenso original. No se aplica al colesteatoma del peñasco.
+- **Koos:** el artículo de 1998 define los grados I y II; los III y IV siguen la descripción habitual de la
+  clasificación.
+- 🔍 **Tos:** las definiciones de los grados 3 y 4 (erosión limitada / importante de la pared externa del ático)
+  proceden de la descripción habitual; el resumen del original no las detalla.
 
 ### 3.4 Sueño y orofaringe (fase 4)
 
@@ -155,12 +174,12 @@ que consultar las condiciones de uso.
 |---|---|---|
 | **1** | Tabla y RLS, registro del módulo, pestaña de bandeja, paquete de Rinología, evolución, informe | Hecha |
 | **2** | Laringe y deglución (RFS, Reinke, NBI, Myer-Cotton, FEES) + enlace con Voice | Hecha |
-| **3** | Otología (House-Brackmann, Sunnybrook, Ménière desde Hearing…) | Siguiente |
-| **4** | Sueño y orofaringe | — |
+| **3** | Otología (House-Brackmann, Sunnybrook, Sadé/Tos, EAONO/JOS, Ménière desde Hearing, Koos) | Hecha |
+| **4** | Sueño y orofaringe | Siguiente |
 | **5** | Dibujos esquemáticos por grado, exportación CSV para investigación | — |
 
 ## 5. Pruebas
 
-- `tests/scales.rhinology.test.ts` y `tests/scales.larynx.test.ts`: cada escala con casos límite
+- `tests/scales.rhinology.test.ts`, `tests/scales.larynx.test.ts` y `tests/scales.otology.test.ts`: cada escala con casos límite
   (mínimos, máximos, umbrales exactos de los criterios).
 - `tests/scales.rls.test.ts`: sin acceso anónimo; cada médico solo lo suyo; límites de tamaño.

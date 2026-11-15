@@ -3,19 +3,22 @@
 import { supabase } from "@/lib/supabase";
 import { RHINOLOGY_VERSION, summarizeRhinology, type RhinologyScales, type RhinologySummary } from "./rhinology";
 import { LARYNX_VERSION, summarizeLarynx, type LarynxScales, type LarynxSummary } from "./larynx";
+import { OTOLOGY_VERSION, summarizeOtology, type OtologyScales, type OtologySummary } from "./otology";
 
-export const PACKS = ["rhinology", "larynx"] as const;
+export const PACKS = ["rhinology", "larynx", "otology"] as const;
 export type Pack = (typeof PACKS)[number];
 
 interface PackTypes {
   rhinology: { scales: RhinologyScales; summary: RhinologySummary };
   larynx: { scales: LarynxScales; summary: LarynxSummary };
+  otology: { scales: OtologyScales; summary: OtologySummary };
 }
 
 /** Version of the definitions and scoring function of each pack (stored with every row). */
 const PACK_DEFS: { [P in Pack]: { version: string; summarize: (s: PackTypes[P]["scales"]) => PackTypes[P]["summary"] } } = {
   rhinology: { version: RHINOLOGY_VERSION, summarize: summarizeRhinology },
   larynx: { version: LARYNX_VERSION, summarize: summarizeLarynx },
+  otology: { version: OTOLOGY_VERSION, summarize: summarizeOtology },
 };
 
 interface RowBase {
@@ -161,4 +164,26 @@ export async function listVoiceByLabel(label: string | null): Promise<VoiceResul
     .limit(20);
   if (error) throw error;
   return (data ?? []) as VoiceResultLite[];
+}
+
+export interface HearingSessionLite {
+  id: string;
+  created_at: string;
+  source: "patient" | "doctor";
+  calibrated: boolean;
+  audiogram: unknown;
+}
+
+/** ENT Senses Hearing sessions with the same patient label (most recent first). */
+export async function listHearingByLabel(label: string | null): Promise<HearingSessionLite[]> {
+  const l = sanitizeLabel(label);
+  if (!l) return [];
+  const { data, error } = await supabase
+    .from("audiometry_sessions")
+    .select("id, created_at, source, calibrated, audiogram")
+    .eq("label", l)
+    .order("created_at", { ascending: false })
+    .limit(20);
+  if (error) throw error;
+  return (data ?? []) as HearingSessionLite[];
 }

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   RFS_ITEMS,
   incompleteLarynxScales,
+  packYearsOf,
   pasClass,
   scoreFees,
   scoreNbi,
@@ -43,6 +44,20 @@ describe("Reinke's oedema (Tan)", () => {
   });
   it("is incomplete with one fold missing", () => {
     expect(scoreReinke({ right: 2 })).toBeNull();
+  });
+});
+
+describe("pack-years", () => {
+  it("is cigarettes per day ÷ 20 × years", () => {
+    expect(packYearsOf({ cigsPerDay: 20, yearsSmoked: 30 })).toBe(30);
+    expect(packYearsOf({ cigsPerDay: 10, yearsSmoked: 15 })).toBe(7.5);
+    expect(packYearsOf({ cigsPerDay: 15, yearsSmoked: 7 })).toBe(5.3);
+    expect(packYearsOf({ cigsPerDay: 0, yearsSmoked: 20 })).toBe(0);
+  });
+  it("needs both values, and still reads pack-years typed in older rows", () => {
+    expect(packYearsOf({ cigsPerDay: 20 })).toBeNull();
+    expect(packYearsOf({ packYears: 25 })).toBe(25);
+    expect(summarizeLarynx({ reinke: { right: 1, left: 1, cigsPerDay: 40, yearsSmoked: 10 } }).packYears).toBe(20);
   });
 });
 
