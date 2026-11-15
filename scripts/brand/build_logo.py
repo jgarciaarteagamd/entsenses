@@ -1,11 +1,12 @@
 r"""Draw the ENT Senses logos as pure vector SVG from Della Respira (OFL).
 
-- "ent": synthetic bold (outline stroked and merged), first "e" mirrored and
-  rotated so its bar is horizontal.
-- "senses": synthetic italic (skew); 1st "e" mirrored (ɘ), 2nd rotated 180° (ə).
-- symbol: schwa (e rotated 180°), centred in a square.
+- "ent": synthetic bold (outline stroked and merged); its "e" is the schwa
+  (ə, the e rotated 180°), the same glyph as the symbol.
+- "senses": upright regular; both "e" mirrored horizontally (ɘ).
+- symbol (favicon, app icons): the bold schwa, centred in a square.
 
-Usage (writes the variants into OUT_DIR; variant "-a" is the one in public/brand):
+Usage (writes entsenses-horizontal.svg, entsenses-vertical.svg, entsenses-symbol.svg
+and entsenses-symbol-plain.svg, the source of the PNG icons, into OUT_DIR):
     pip install fonttools skia-pathops
     curl -L -o DellaRespira-Regular.ttf "$(curl -s 'https://fonts.googleapis.com/css2?family=Della+Respira' \
         -A 'Mozilla/4.0' | grep -o 'https://[^)]*\.ttf')"
@@ -30,7 +31,6 @@ cmap = font.getBestCmap()
 
 BAR_ANGLE = math.degrees(math.atan2(690 - 493, 768 - 203))  # ~19.2°, the e's slanted bar
 BOLD = 72        # stroke width added around "ent" outlines (font units, upm 2048)
-ITALIC = 11      # degrees of slant for "senses"
 X_H = 963        # height of n (flat x-height)
 
 
@@ -162,7 +162,7 @@ def ent(e_kind):
     return fit_bold_height(p), adv * X_H / (X_H + BOLD)
 
 
-def senses(e1, e2, slant=ITALIC):
+def senses(e1, e2, slant=0):
     p, adv = word([("s", None), ("e", e_variant(e1)), ("n", None),
                    ("s", None), ("e", e_variant(e2)), ("s", None)], slant=slant, tracking=8)
     return p, adv
@@ -173,13 +173,13 @@ def union_bounds(*bs):
             max(b[2] for b in bs), max(b[3] for b in bs))
 
 
-def build(tag, ent_e, sen_e1, sen_e2):
+def build(tag, ent_e, sen_e1, sen_e2, slant=0):
     E, _ = ent(ent_e)
-    S, _ = senses(sen_e1, sen_e2)
+    S, _ = senses(sen_e1, sen_e2, slant)
     eb, sb = E.bounds, S.bounds
 
     # Horizontal: same x-height, one word-space apart.
-    gap = 300
+    gap = 380
     t_s = translate(eb[2] + gap - sb[0], 0)
     box = union_bounds(eb, transformed(S, t_s).bounds)
     svg([(E, ID), (S, t_s)], box, title="ENT Senses", pad=(0, 0),
@@ -194,13 +194,8 @@ def build(tag, ent_e, sen_e1, sen_e2):
         out=f"entsenses-vertical{tag}.svg")
 
 
-VARIANTS = {
-    "-a": ("mirror-level", "mirror", "schwa"),   # ɘnt (bar level) · sɘnsəs
-    "-b": ("e", "mirror", "schwa"),              # ent · sɘnsəs
-    "-c": ("mirror-level", "schwa", "schwa"),    # ɘnt · sənsəs
-}
-for tag, v in VARIANTS.items():
-    build(tag, *v)
+# ənt · sɘnsɘs (other e shapes: "e", "mirror-level"; pass slant=11 for an italic "senses")
+build("", "schwa", "mirror", "mirror")
 
 
 def symbol(bold, out, dark_aware=False, pad_ratio=0.16):
@@ -217,5 +212,4 @@ def symbol(bold, out, dark_aware=False, pad_ratio=0.16):
 
 symbol(BOLD, "entsenses-symbol.svg", dark_aware=True)
 symbol(BOLD, "entsenses-symbol-plain.svg", pad_ratio=0.0)
-symbol(0, "entsenses-symbol-regular.svg", dark_aware=True)
 print("ok", sorted(x.name for x in OUT.iterdir()))

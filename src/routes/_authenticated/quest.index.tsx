@@ -42,7 +42,7 @@ function QuestionnairesIndexPage() {
         <main className="mx-auto max-w-5xl px-4 py-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-violet-600">ENT Senses Quest</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">ENT Senses Quest</p>
               <h1 className="text-2xl font-bold">{t("catalog.title")}</h1>
               <p className="text-muted-foreground">{t("catalog.subtitle")}</p>
             </div>

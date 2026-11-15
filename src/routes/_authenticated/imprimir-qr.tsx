@@ -36,18 +36,18 @@ function PrintQrPage() {
           </Button>
         </div>
       </div>
-      <main className="mx-auto max-w-3xl bg-white px-8 py-12 text-center text-slate-900 shadow-sm print:shadow-none">
-        <p className="text-sm uppercase tracking-widest text-slate-500">{t(`print.kicker.${m}`)}</p>
+      <main className="mx-auto max-w-3xl bg-white px-8 py-12 text-center text-neutral-900 shadow-sm print:shadow-none">
+        <p className="text-sm uppercase tracking-widest text-neutral-500">{t(`print.kicker.${m}`)}</p>
         <h1 className="mt-2 text-3xl font-bold">{t(`print.title.${m}`)}</h1>
         <div className="mt-8 flex justify-center">
           <QrCode value={url} size={300} />
         </div>
         <p className="mx-auto mt-8 max-w-xl text-base leading-7">{t(`print.instructions.${m}`)}</p>
-        <p className="mx-auto mt-4 flex max-w-xl items-start justify-center gap-2 text-sm leading-6 text-slate-600">
+        <p className="mx-auto mt-4 flex max-w-xl items-start justify-center gap-2 text-sm leading-6 text-neutral-600">
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
           {t(`print.privacy.${m}`)}
         </p>
-        <p className="mt-8 break-all font-mono text-[11px] text-slate-400">{url}</p>
+        <p className="mt-8 break-all font-mono text-[11px] text-neutral-400">{url}</p>
       </main>
       <style>{`@media print { @page { size: A4; margin: 15mm; } }`}</style>
     </div>

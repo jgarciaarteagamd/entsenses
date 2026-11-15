@@ -581,7 +581,7 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
                 title={t("aud.button")}
               />
               {lastResult !== null && (
-                <Badge variant="outline" className={lastResult ? "border-emerald-300 bg-emerald-50 text-emerald-800" : "border-slate-300 text-slate-600"}>
+                <Badge variant="outline" className={lastResult ? "border-emerald-300 bg-emerald-50 text-emerald-800" : "border-neutral-300 text-neutral-600"}>
                   {lastResult ? t("aud.responded") : t("aud.not_responded")}
                 </Badge>
               )}
@@ -625,10 +625,10 @@ function Audiometer({ profile, engine }: { profile: CalibrationProfile; engine: 
 
         <div className="space-y-4">
           <div className="grid gap-3 sm:grid-cols-2">
-            <div className="aspect-[4/3] overflow-hidden rounded-xl border border-red-200 bg-white text-slate-900">
+            <div className="aspect-[4/3] overflow-hidden rounded-xl border border-red-200 bg-white text-neutral-900">
               <AudiogramChart ear={EarEnum.Right} data={audiogram.right} />
             </div>
-            <div className="aspect-[4/3] overflow-hidden rounded-xl border border-blue-200 bg-white text-slate-900">
+            <div className="aspect-[4/3] overflow-hidden rounded-xl border border-blue-200 bg-white text-neutral-900">
               <AudiogramChart ear={EarEnum.Left} data={audiogram.left} />
             </div>
           </div>

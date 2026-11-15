@@ -33,15 +33,15 @@ function ReportPage() {
           </Button>
         </div>
       </div>
-      <main className="mx-auto max-w-3xl bg-white px-6 pb-12 pt-6 text-slate-900 shadow-sm print:max-w-none print:px-0 print:shadow-none">
+      <main className="mx-auto max-w-3xl bg-white px-6 pb-12 pt-6 text-neutral-900 shadow-sm print:max-w-none print:px-0 print:shadow-none">
         {isLoading && <p className="text-sm text-muted-foreground">{t("inbox.loading")}</p>}
         {!isLoading && !r && <p className="text-sm text-muted-foreground">{t("report.not_available")}</p>}
         {r && (
           <>
             <header className="mb-5 border-b pb-4">
-              <p className="text-xs uppercase tracking-wide text-slate-500">{t("app.name")}</p>
+              <p className="text-xs uppercase tracking-wide text-neutral-500">{t("app.name")}</p>
               <h1 className="text-2xl font-bold">{t("report.title")}</h1>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-neutral-600">
                 {t("report.date")}: {new Date(r.created_at).toLocaleString(lang === "en" ? "en-GB" : "es-ES")}
                 {r.label && <> · {t("report.label")}: <strong>{r.label}</strong></>}
                 {" · "}

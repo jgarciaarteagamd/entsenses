@@ -281,7 +281,7 @@ function ResultCard({ r, onChanged }: { r: SessionRow; onChanged: () => void }) 
         )}
         {open && !remote && (
           <div className="mt-4 space-y-5">
-            <div className="grid gap-4 text-slate-900 md:grid-cols-2">
+            <div className="grid gap-4 text-neutral-900 md:grid-cols-2">
               <div className="aspect-[4/3] overflow-hidden rounded-xl border border-red-200 bg-white sm:aspect-auto sm:h-[300px]">
                 <AudiogramChart ear={Ear.Right} data={audiogram.right} />
               </div>

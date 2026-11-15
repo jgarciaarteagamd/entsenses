@@ -70,9 +70,9 @@ const AudiometricInput: React.FC<{
             className={`w-full p-1 pr-6 border rounded-md text-center text-sm focus:ring-2 focus:outline-none transition
                 ${warning 
                     ? 'bg-white border-amber-500 focus:ring-amber-200 focus:border-amber-500 text-amber-600 font-bold' 
-                    : 'bg-white text-slate-900 border-slate-300 focus:ring-primary-focus focus:border-primary'
+                    : 'bg-white text-neutral-900 border-neutral-300 focus:ring-primary-focus focus:border-primary'
                 }
-                ${disabled ? 'bg-slate-50 text-slate-400 cursor-not-allowed border-slate-200' : ''}
+                ${disabled ? 'bg-neutral-50 text-neutral-400 cursor-not-allowed border-neutral-200' : ''}
             `}
             placeholder="dB"
             title={warning ? t('dataInputPanel.limitWarning') : ''}
@@ -85,8 +85,8 @@ const StyledInputContainer: React.FC<{
     children: React.ReactNode; 
     t: (key: string) => string;
 }> = ({ title, children, t }) => (
-    <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 shadow-sm mb-4 animate-fadeIn">
-        <div className="text-xs font-bold mb-3 border-b border-slate-200 pb-1 flex justify-between items-center text-slate-600">
+    <div className="bg-neutral-50 p-3 rounded-lg border border-neutral-200 shadow-sm mb-4 animate-fadeIn">
+        <div className="text-xs font-bold mb-3 border-b border-neutral-200 pb-1 flex justify-between items-center text-neutral-600">
             <span>{title}</span>
         </div>
         {children}
@@ -157,14 +157,14 @@ const DataInputPanel: React.FC<DataInputPanelProps> = ({ ear, data, onDataChange
             
             return (
             <div key={`${ear}-${conduction}-${freq}`} className="flex flex-col items-center">
-              <label htmlFor={`${ear}-${conduction}-${freq}`} className="text-[10px] mb-0.5 text-slate-500">{freq}</label>
+              <label htmlFor={`${ear}-${conduction}-${freq}`} className="text-[10px] mb-0.5 text-neutral-500">{freq}</label>
               <div className="relative w-full flex items-center">
                   <AudiometricInput id={`${ear}-${conduction}-${freq}`} value={val} onChange={(val) => onDataChange(ear, conduction, freq, val)} onKeyDown={(e) => handleKeyDown(e, index)} disabled={isDisabled} warning={warning} t={t} />
                   {!disabled && (
                       <button 
                         onClick={() => { if (val === null || val === undefined) { const limitMap = MAX_OUTPUT_LEVELS[limitKey as keyof typeof MAX_OUTPUT_LEVELS]; const maxVal = limitMap ? limitMap[freq] : 120; if (maxVal !== undefined) { onDataChange(ear, conduction, freq, maxVal.toString()); } if (onNrChange) onNrChange(ear, conduction, freq, true); } else { if (onNrChange) onNrChange(ear, conduction, freq, !isNr); } }}
                         disabled={isDisabled}
-                        className={`absolute right-1 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-slate-100 transition-colors ${isNr ? 'text-primary' : 'text-slate-300'} ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
+                        className={`absolute right-1 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-neutral-100 transition-colors ${isNr ? 'text-primary' : 'text-neutral-300'} ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
                         title={t('dataInputPanel.nrTooltip')} tabIndex={-1}
                       ><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg></button>
                   )}
@@ -197,7 +197,7 @@ const DataInputPanel: React.FC<DataInputPanelProps> = ({ ear, data, onDataChange
   const renderTabButton = (type: Conduction, label: string) => {
       const isActive = activeTab === type; const hasValues = hasData(type);
       return (
-        <button key={type} type="button" onClick={() => setActiveTab(isActive ? null : type)} className={`flex-1 py-2 px-1 text-[10px] sm:text-xs font-medium rounded-t-lg border-b-2 transition-colors relative flex items-center justify-center gap-1 ${isActive ? `${earColor} border-${ear === Ear.Left ? 'blue' : 'red'}-200 bg-slate-50 border-current` : 'text-slate-500 border-transparent hover:bg-slate-50 hover:text-slate-700'}`}>
+        <button key={type} type="button" onClick={() => setActiveTab(isActive ? null : type)} className={`flex-1 py-2 px-1 text-[10px] sm:text-xs font-medium rounded-t-lg border-b-2 transition-colors relative flex items-center justify-center gap-1 ${isActive ? `${earColor} border-${ear === Ear.Left ? 'blue' : 'red'}-200 bg-neutral-50 border-current` : 'text-neutral-500 border-transparent hover:bg-neutral-50 hover:text-neutral-700'}`}>
             <span>{label}</span>
             {hasValues && !isActive && (<span className={`absolute top-1 right-1 h-1.5 w-1.5 rounded-full ${ear === Ear.Left ? 'bg-blue-400' : 'bg-red-400'}`}></span>)}
         </button>
@@ -218,7 +218,7 @@ const DataInputPanel: React.FC<DataInputPanelProps> = ({ ear, data, onDataChange
   }
 
   return (
-    <div className={`bg-white rounded-xl border ${borderColor} shadow-sm h-full flex flex-col overflow-hidden ${disabled ? 'bg-slate-50/50' : ''}`}>
+    <div className={`bg-white rounded-xl border ${borderColor} shadow-sm h-full flex flex-col overflow-hidden ${disabled ? 'bg-neutral-50/50' : ''}`}>
       <div className={`py-4 ${ear === Ear.Left ? 'bg-blue-50/30' : 'bg-red-50/30'} border-b ${borderColor}`}>
         <h3 className={`text-lg font-bold text-center ${earColor}`}>
           {earTitle}
@@ -227,7 +227,7 @@ const DataInputPanel: React.FC<DataInputPanelProps> = ({ ear, data, onDataChange
       
       <div className="p-4 flex flex-col gap-4">
         <StyledInputContainer title={t('dataInputPanel.airConduction')} t={t}>{renderInputGrid(Conduction.Air)}</StyledInputContainer>
-        <div className="flex space-x-1 border-b border-slate-200 mb-0 overflow-x-auto">
+        <div className="flex space-x-1 border-b border-neutral-200 mb-0 overflow-x-auto">
             {tabs.map(tab => renderTabButton(tab.key, tab.label))}
         </div>
         <div className="flex-1 min-h-[40px]">
@@ -236,7 +236,7 @@ const DataInputPanel: React.FC<DataInputPanelProps> = ({ ear, data, onDataChange
                     {renderInputGrid(activeTab)}
                 </StyledInputContainer>
             )}
-            {activeTab === null && (<div className="h-full flex items-center justify-center text-xs text-slate-400 italic py-2">{t('dataInputPanel.tabSelectionNotice')}</div>)}
+            {activeTab === null && (<div className="h-full flex items-center justify-center text-xs text-neutral-400 italic py-2">{t('dataInputPanel.tabSelectionNotice')}</div>)}
         </div>
 
         {qualityErrors.length > 0 && (
