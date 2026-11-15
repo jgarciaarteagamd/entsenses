@@ -22,7 +22,7 @@ export const MODULES: ModuleInfo[] = [
   { id: "quest", name: "Quest", icon: BookOpen, status: "active", home: "/quest", accent: "text-foreground bg-muted" },
   { id: "voice", name: "Voice", icon: Mic, status: "active", home: "/voice/evaluar", patientLink: true, accent: "text-foreground bg-muted" },
   { id: "hearing", name: "Hearing", icon: Ear, status: "active", home: "/hearing/consulta", patientLink: true, accent: "text-foreground bg-muted" },
-  { id: "scales", name: "Scales", icon: Ruler, status: "coming", accent: "text-muted-foreground bg-muted" },
+  { id: "scales", name: "Scales", icon: Ruler, status: "active", home: "/scales", accent: "text-foreground bg-muted" },
   { id: "tinnitus", name: "Tinnitus", icon: Waves, status: "coming", accent: "text-muted-foreground bg-muted" },
 ];
 

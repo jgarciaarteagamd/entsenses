@@ -82,7 +82,7 @@ function SettingsPage() {
   async function deleteAccount() {
     if (confirm !== "DELETE") return;
     // Every module's data (RLS limits each delete to the doctor's own rows).
-    for (const table of ["patient_invitations", "patient_responses", "voice_results", "audiometry_sessions"]) {
+    for (const table of ["patient_invitations", "patient_responses", "voice_results", "audiometry_sessions", "scale_assessments"]) {
       const { error } = await supabase.from(table).delete().eq("doctor_id", user.id);
       if (error) console.error(`[delete ${table}]`, error);
     }

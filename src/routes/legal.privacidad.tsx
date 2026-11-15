@@ -70,7 +70,8 @@ function PrivacyES() {
         <li>
           <strong>Registros e informes del profesional:</strong> cuestionarios rellenados en consulta, valoración
           perceptual de la voz, informes audiométricos (audiograma, impedanciometría, logoaudiometría, edad,
-          antecedentes, exploración, juicio clínico y plan) y la <strong>etiqueta</strong> seudonimizada que el
+          antecedentes, exploración, juicio clínico y plan), escalas clínicas de Scales (grados marcados, puntuaciones,
+          datos analíticos que exigen los criterios, como eosinófilos o IgE, y fecha de la exploración) y la <strong>etiqueta</strong> seudonimizada que el
           profesional elige. <strong>Nombre, apellidos, documento y fecha de nacimiento no se guardan</strong>: se
           escriben solo para imprimir un informe y se borran al recargar la página.
         </li>
@@ -211,7 +212,8 @@ function PrivacyEN() {
         <li>
           <strong>Professional’s records and reports:</strong> questionnaires completed in clinic, perceptual voice
           ratings, audiometric reports (audiogram, impedance, speech audiometry, age, history, examination, clinical
-          impression and plan) and the pseudonymised <strong>label</strong> chosen by the professional.{" "}
+          impression and plan), Scales clinical scales (grades chosen, scores, laboratory values required by the
+          criteria such as eosinophils or IgE, and examination date) and the pseudonymised <strong>label</strong> chosen by the professional.{" "}
           <strong>Name, surname, ID and date of birth are never stored</strong>: they are typed only to print a report
           and are cleared when the page reloads.
         </li>

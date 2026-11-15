@@ -8,11 +8,12 @@ import { Brand } from "@/components/Brand";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useLang } from "@/lib/i18n";
 
-const NAV: { to: string; icon: typeof Inbox; label?: string; key?: string }[] = [
+// Module shortcuts are hidden on phones (they are on the dashboard) so the header fits in 390 px.
+const NAV: { to: string; icon: typeof Inbox; label?: string; key?: string; module?: boolean }[] = [
   { to: "/panel", icon: LayoutDashboard, key: "nav.panel" },
   ...activeModules()
     .filter((m) => m.home)
-    .map((m) => ({ to: m.home!, icon: m.icon, label: `ENT Senses ${m.name}` })),
+    .map((m) => ({ to: m.home!, icon: m.icon, label: `ENT Senses ${m.name}`, module: true })),
   { to: "/bandeja", icon: Inbox, key: "nav.inbox" },
   { to: "/invitaciones", icon: Send, key: "nav.invitations" },
   { to: "/configuracion", icon: Settings, key: "nav.settings" },
@@ -35,14 +36,14 @@ export function Header() {
         </Link>
         <TooltipProvider delayDuration={200}>
           <nav className="flex items-center gap-1">
-            {NAV.map(({ to, icon: Icon, key, label }) => (
+            {NAV.map(({ to, icon: Icon, key, label, module }) => (
               <Tooltip key={to}>
                 <TooltipTrigger asChild>
                   <Link
                     to={to}
                     aria-label={label ?? t(key!)}
-                    className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
-                    activeProps={{ className: "rounded-md p-2 bg-muted text-foreground" }}
+                    className={`rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground ${module ? "hidden sm:block" : ""}`}
+                    activeProps={{ className: `rounded-md p-2 bg-muted text-foreground ${module ? "hidden sm:block" : ""}` }}
                   >
                     <Icon className="h-5 w-5" />
                   </Link>

@@ -7,6 +7,7 @@ import { MODULES, activeModules, type ModuleId } from "@/modules/registry";
 import { HearingInbox, useHearingUnseen } from "@/modules/hearing/components/HearingInbox";
 import { QuestInbox, useQuestUnseen } from "@/modules/quest/components/QuestInbox";
 import { VoiceInbox, useVoiceUnseen } from "@/modules/voice/components/VoiceInbox";
+import { ScalesInbox, useScalesUnseen } from "@/modules/scales/components/ScalesInbox";
 
 // Unified inbox: one tab per active module, each rendering that module's own inbox.
 export const Route = createFileRoute("/_authenticated/bandeja")({
@@ -20,6 +21,7 @@ const INBOXES: Partial<Record<ModuleId, { Inbox: () => React.ReactNode; useUnsee
   quest: { Inbox: QuestInbox, useUnseen: useQuestUnseen },
   voice: { Inbox: VoiceInbox, useUnseen: useVoiceUnseen },
   hearing: { Inbox: HearingInbox, useUnseen: useHearingUnseen },
+  scales: { Inbox: ScalesInbox, useUnseen: useScalesUnseen },
 };
 
 function UnseenBadge({ use }: { use: () => number }) {

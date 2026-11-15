@@ -9,7 +9,8 @@ Ver [`PLAN.md`](PLAN.md).
 | **Hearing** | Informes audiométricos (audiograma, impedanciometría, logoaudiometría) con el motor de AudiometricReport; **audiómetro manual por vía aérea** con perfiles de calibración, comprobación diaria y pulsador del paciente; próximamente procedimiento automático, enmascaramiento y prueba del paciente ([`docs/hearing/PLAN.md`](docs/hearing/PLAN.md)) | Activo |
 | **Quest** | Cuestionarios clínicos validados (catálogo, buscador por diagnóstico), QR e impresión por cuestionario, rellenar en consulta, invitaciones por correo (Gmail, app de correo, copiar, compartir) | Activo |
 | **Voice** | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer, HNR, TMF, s/z), estimación GRBAS/CAPE-V, evaluación en consulta con valoración perceptual, QR del paciente | Activo |
-| **Scales**, **Tinnitus** | — | Futuro |
+| **Scales** | Escalas que puntúa el médico, con evolución por paciente e informe imprimible. Paquete de **Rinología**: Nasal Polyp Score, Lund-Kennedy (original y modificada), Lund-Mackay, control EPOS 2020, indicación y respuesta a biológicos EPOS/EUFOREA 2023 (con el SNOT-22 de Quest) ([`docs/scales/PLAN.md`](docs/scales/PLAN.md)) | Activo |
+| **Tinnitus** | — | Futuro |
 
 ## Principios
 
@@ -30,7 +31,7 @@ npm run dev
 
 **Base de datos (proyecto Supabase nuevo):** pegar **`supabase/setup.sql`** completo en
 SQL Editor → New query → Run. Es la suma, en orden, de `supabase/migrations/` (esquemas de Quest,
-Voice y Hearing). Tras añadir una migración: `npm run db:setup`.
+Voice, Hearing y Scales). Tras añadir una migración: `npm run db:setup`.
 
 **Netlify:** sitio conectado a este repositorio con las variables `VITE_SUPABASE_URL` y
 `VITE_SUPABASE_PUBLISHABLE_KEY` (`netlify.toml` y la función `keepalive` ya están configurados).

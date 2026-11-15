@@ -16,7 +16,7 @@
 | **ENT Senses Quest** | ENT Quest | Cuestionarios clínicos validados (SNOT-22, VHI, EAT-10…): QR, hoja imprimible, invitaciones por correo, rellenar en consulta | Hecho (etapa B) |
 | **ENT Senses Voice** | Vocalyzer | Análisis acústico de la voz en el navegador (AVQI, CPPS, jitter, shimmer…), estimación GRBAS/CAPE-V | Hecho (etapa C) |
 | **ENT Senses Hearing** | Auditone Test + AudiometricReport | Informes audiométricos (audiograma, impedanciometría, logoaudiometría); prueba auditiva informativa del paciente; audiometría tonal en consulta | Hecho (etapa A); fases 2–8 de su plan |
-| **ENT Senses Scales** | — | Escalas clínicas (por definir) | Futuro |
+| **ENT Senses Scales** | — | Escalas que puntúa el médico; paquete de Rinología (NPS, Lund-Kennedy, Lund-Mackay, EPOS 2020, biológicos EPOS/EUFOREA 2023) | Hecho (fase 1 de su plan) |
 | **ENT Senses Tinnitus** | — | Evaluación de acúfenos (por definir) | Futuro |
 
 El plan técnico y regulatorio del módulo Hearing (audiometría calibrada, normas IEC/ISO, Clase IIa)
@@ -50,9 +50,10 @@ src/
     hearing/         motor de AudiometricReport, editor de informes, sesiones
     quest/           cuestionarios, puntuaciones, invitaciones
     voice/           análisis acústico (Web Worker), protocolo, informe
+    scales/          escalas clínicas (definiciones y cálculo), formularios, evolución
   routes/
     panel, bandeja (pestañas por módulo), invitaciones, configuracion
-    hearing.*, quest.*, voice.*          (área del médico)
+    hearing.*, quest.*, voice.*, scales.*  (área del médico)
     p.$doctorId.<módulo>…, i.$token       (área del paciente)
 supabase/migrations/  esquema completo (las migraciones de las tres apps + las de la suite)
 docs/                 planes por módulo y documentación regulatoria
@@ -87,4 +88,4 @@ docs/                 planes por módulo y documentación regulatoria
 ## 6. Pendiente de decidir
 
 - Si hay datos reales en ENT Quest o Vocalyzer que deban trasladarse (etapa E).
-- Contenido de los módulos Scales y Tinnitus.
+- Contenido del módulo Tinnitus. (Scales: ver [`docs/scales/PLAN.md`](docs/scales/PLAN.md).)

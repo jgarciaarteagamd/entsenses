@@ -47,6 +47,11 @@ function TermsES() {
           impedanciometría, logoaudiometría) y, en desarrollo, una prueba auditiva informativa para pacientes y una
           audiometría tonal en consulta.
         </li>
+        <li>
+          <strong>ENT Senses Scales:</strong> registro y cálculo de escalas clínicas que puntúa el propio profesional
+          (por ejemplo, puntuaciones endoscópicas y tomográficas de la rinosinusitis crónica y criterios de consenso
+          publicados), con seguimiento por paciente.
+        </li>
       </ul>
       <p>Podrán añadirse otros módulos. El uso de la Aplicación implica la aceptación plena de los presentes Términos.</p>
 
@@ -78,6 +83,13 @@ function TermsES() {
           calibrada». La audiometría en consulta (en desarrollo) se diseña siguiendo ISO 8253-1, ISO 389-1 e IEC
           60645-1, pero sus resultados son orientativos mientras no disponga de marcado CE y no deben usarse para
           peritajes, certificados laborales o médico-legales, adaptación de audífonos ni indicación quirúrgica.
+        </li>
+        <li>
+          <strong>Scales.</strong> Es una herramienta de registro y cálculo: el profesional elige cada grado y la
+          Aplicación suma las puntuaciones y aplica las reglas de la publicación citada. No interpreta imágenes. Cuando
+          una escala resume criterios de consenso para un tratamiento (por ejemplo, biológicos en la rinosinusitis
+          crónica con pólipos), el resultado indica si se cumplen los criterios publicados y no constituye una
+          prescripción ni sustituye el juicio clínico ni las condiciones de financiación aplicables.
         </li>
         <li>
           <strong>Seguridad del paciente.</strong> Las pruebas con sonido deben hacerse con un volumen cómodo y
@@ -212,6 +224,10 @@ function TermsEN() {
           <strong>ENT Senses Hearing:</strong> audiometric reports (pure-tone audiometry, impedance, speech audiometry)
           and, in development, an informative hearing check for patients and in-clinic pure-tone audiometry.
         </li>
+        <li>
+          <strong>ENT Senses Scales:</strong> recording and scoring of clinician-rated scales (for example, endoscopic and
+          CT scores of chronic rhinosinusitis and published consensus criteria), with per-patient follow-up.
+        </li>
       </ul>
       <p>Other modules may be added. Using the App implies full acceptance of these Terms.</p>
 
@@ -242,6 +258,13 @@ function TermsEN() {
           (in development) follows ISO 8253-1, ISO 389-1 and IEC 60645-1, but its results are orientative while it lacks
           CE marking and must not be used for medico-legal or occupational certificates, hearing-aid fitting or surgical
           indication.
+        </li>
+        <li>
+          <strong>Scales.</strong> A recording and scoring tool: the professional chooses each grade and the App adds up
+          the scores and applies the rules of the cited publication. It does not interpret images. When a scale
+          summarises consensus criteria for a treatment (for example, biologics in chronic rhinosinusitis with nasal
+          polyps), the result states whether the published criteria are met; it is not a prescription and does not
+          replace clinical judgement or the applicable reimbursement conditions.
         </li>
         <li>
           <strong>Patient safety.</strong> Tests with sound should use a comfortable volume and stop at any discomfort or
