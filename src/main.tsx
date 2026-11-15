@@ -5,6 +5,8 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { LanguageProvider } from "./lib/i18n";
 import { Toaster } from "./components/ui/sonner";
+import "@fontsource/della-respira/latin-400.css";
+import "@fontsource-variable/source-sans-3/wght.css";
 import "./styles.css";
 
 const queryClient = new QueryClient();

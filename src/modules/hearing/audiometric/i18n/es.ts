@@ -167,9 +167,9 @@ const es = {
       title: "Aviso Legal",
       backToMenu: "Volver",
       content: `
-        <div class="space-y-6 text-slate-700">
+        <div class="space-y-6 text-neutral-700">
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">1. Identificación del Titular</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">1. Identificación del Titular</h2>
             <p>En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y Comercio Electrónico (LSSI-CE), se hace constar que el titular y creador de esta aplicación web es:</p>
             <ul class="list-disc pl-5 mt-2 space-y-1">
               <li><strong>Titular:</strong> <a href="https://jgarciaarteaga.netlify.app" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Juan Pablo García Arteaga</a></li>
@@ -178,12 +178,12 @@ const es = {
             </ul>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">2. Propiedad Intelectual y Modelos de Licencia</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">2. Propiedad Intelectual y Modelos de Licencia</h2>
             <p>El código fuente, arquitectura de interfaz y algoritmos de cálculo de ENT Senses son una obra original de Juan Pablo García Arteaga y se encuentran debidamente protegidos por derechos de propiedad intelectual e inscritos en el Registro Ninfa de la Junta de Andalucía. La marca se halla en fase de registro en la OEMP. Queda prohibida la reproducción total o parcial sin autorización expresa.</p>
             <p>El titular se reserva el derecho exclusivo de ceder, licenciar o pactar patrocinios comerciales sobre los espacios de la plataforma y sus derechos de explotación a empresas terceras o entidades corporativas del sector audiológico.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">3. Jurisdicción</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">3. Jurisdicción</h2>
             <p>Para cualquier controversia derivada del uso de esta herramienta, las partes se someten expresamente a los Juzgados y Tribunales de <strong>Huelva, España</strong>.</p>
           </section>
         </div>`
@@ -192,29 +192,29 @@ const es = {
       title: "Política de Privacidad y Soberanía del Dato (RGPD)",
       backToMenu: "Volver",
       content: `
-        <div class="space-y-6 text-slate-700">
+        <div class="space-y-6 text-neutral-700">
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">1. Transparencia previa y Datos Recopilados</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">1. Transparencia previa y Datos Recopilados</h2>
             <p>Antes de utilizar nuestra infraestructura, queremos ser transparentes sobre los datos que se procesan. Esta aplicación solicita únicamente información clínica estrictamente necesaria (umbrales de audición, impedanciometría y logoaudiometría) para cumplir el fin exclusivo de <strong>generar el informe audiométrico</strong>. No se recopilan datos para investigación o fines estadísticos. La aplicación se aloja en servidores dentro del Espacio Económico Europeo (EEE), y no existen acuerdos de cesión comercial de datos con terceras entidades.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">2. Procesamiento Volátil (Edge Computing) y Privacy by Design</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">2. Procesamiento Volátil (Edge Computing) y Privacy by Design</h2>
             <p>ENT Senses ha sido diseñado bajo un estricto paradigma de privacidad desde el diseño y por defecto. El procesamiento de los datos introducidos en los formularios se realiza de forma 100% local, exclusivamente en la memoria RAM del navegador web del usuario. No existe persistencia de datos en bases de datos externas, ni transferencia de Información de Salud Protegida (PHI) a nuestros servidores.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">3. Preservación, Consentimiento y Seguridad</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">3. Preservación, Consentimiento y Seguridad</h2>
             <p>Nuestra concepción sobre los historiales de salud parte de que es el experto, usted, en su propia consulta, el ente de control. El uso del generador ha sido supeditado a un mecanismo de validación activa; en concreto, un consentimiento expreso mediante un <em>checkbox</em> obligatorio asegurando su legitimación. Protocolos de acceso seguro y cifrado (HTTPS/SSL) aseguran el tránsito de la aplicación web a su terminal.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">4. Derechos ARCO-POL, EIPD, y RAT</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">4. Derechos ARCO-POL, EIPD, y RAT</h2>
             <p>Dado que la aplicación procesa datos relativos a la salud (Categoría Especial), el sistema se ampara en una Evaluación de Impacto (EIPD) cuyo análisis concluye que el diseño sin servidor de almacenamiento mitiga los riesgos. En el Registro de Actividades de Tratamiento (RAT) esto figura como un proceso efímero. Al cerrar la pestaña o recargar la página (F5), se ejecutan instantáneamente los derechos al olvido y cancelación, destruyéndose irreversiblemente el documento volátil, liberando la memoria y no quedando ningún rastro posterior en nuestro servicio.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">5. Responsabilidad del Tratamiento y Custodia</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">5. Responsabilidad del Tratamiento y Custodia</h2>
             <p>Juan Pablo García Arteaga no actúa como Responsable ni como Encargado del Tratamiento de pacientes. Al minimizar absolutamente la recolección, imposibilita la custodia del material tras su borrado local. Es responsabilidad exclusiva y excluyente del facultativo descargar el PDF y custodiarlo en su infraestructura local u hospitalaria amparándose en su respectivo RGPD.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">6. Cookies Analíticas y Anonimización</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">6. Cookies Analíticas y Anonimización</h2>
             <p>Utilizamos Google Analytics de forma anonimizada para recolectar datos agregados del flujo de componentes e interacciones de UI, mejorando la herramienta ofimáticamente. Jamás estas cookies o scripts procesarán variables identificativas, nombres o perfiles tonales.</p>
           </section>
         </div>`
@@ -223,17 +223,17 @@ const es = {
       title: "Términos y Condiciones de Uso",
       backToMenu: "Volver",
       content: `
-        <div class="space-y-6 text-slate-700">
+        <div class="space-y-6 text-neutral-700">
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">1. Naturaleza del Software (Uso Previsto)</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">1. Naturaleza del Software (Uso Previsto)</h2>
             <p>ENT Senses es una <strong>herramienta ofimática y de soporte documental de uso gratuito (calculadora administrativa, no diagnóstica)</strong>. No es un Producto Sanitario ni un software médico ("Medical Device") según el Reglamento (UE) 2017/745 (MDR). Su <strong>uso previsto</strong> se limita estrictamente a la representación gráfica de datos ingresados manualmente, la automatización de fórmulas aritméticas de dominio público (como el cálculo de PTA, los porcentajes de pérdidas y la implementación a las normativas de compensación), y la maquetación de un documento PDF para su impresión. En ningún caso interviene en la toma de decisiones clínicas ni sugiere tratamientos o diagnósticos.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">2. Uso Exclusivo Profesional y Exención Diagnóstica</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">2. Uso Exclusivo Profesional y Exención Diagnóstica</h2>
             <p>El uso de esta herramienta está restringido a facultativos especialistas, audiólogos y profesionales sanitarios autorizados. Usted comprende mediante una marcación afirmativa del consentimiento expreso que <strong>ENT Senses es una calculadora administrativa y herramienta ofimática, no diagnóstica.</strong> No emite sugerencias clínicas, no interpreta resultados y no realiza diagnósticos automatizados. El profesional clínico asume la absoluta y total responsabilidad sobre la veracidad de los datos introducidos, la gestión, la custodia del informe impreso y el juicio clínico reflejado.</p>
           </section>
           <section>
-            <h2 class="text-xl font-bold text-slate-900 mb-3">3. Exención de Responsabilidad por Pérdida de Datos</h2>
+            <h2 class="text-xl font-bold text-neutral-900 mb-3">3. Exención de Responsabilidad por Pérdida de Datos</h2>
             <p>Dada la arquitectura volátil y de no-almacenamiento de la aplicación (Privacy by Design), el titular no se hace responsable en ningún caso de la pérdida de información que pudiera sufrir el usuario por el cierre accidental del navegador, fallos de suministro eléctrico, falta de guardado del PDF o interrupciones de sesión. El software se proporciona "tal cual" (as is), sin garantías implícitas de funcionamiento ininterrumpido.</p>
           </section>
         </div>`

@@ -90,25 +90,25 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
       const earData = ear === Ear.Right ? data.impedance!.right : data.impedance!.left;
       const freqs = [500, 1000, 2000, 4000];
       return (
-          <div className="mt-2 text-[9px] border border-slate-100 rounded">
+          <div className="mt-2 text-[9px] border border-neutral-100 rounded">
               <table className="w-full text-center border-collapse">
-                  <thead className="bg-slate-50 border-b border-slate-100 uppercase tracking-tighter text-slate-500">
+                  <thead className="bg-neutral-50 border-b border-neutral-100 uppercase tracking-tighter text-neutral-500">
                       <tr>
-                          <th className="py-0.5 px-1 border-r border-slate-100 text-left font-normal border-b">Reflejos</th>
+                          <th className="py-0.5 px-1 border-r border-neutral-100 text-left font-normal border-b">Reflejos</th>
                           {freqs.map(f => <th key={f} className="py-0.5 px-1 font-normal border-b">{f} Hz</th>)}
                       </tr>
                   </thead>
                   <tbody>
-                      <tr className="border-b border-slate-100">
-                          <td className="py-0.5 px-1 border-r border-slate-100 text-left font-bold text-slate-400">Ipsilateral</td>
+                      <tr className="border-b border-neutral-100">
+                          <td className="py-0.5 px-1 border-r border-neutral-100 text-left font-bold text-neutral-400">Ipsilateral</td>
                           {freqs.map(f => <td key={`ipsi-${f}`} className="py-0.5 px-1">{getReflexValue(earData, 'ipsi', f)}</td>)}
                       </tr>
-                      <tr className="border-b border-slate-100">
-                          <td className="py-0.5 px-1 border-r border-slate-100 text-left font-bold text-slate-400">Contralateral</td>
+                      <tr className="border-b border-neutral-100">
+                          <td className="py-0.5 px-1 border-r border-neutral-100 text-left font-bold text-neutral-400">Contralateral</td>
                           {freqs.map(f => <td key={`contra-${f}`} className="py-0.5 px-1">{getReflexValue(earData, 'contra', f)}</td>)}
                       </tr>
                       <tr>
-                          <td className="py-0.5 px-1 border-r border-slate-100 text-left font-bold text-slate-400">Decay</td>
+                          <td className="py-0.5 px-1 border-r border-neutral-100 text-left font-bold text-neutral-400">Decay</td>
                           {freqs.map(f => <td key={`decay-${f}`} className="py-0.5 px-1">{(f === 500 || f === 1000) ? getDecayValue(earData, f) : '-'}</td>)}
                       </tr>
                   </tbody>
@@ -118,7 +118,7 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white font-sans text-[11px] text-slate-900 max-w-[210mm] min-h-[297mm] mx-auto shadow-2xl print:shadow-none print:bg-transparent relative flex flex-col">
+    <div className="bg-white font-sans text-[11px] text-neutral-900 max-w-[210mm] min-h-[297mm] mx-auto shadow-2xl print:shadow-none print:bg-transparent relative flex flex-col">
         <style>{`
             @media print {
                 @page { margin: 10mm; }
@@ -137,54 +137,54 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
             <tbody>
                 <tr><td className="px-6 sm:px-10 print:px-0 align-top">
                     
-                    <header className="flex justify-between items-center border-b-2 border-slate-100 pb-2 mb-3">
+                    <header className="flex justify-between items-center border-b-2 border-neutral-100 pb-2 mb-3">
                         <div className="flex items-center"><BrandLogo isPremium={false} size="sm" /></div>
-                        <div className="text-right"><h1 className="text-sm font-black text-slate-800 uppercase tracking-widest">{t('reportPage.reportTitle')}</h1></div>
+                        <div className="text-right"><h1 className="text-sm font-black text-neutral-800 uppercase tracking-widest">{t('reportPage.reportTitle')}</h1></div>
                     </header>
 
-                    <section className="bg-white p-3 border border-slate-200 rounded-2xl mb-4 print:break-inside-avoid">
+                    <section className="bg-white p-3 border border-neutral-200 rounded-2xl mb-4 print:break-inside-avoid">
             <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-end border-b border-slate-200/50 pb-1.5">
+                <div className="flex justify-between items-end border-b border-neutral-200/50 pb-1.5">
                     <div className="flex gap-2 items-baseline">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight">{t('reportGenerator.patient.id')}:</span>
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight">{t('reportGenerator.patient.id')}:</span>
                         <span className="font-bold text-sm tracking-tight">{reportInfo.id}</span>
                     </div>
                     <div className="flex gap-2 items-baseline">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight">{t('reportGenerator.patient.age')}:</span>
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight">{t('reportGenerator.patient.age')}:</span>
                         <span className="font-bold text-sm tracking-tight">{reportInfo.edad}</span>
                     </div>
                 </div>
                 <div className="flex gap-12 items-baseline pb-0.5">
                     <div className="flex gap-2 items-baseline">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight whitespace-nowrap">{t('reportPage.lastName')}:</span>
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight whitespace-nowrap">{t('reportPage.lastName')}:</span>
                         <span className="font-bold text-sm tracking-tight">{reportInfo.apellidos}</span>
                     </div>
                     <div className="flex gap-2 items-baseline">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight whitespace-nowrap">{t('reportPage.firstName')}:</span>
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight whitespace-nowrap">{t('reportPage.firstName')}:</span>
                         <span className="font-bold text-sm tracking-tight">{reportInfo.nombre}</span>
                     </div>
                 </div>
-                <div className="mt-0.5 pt-1.5 border-t border-slate-200/50">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.reason')}</span>
-                    <p className="text-slate-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.motivo}</p>
+                <div className="mt-0.5 pt-1.5 border-t border-neutral-200/50">
+                    <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.reason')}</span>
+                    <p className="text-neutral-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.motivo}</p>
                 </div>
                 {reportInfo.antecedentes?.trim() && (
-                    <div className="mt-0.5 pt-1.5 border-t border-slate-200/50">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.antecedentes')}</span>
-                        <p className="text-slate-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.antecedentes}</p>
+                    <div className="mt-0.5 pt-1.5 border-t border-neutral-200/50">
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.antecedentes')}</span>
+                        <p className="text-neutral-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.antecedentes}</p>
                     </div>
                 )}
                 {reportInfo.exploracionFisica?.trim() && (
-                    <div className="mt-0.5 pt-1.5 border-t border-slate-200/50">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.physicalExam')}</span>
-                        <p className="text-slate-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.exploracionFisica}</p>
+                    <div className="mt-0.5 pt-1.5 border-t border-neutral-200/50">
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.clinicalHistory.physicalExam')}</span>
+                        <p className="text-neutral-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.exploracionFisica}</p>
                     </div>
                 )}
             </div>
         </section>
         <div className="flex flex-col gap-4 mb-4">
             {hasAnyImpedanceData() && (
-                <div className="border border-slate-200 rounded-2xl bg-white p-3 print:break-inside-avoid">
+                <div className="border border-neutral-200 rounded-2xl bg-white p-3 print:break-inside-avoid">
                     <div className="grid grid-cols-2 gap-6">
                         <div className="flex flex-col gap-2">
                             <div className="flex justify-center items-center">
@@ -203,7 +203,7 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
             )}
 
             {hasAnyAudiogramData() && (
-                <div className="border border-slate-200 rounded-2xl bg-white p-3 flex flex-col gap-4 print:break-inside-avoid">
+                <div className="border border-neutral-200 rounded-2xl bg-white p-3 flex flex-col gap-4 print:break-inside-avoid">
                     <div className="grid grid-cols-2 gap-6">
                         <div className="flex justify-center items-center">
                             <AudiogramChart ear={Ear.Right} data={audiogram.right} isPrintVersion={true} />
@@ -214,33 +214,33 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
                     </div>
                     
                     <div className="flex flex-col gap-1">
-                        <div className="text-[9px] border border-slate-100 rounded">
+                        <div className="text-[9px] border border-neutral-100 rounded">
                             <table className="w-full text-center border-collapse">
-                                <thead className="bg-slate-50 border-b border-slate-100 uppercase tracking-tighter text-slate-500">
+                                <thead className="bg-neutral-50 border-b border-neutral-100 uppercase tracking-tighter text-neutral-500">
                                     <tr>
-                                        <th className="py-0.5 px-2 border-r border-slate-100 text-left font-normal border-b">{t('classificationTable.parameter')}</th>
+                                        <th className="py-0.5 px-2 border-r border-neutral-100 text-left font-normal border-b">{t('classificationTable.parameter')}</th>
                                         <th className="py-0.5 px-2 text-red-600 font-bold border-b">{t('classificationTable.rightEar')}</th>
                                         <th className="py-0.5 px-2 text-blue-600 font-bold border-b">{t('classificationTable.leftEar')}</th>
                                         <th className="py-0.5 px-2 font-normal border-b">{t('classificationTable.binaural')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="border-b border-slate-100">
-                                        <td className="py-0.5 px-2 border-r border-slate-100 text-left font-bold text-slate-500">{t('classificationTable.pta')}</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.ptaOdVa} dB</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.ptaOiVa} dB</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.ptaAoVa} dB</td>
+                                    <tr className="border-b border-neutral-100">
+                                        <td className="py-0.5 px-2 border-r border-neutral-100 text-left font-bold text-neutral-500">{t('classificationTable.pta')}</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.ptaOdVa} dB</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.ptaOiVa} dB</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.ptaAoVa} dB</td>
                                     </tr>
                                     <tr>
-                                        <td className="py-0.5 px-2 border-r border-slate-100 text-left font-bold text-slate-500">{t('classificationTable.loss')}</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.pOdVaTotal || '-'} {calculatedValues.pOdVaTotal && calculatedValues.pOdVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.pOiVaTotal || '-'} {calculatedValues.pOiVaTotal && calculatedValues.pOiVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
-                                        <td className="py-0.5 px-2 font-bold text-[10px] text-slate-800">{calculatedValues.pAoVaTotal || '-'} {calculatedValues.pAoVaTotal && calculatedValues.pAoVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
+                                        <td className="py-0.5 px-2 border-r border-neutral-100 text-left font-bold text-neutral-500">{t('classificationTable.loss')}</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.pOdVaTotal || '-'} {calculatedValues.pOdVaTotal && calculatedValues.pOdVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.pOiVaTotal || '-'} {calculatedValues.pOiVaTotal && calculatedValues.pOiVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
+                                        <td className="py-0.5 px-2 font-bold text-[10px] text-neutral-800">{calculatedValues.pAoVaTotal || '-'} {calculatedValues.pAoVaTotal && calculatedValues.pAoVaTotal !== '-' && ((calculatedValues.standard as string) === 'BIAP' ? 'dB' : '%')}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div className="text-[9px] text-slate-400 italic text-center font-medium mt-1">
+                        <div className="text-[9px] text-neutral-400 italic text-center font-medium mt-1">
                             {t('classificationTable.methodologyNotice').replace('{{standard}}', String(calculatedValues.standard ?? ''))}
                         </div>
                     </div>
@@ -248,39 +248,39 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
             )}
 
             {hasAnySpeechData() && (
-                <div className="border border-slate-200 rounded-2xl bg-white p-3 flex justify-center print:break-inside-avoid">
+                <div className="border border-neutral-200 rounded-2xl bg-white p-3 flex justify-center print:break-inside-avoid">
                     <SpeechAudiometryChart data={data.speechAudiometry!} isPrintVersion={true} />
                 </div>
             )}
         </div>
 
-        <section className="bg-white p-3 border border-slate-200 rounded-2xl mb-4 print:break-inside-avoid">
+        <section className="bg-white p-3 border border-neutral-200 rounded-2xl mb-4 print:break-inside-avoid">
             <div className="flex flex-col gap-2">
                 <div>
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight block mb-0.5">{t('reportPage.diagnosticImpression')}</span>
-                    <p className="text-slate-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.juicioClinico}</p>
+                    <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight block mb-0.5">{t('reportPage.diagnosticImpression')}</span>
+                    <p className="text-neutral-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.juicioClinico}</p>
                 </div>
                 {reportInfo.plan?.trim() && (
-                    <div className="mt-0.5 pt-1.5 border-t border-slate-200/50">
-                        <span className="text-[9px] font-black text-slate-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.diagnosis.plan')}</span>
-                        <p className="text-slate-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.plan}</p>
+                    <div className="mt-0.5 pt-1.5 border-t border-neutral-200/50">
+                        <span className="text-[9px] font-black text-neutral-400 uppercase tracking-tight block mb-0.5">{t('reportGenerator.diagnosis.plan')}</span>
+                        <p className="text-neutral-700 leading-tight whitespace-pre-wrap line-clamp-2">{reportInfo.plan}</p>
                     </div>
                 )}
             </div>
         </section>
 
         <section className="flex justify-between items-start mt-4 mb-4 print:break-inside-avoid">
-            <div className="text-[10px] text-slate-600 font-bold tracking-tight mt-2"><p>{fullSignatureLine}</p></div>
+            <div className="text-[10px] text-neutral-600 font-bold tracking-tight mt-2"><p>{fullSignatureLine}</p></div>
             <div className="w-56 text-center">
                 <div className="flex flex-col items-center">
                     <div className="w-full h-[50px] flex items-end justify-center mb-2">
                         {/* Placeholder for real signature */}
                     </div>
-                    <div className="w-full h-px bg-slate-200 mb-1"></div>
-                    <p className="text-[8px] text-slate-300 font-black uppercase tracking-[0.2em] mb-2">{t('reportPage.signatureLabel')}</p>
-                    <p className="font-bold text-sm text-slate-800">{reportInfo.facultativo}</p>
-                    {reportInfo.profesion && <p className="text-[11px] text-slate-600 font-medium leading-tight">{reportInfo.profesion}</p>}
-                    {reportInfo.matricula && <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter mt-1">{reportInfo.matricula}</p>}
+                    <div className="w-full h-px bg-neutral-200 mb-1"></div>
+                    <p className="text-[8px] text-neutral-300 font-black uppercase tracking-[0.2em] mb-2">{t('reportPage.signatureLabel')}</p>
+                    <p className="font-bold text-sm text-neutral-800">{reportInfo.facultativo}</p>
+                    {reportInfo.profesion && <p className="text-[11px] text-neutral-600 font-medium leading-tight">{reportInfo.profesion}</p>}
+                    {reportInfo.matricula && <p className="text-[9px] text-neutral-400 font-bold uppercase tracking-tighter mt-1">{reportInfo.matricula}</p>}
                 </div>
             </div>
         </section>
@@ -296,10 +296,10 @@ const Report: React.FC<{ data: FullReportData }> = ({ data }) => {
         </table>
 
         {/* Legal footer fixed for print to repeat on each page at the very bottom */}
-        <div className="mt-auto px-6 sm:px-10 print:px-10 print:fixed print:bottom-0 print:left-0 print:w-full print:bg-white grid grid-cols-3 items-center bg-white z-50 border-t border-slate-100 uppercase tracking-widest text-slate-400 font-bold mb-2 print:mb-0">
+        <div className="mt-auto px-6 sm:px-10 print:px-10 print:fixed print:bottom-0 print:left-0 print:w-full print:bg-white grid grid-cols-3 items-center bg-white z-50 border-t border-neutral-100 uppercase tracking-widest text-neutral-400 font-bold mb-2 print:mb-0">
             <div className="flex flex-col items-start pt-2 pb-2">
                 {/* <span className="text-[7px] mb-1">{t('footer.supportedBy')}</span>
-                <div className="h-6 w-16 bg-slate-100 rounded border border-slate-200 flex items-center justify-center text-[6px] transition-all duration-300 hover:shadow-md cursor-pointer">[LOGO]</div> */}
+                <div className="h-6 w-16 bg-neutral-100 rounded border border-neutral-200 flex items-center justify-center text-[6px] transition-all duration-300 hover:shadow-md cursor-pointer">[LOGO]</div> */}
             </div>
             <div className="pt-2 pb-2 text-center">
                 {reportInfo.footerText && (

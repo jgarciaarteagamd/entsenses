@@ -210,15 +210,15 @@ const CustomTooltipContent: React.FC<any> = ({ active, payload, label, t, ear })
     const effectiveAir = hasData(airMasked) ? airMasked : air; 
     const gap = (hasData(effectiveAir) && hasData(effectiveBone)) ? effectiveAir - effectiveBone : null;
     return (
-      <div className="bg-white/80 backdrop-blur-sm p-3 shadow-lg rounded-md border border-slate-200">
-        <p className="font-bold text-slate-700">{`${payload[0]?.payload?.freq} Hz`}</p>
+      <div className="bg-white/80 backdrop-blur-sm p-3 shadow-lg rounded-md border border-neutral-200">
+        <p className="font-bold text-neutral-700">{`${payload[0]?.payload?.freq} Hz`}</p>
         <ul className="mt-1 space-y-1">
-          {hasData(air) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.air')}: ${formatVal(air, isNrAir)}`}</li>)}
-          {hasData(airMasked) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.airMasked')}: ${formatVal(airMasked, isNrAirMasked)}`}</li>)}
-          {hasData(bone) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.bone')}: ${formatVal(bone, isNrBone)}`}</li>)}
-          {hasData(boneMasked) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.boneMasked')}: ${formatVal(boneMasked, isNrBoneMasked)}`}</li>)}
-          {hasData(ucl) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.ucl')}: ${formatVal(ucl, isNrUcl)}`}</li>)}
-          {hasData(algiacusia) && (<li className="text-sm font-medium text-slate-600">{`${t('audiogramCharts.tooltip.algiacusia')}: ${formatVal(algiacusia, isNrAlgiacusia)}`}</li>)}
+          {hasData(air) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.air')}: ${formatVal(air, isNrAir)}`}</li>)}
+          {hasData(airMasked) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.airMasked')}: ${formatVal(airMasked, isNrAirMasked)}`}</li>)}
+          {hasData(bone) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.bone')}: ${formatVal(bone, isNrBone)}`}</li>)}
+          {hasData(boneMasked) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.boneMasked')}: ${formatVal(boneMasked, isNrBoneMasked)}`}</li>)}
+          {hasData(ucl) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.ucl')}: ${formatVal(ucl, isNrUcl)}`}</li>)}
+          {hasData(algiacusia) && (<li className="text-sm font-medium text-neutral-600">{`${t('audiogramCharts.tooltip.algiacusia')}: ${formatVal(algiacusia, isNrAlgiacusia)}`}</li>)}
           {gap !== null && gap > 0 && (<li className="text-sm" style={gap >= 15 ? { color: '#d97706', fontWeight: 'bold' } : { color: '#475569', fontWeight: 'bold' }}>{`${t('audiogramCharts.tooltip.gap')}: ${gap} dB`}</li>)}
         </ul>
       </div>

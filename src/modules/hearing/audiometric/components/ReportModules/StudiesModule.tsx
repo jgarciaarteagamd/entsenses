@@ -52,21 +52,21 @@ const StudiesModule: React.FC<StudiesModuleProps> = ({
     return (
         <div className="space-y-6 animate-fadeIn">
             <div className="flex justify-center mb-6">
-                <div className="flex flex-col md:flex-row bg-slate-50 p-1.5 rounded-2xl border border-slate-100 w-full md:w-fit gap-1 md:gap-0">
+                <div className="flex flex-col md:flex-row bg-neutral-50 p-1.5 rounded-2xl border border-neutral-100 w-full md:w-fit gap-1 md:gap-0">
                     <button
-                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'impedance' ? 'bg-white text-primary shadow-md border border-slate-100' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 md:hover:bg-transparent'}`}
+                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'impedance' ? 'bg-white text-primary shadow-md border border-neutral-100' : 'text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 md:hover:bg-transparent'}`}
                         onClick={() => setActiveTab('impedance')}
                     >
                         {t('studies.tympanometry.title')}
                     </button>
                     <button
-                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'audiometry' ? 'bg-white text-primary shadow-md border border-slate-100' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 md:hover:bg-transparent'}`}
+                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'audiometry' ? 'bg-white text-primary shadow-md border border-neutral-100' : 'text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 md:hover:bg-transparent'}`}
                         onClick={() => setActiveTab('audiometry')}
                     >
                         {t('studies.audiometryTitle')}
                     </button>
                     <button
-                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'speech' ? 'bg-white text-primary shadow-md border border-slate-100' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 md:hover:bg-transparent'}`}
+                        className={`w-full md:w-auto px-4 md:px-6 xl:px-8 py-2.5 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'speech' ? 'bg-white text-primary shadow-md border border-neutral-100' : 'text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 md:hover:bg-transparent'}`}
                         onClick={() => setActiveTab('speech')}
                     >
                         {t('studies.speechTitle')}
@@ -93,14 +93,14 @@ const StudiesModule: React.FC<StudiesModuleProps> = ({
                         />
                     </div>
                     
-                    <div className="mt-8 mb-4 border-t border-slate-200 pt-8 pb-2">
+                    <div className="mt-8 mb-4 border-t border-neutral-200 pt-8 pb-2">
                         <div className="flex justify-center mb-6">
-                            <div className="bg-slate-50 p-1.5 rounded-2xl border border-slate-100 flex overflow-x-auto w-full max-w-2xl px-1">
+                            <div className="bg-neutral-50 p-1.5 rounded-2xl border border-neutral-100 flex overflow-x-auto w-full max-w-2xl px-1">
                                 {Object.values(CalculationStandard).map((std) => (
                                     <button 
                                         key={std} 
                                         onClick={() => onCalculationStandardChange(std)} 
-                                        className={`flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all ${calculationStandard === std ? 'bg-white text-primary shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'}`}
+                                        className={`flex-1 min-w-[80px] px-4 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all ${calculationStandard === std ? 'bg-white text-primary shadow-sm border border-neutral-200' : 'text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100'}`}
                                     >
                                         {std}
                                     </button>
@@ -110,7 +110,7 @@ const StudiesModule: React.FC<StudiesModuleProps> = ({
                         <CalculatedValuesPanel data={calculatedValues} hideGrade={true} />
                     </div>
                     
-                    <div className="border-t border-slate-200 mt-8 pt-6">
+                    <div className="border-t border-neutral-200 mt-8 pt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="aspect-[4/3] sm:aspect-auto sm:h-[360px] border border-red-200 rounded-xl overflow-hidden shadow-sm bg-white">
                                 <AudiogramChart ear={Ear.Right} data={audiogramData.right} />
@@ -132,7 +132,7 @@ const StudiesModule: React.FC<StudiesModuleProps> = ({
                         <SpeechInputPanel ear={Ear.Right} data={speechData.right} onChange={onSpeechDataChange} />
                         <SpeechInputPanel ear={Ear.Left} data={speechData.left} onChange={onSpeechDataChange} />
                     </div>
-                    <div className="border-t border-slate-200 mt-8 pt-6">
+                    <div className="border-t border-neutral-200 mt-8 pt-6">
                         <SpeechAudiometryChart data={speechData} />
                     </div>
                 </>
@@ -160,7 +160,7 @@ const StudiesModule: React.FC<StudiesModuleProps> = ({
                             onDecayChange={onImpedanceDecayChange}
                         />
                     </div>
-                    <div className="border-t border-slate-200 mt-8 pt-6">
+                    <div className="border-t border-neutral-200 mt-8 pt-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="aspect-[4/3] sm:aspect-auto sm:h-[400px] border border-red-200 rounded-xl overflow-hidden shadow-sm bg-white">
                                 <ImpedanceChart ear={Ear.Right} data={impedanceData.right.tymp} />

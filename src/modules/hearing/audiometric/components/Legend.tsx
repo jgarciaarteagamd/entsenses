@@ -43,7 +43,7 @@ const LegendItem: React.FC<{ symbol: React.ReactNode; label: string; }> = ({ sym
     <div className="w-8 h-8 flex items-center justify-center">
       {symbol}
     </div>
-    <span className="text-xs text-slate-600 leading-tight flex-1">{label}</span>
+    <span className="text-xs text-neutral-600 leading-tight flex-1">{label}</span>
   </div>
 );
 
@@ -51,8 +51,8 @@ const Legend: React.FC<{ isMinimal?: boolean }> = ({ isMinimal = false }) => {
   const { t } = useTranslations();
   
   return (
-    <div className="p-3 bg-slate-100/50 rounded-lg border border-slate-200">
-      <h4 className="font-bold text-center mb-2 text-slate-700 text-sm italic uppercase tracking-wider">{t('legend.title')}</h4>
+    <div className="p-3 bg-neutral-100/50 rounded-lg border border-neutral-200">
+      <h4 className="font-bold text-center mb-2 text-neutral-700 text-sm italic uppercase tracking-wider">{t('legend.title')}</h4>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <LegendItem symbol={<LegendIcon type="circle" color={COLORS.right} ear="right" />} label={t('legend.rightAir')} />
         <LegendItem symbol={<LegendIcon type="cross" color={COLORS.left} ear="left" />} label={t('legend.leftAir')} />

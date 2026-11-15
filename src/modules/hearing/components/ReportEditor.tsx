@@ -140,7 +140,7 @@ export function ReportEditor({
 
   if (preview) {
     return (
-      <div className="min-h-screen bg-slate-100 py-6 print:bg-white print:py-0">
+      <div className="min-h-screen bg-neutral-100 py-6 print:bg-white print:py-0">
         <div className="no-print mx-auto mb-4 flex max-w-[210mm] px-4">
           <Button variant="outline" size="sm" onClick={() => setPreview(false)}>
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -182,7 +182,7 @@ export function ReportEditor({
         </p>
       )}
 
-      <div className="rounded-xl border bg-white p-4 text-slate-900 md:p-6">
+      <div className="rounded-xl border bg-white p-4 text-neutral-900 md:p-6">
         {tab === "patient" && (
           <>
             <p className="mb-4 flex gap-2 rounded border border-emerald-200 bg-emerald-50 p-3 text-xs leading-5 text-emerald-900">

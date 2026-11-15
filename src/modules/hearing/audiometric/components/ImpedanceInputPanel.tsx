@@ -18,7 +18,7 @@ const InputWithSuffix: React.FC<{
     suffix: string;
     step?: string;
 }> = ({ value, onChange, suffix, step }) => (
-    <div className="relative flex items-center w-full h-9 bg-white border border-slate-200 rounded-md overflow-hidden transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+    <div className="relative flex items-center w-full h-9 bg-white border border-neutral-200 rounded-md overflow-hidden transition-colors focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
         <input 
             type="number"
             className="w-full h-full px-3 text-sm text-left bg-transparent outline-none"
@@ -27,7 +27,7 @@ const InputWithSuffix: React.FC<{
             step={step}
             placeholder="-"
         />
-        <span className="px-3 text-xs font-medium text-slate-400 select-none bg-slate-50 flex items-center justify-center border-l border-slate-100 min-w-fit h-full">
+        <span className="px-3 text-xs font-medium text-neutral-400 select-none bg-neutral-50 flex items-center justify-center border-l border-neutral-100 min-w-fit h-full">
             {suffix}
         </span>
     </div>
@@ -52,7 +52,7 @@ const ImpedanceInputPanel: React.FC<ImpedanceInputPanelProps> = ({ ear, data, on
     const renderReflexRow = (type: 'ipsi' | 'contra', title: string) => {
         return (
             <div className="grid grid-cols-[45px_1fr_1fr_1fr_1fr] sm:grid-cols-[80px_1fr_1fr_1fr_1fr] gap-1 sm:gap-2 items-start mt-3">
-                <div className="text-[10px] sm:text-sm font-bold text-slate-700 pt-2 break-words">{title}</div>
+                <div className="text-[10px] sm:text-sm font-bold text-neutral-700 pt-2 break-words">{title}</div>
                 {freqs.map(freq => {
                     const absentMap = data.reflex.absent?.[type] || {};
                     const presentMap = data.reflex.present?.[type] || {};
@@ -63,10 +63,10 @@ const ImpedanceInputPanel: React.FC<ImpedanceInputPanelProps> = ({ ear, data, on
 
                     return (
                         <div key={`${type}-${freq}`} className="flex flex-col gap-1 items-center">
-                            <div className={`relative flex w-full items-stretch h-8 overflow-hidden border rounded transition-colors ${isAbsent ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-300 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary'}`}>
+                            <div className={`relative flex w-full items-stretch h-8 overflow-hidden border rounded transition-colors ${isAbsent ? 'bg-neutral-50 border-neutral-200' : 'bg-white border-neutral-300 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary'}`}>
                                 <input 
                                     type="number" 
-                                    className={`w-full min-w-0 pr-5 sm:pr-6 pl-1 text-center text-[10px] sm:text-xs outline-none bg-transparent ${isAbsent ? 'text-slate-400' : 'text-slate-900'}`}
+                                    className={`w-full min-w-0 pr-5 sm:pr-6 pl-1 text-center text-[10px] sm:text-xs outline-none bg-transparent ${isAbsent ? 'text-neutral-400' : 'text-neutral-900'}`}
                                     value={data.reflex[type][freq] || ''} 
                                     onChange={e => {
                                         const val = e.target.value;
@@ -81,10 +81,10 @@ const ImpedanceInputPanel: React.FC<ImpedanceInputPanelProps> = ({ ear, data, on
                                     disabled={isAbsent}
                                     placeholder="-"
                                 />
-                                <div className="absolute top-0 right-0 h-full flex flex-col w-5 sm:w-6 shrink-0 bg-slate-50 border-l border-slate-200">
+                                <div className="absolute top-0 right-0 h-full flex flex-col w-5 sm:w-6 shrink-0 bg-neutral-50 border-l border-neutral-200">
                                     <button
                                         type="button"
-                                        className={`w-full flex-1 flex items-center justify-center text-[8px] sm:text-[9px] font-bold border-b border-slate-200 transition-colors ${isPresent ? 'bg-green-100 text-green-700 shadow-inner' : 'bg-transparent text-slate-400 hover:bg-slate-100'}`}
+                                        className={`w-full flex-1 flex items-center justify-center text-[8px] sm:text-[9px] font-bold border-b border-neutral-200 transition-colors ${isPresent ? 'bg-green-100 text-green-700 shadow-inner' : 'bg-transparent text-neutral-400 hover:bg-neutral-100'}`}
                                         onClick={() => {
                                             if (hasValue) return; // Cannot disable P if there's a value
                                             const newState = !presentMap[freq];
@@ -99,7 +99,7 @@ const ImpedanceInputPanel: React.FC<ImpedanceInputPanelProps> = ({ ear, data, on
                                     </button>
                                     <button
                                         type="button"
-                                        className={`w-full flex-1 flex items-center justify-center text-[8px] sm:text-[9px] font-bold transition-colors ${isAbsent ? 'bg-orange-100 text-orange-600 shadow-inner' : 'bg-transparent text-slate-400 hover:bg-slate-100'}`}
+                                        className={`w-full flex-1 flex items-center justify-center text-[8px] sm:text-[9px] font-bold transition-colors ${isAbsent ? 'bg-orange-100 text-orange-600 shadow-inner' : 'bg-transparent text-neutral-400 hover:bg-neutral-100'}`}
                                         onClick={() => {
                                             const newState = !isAbsent;
                                             onReflexAbsentChange(ear, type, freq, newState);
@@ -143,39 +143,39 @@ const ImpedanceInputPanel: React.FC<ImpedanceInputPanelProps> = ({ ear, data, on
 
              <div className="p-4 sm:p-6 flex flex-col gap-6">
                  {/* Timpanometría */}
-                 <div className="flex flex-col p-4 bg-slate-50/50 border border-slate-100 rounded-lg">
-                    <span className="text-sm font-bold text-slate-700 mb-4 border-b border-slate-200 pb-2">{t('studies.tympanometry.title')}</span>
+                 <div className="flex flex-col p-4 bg-neutral-50/50 border border-neutral-100 rounded-lg">
+                    <span className="text-sm font-bold text-neutral-700 mb-4 border-b border-neutral-200 pb-2">{t('studies.tympanometry.title')}</span>
                     <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-bold text-slate-500">{t('studies.tympanometry.pressure')}</label>
+                            <label className="text-xs font-bold text-neutral-500">{t('studies.tympanometry.pressure')}</label>
                             <InputWithSuffix value={data.tymp.pom} onChange={e => handleTympChange('pom', e)} step="0.01" suffix="daPa" />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-bold text-slate-500">{t('studies.tympanometry.compliance')}</label>
+                            <label className="text-xs font-bold text-neutral-500">{t('studies.tympanometry.compliance')}</label>
                             <InputWithSuffix value={data.tymp.cac} onChange={e => handleTympChange('cac', e)} step="0.01" suffix="mL" />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-bold text-slate-500">{t('studies.tympanometry.volume')}</label>
+                            <label className="text-xs font-bold text-neutral-500">{t('studies.tympanometry.volume')}</label>
                             <InputWithSuffix value={data.tymp.veq} onChange={e => handleTympChange('veq', e)} step="0.01" suffix="mL" />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-xs font-bold text-slate-500">{t('studies.tympanometry.gradient')}</label>
+                            <label className="text-xs font-bold text-neutral-500">{t('studies.tympanometry.gradient')}</label>
                             <InputWithSuffix value={data.tymp.gradient} onChange={e => handleTympChange('gradient', e)} step="0.01" suffix="daPa" />
                         </div>
                     </div>
                  </div>
 
                  {/* Reflejos Estapediales */}
-                 <div className="flex flex-col p-2 sm:p-4 bg-slate-50/50 border border-slate-100 rounded-lg">
-                    <span className="text-sm font-bold text-slate-700 mb-4 border-b border-slate-200 pb-2">{t('studies.reflexes.title')}</span>
+                 <div className="flex flex-col p-2 sm:p-4 bg-neutral-50/50 border border-neutral-100 rounded-lg">
+                    <span className="text-sm font-bold text-neutral-700 mb-4 border-b border-neutral-200 pb-2">{t('studies.reflexes.title')}</span>
                     <div className="flex flex-col">
                         {/* Headers */}
                         <div className="grid grid-cols-[45px_1fr_1fr_1fr_1fr] sm:grid-cols-[80px_1fr_1fr_1fr_1fr] gap-1 sm:gap-2 mb-2">
                             <div></div>
-                            {freqs.map(f => <div key={f} className="text-[10px] sm:text-xs font-bold text-center text-slate-500">{f} Hz</div>)}
+                            {freqs.map(f => <div key={f} className="text-[10px] sm:text-xs font-bold text-center text-neutral-500">{f} Hz</div>)}
                         </div>
                         {renderReflexRow('ipsi', t('studies.reflexes.ipsi'))}
-                        <div className="h-px bg-slate-100 my-3"></div>
+                        <div className="h-px bg-neutral-100 my-3"></div>
                         {renderReflexRow('contra', t('studies.reflexes.contra'))}
                     </div>
                  </div>

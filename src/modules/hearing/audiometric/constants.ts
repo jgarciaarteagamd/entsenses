@@ -5,8 +5,8 @@ export const BONE_FREQUENCIES = [250, 500, 750, 1000, 1500, 2000, 3000, 4000, 60
 export const COLORS = {
   right: '#dc2626', // red-600
   left: '#2563eb',  // blue-600
-  text: '#334155',  // slate-700
-  grid: '#e2e8f0',  // slate-200
+  text: '#334155',  // neutral-700
+  grid: '#e2e8f0',  // neutral-200
 };
 
 export const INITIAL_HEARING_DATA = AIR_FREQUENCIES.reduce((acc, freq) => ({ ...acc, [freq]: null }), {});

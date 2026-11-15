@@ -173,7 +173,7 @@ const SpeechAudiometryChart: React.FC<SpeechAudiometryChartProps> = ({ data, isP
   const CustomTooltip = ({ active, payload, label }: any) => {
       if (active && payload && payload.length) {
           return (
-              <div className="bg-white/90 p-2 border border-slate-200 rounded shadow text-sm">
+              <div className="bg-white/90 p-2 border border-neutral-200 rounded shadow text-sm">
                   <p className="font-bold mb-1">{label} dB HL</p>
                   {payload.map((entry: any, index: number) => {
                       if (entry.name === 'normality') return null; // Skip normality tooltip
@@ -307,7 +307,7 @@ const SpeechAudiometryChart: React.FC<SpeechAudiometryChartProps> = ({ data, isP
   }
 
   return (
-    <div className={`w-full h-[400px] bg-white relative rounded-lg border border-slate-200 p-2`}>
+    <div className={`w-full h-[400px] bg-white relative rounded-lg border border-neutral-200 p-2`}>
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart margin={chartMargin}>
             {ChartElements}
