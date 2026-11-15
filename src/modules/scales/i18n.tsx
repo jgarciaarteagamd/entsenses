@@ -26,6 +26,7 @@ export const SCALES_DICT: Dict = {
   "pack.rhinology": { es: "Rinología", en: "Rhinology" },
   "pack.larynx": { es: "Laringe y deglución", en: "Larynx and swallowing" },
   "pack.otology": { es: "Otología", en: "Otology" },
+  "pack.sleep": { es: "Sueño y orofaringe", en: "Sleep and oropharynx" },
 
   // Form
   "form.title.new": { es: "Valoración de rinología", en: "Rhinology assessment" },
@@ -383,6 +384,58 @@ export const SCALES_DICT: Dict = {
   "follow.subtitle.otology": { es: "Valoraciones de otología con la etiqueta «{0}».", en: "Otology assessments with the label “{0}”." },
   "follow.chart.facial": { es: "Nervio facial", en: "Facial nerve" },
   "follow.chart.hearing": { es: "Audición (Ménière)", en: "Hearing (Menière)" },
+
+  // Sleep pack
+  "sleep.title.new": { es: "Valoración de sueño y orofaringe", en: "Sleep and oropharynx assessment" },
+  "sleep.title.edit": { es: "Editar valoración de sueño y orofaringe", en: "Edit sleep and oropharynx assessment" },
+  "scale.exam": { es: "Exploración: Brodsky · posición lingual · Friedman", en: "Examination: Brodsky · tongue position · Friedman" },
+  "scale.exam.desc": {
+    es: "Tamaño amigdalar (Brodsky), posición lingual de Friedman (boca abierta, lengua en reposo, sin fonar) e IMC. El estadio de Friedman modificado se calcula con los tres.",
+    en: "Tonsil size (Brodsky), Friedman tongue position (mouth open, tongue at rest, no phonation) and BMI. The modified Friedman stage is computed from all three.",
+  },
+  "exam.brodsky": { es: "Tamaño amigdalar (Brodsky)", en: "Tonsil size (Brodsky)" },
+  "exam.ftp": { es: "Posición lingual de Friedman (Mallampati modificado)", en: "Friedman tongue position (modified Mallampati)" },
+  "exam.weight": { es: "Peso (kg)", en: "Weight (kg)" },
+  "exam.height": { es: "Talla (cm)", en: "Height (cm)" },
+  "exam.bmi": { es: "IMC", en: "BMI" },
+  "exam.craniofacial": { es: "Deformidad esquelética (micrognatia, hipoplasia mediofacial)", en: "Skeletal deformity (micrognathia, midface hypoplasia)" },
+  "exam.friedman": { es: "Estadio de Friedman", en: "Friedman stage" },
+  "exam.friedman.missing": {
+    es: "Para el estadio de Friedman faltan la posición lingual, el IMC o la pregunta de deformidad esquelética.",
+    en: "The Friedman stage needs the tongue position, the BMI and the skeletal deformity question.",
+  },
+  "scale.adenoid": { es: "Adenoides (Parikh)", en: "Adenoids (Parikh)" },
+  "scale.adenoid.desc": { es: "Endoscopia flexible: estructuras que contacta el tejido adenoideo, grados 1–4.", en: "Flexible endoscopy: structures the adenoid tissue contacts, grades 1–4." },
+  "scale.vote": { es: "Endoscopia del sueño inducido (VOTE)", en: "Drug-induced sleep endoscopy (VOTE)" },
+  "scale.vote.desc": {
+    es: "Grado de obstrucción (0–2 o X) y configuración en velo, orofaringe, base de lengua y epiglotis.",
+    en: "Degree of obstruction (0–2 or X) and configuration at the velum, oropharynx, tongue base and epiglottis.",
+  },
+  "vote.level": { es: "Nivel", en: "Level" },
+  "vote.degree": { es: "Grado", en: "Degree" },
+  "vote.config": { es: "Configuración", en: "Configuration" },
+  "vote.obstructed": { es: "{0} de 4 niveles con obstrucción", en: "{0} of 4 levels obstructed" },
+  "scale.study": { es: "Estudio de sueño", en: "Sleep study" },
+  "scale.study.desc": {
+    es: "Resultado de la polisomnografía o poligrafía. Gravedad en adultos por el IAH (AASM): < 5 normal, 5–14,9 leve, 15–29,9 moderada, ≥ 30 grave.",
+    en: "Polysomnography or home sleep apnoea test result. Adult severity by AHI (AASM): < 5 normal, 5–14.9 mild, 15–29.9 moderate, ≥ 30 severe.",
+  },
+  "study.type": { es: "Tipo de estudio", en: "Study type" },
+  "study.type.psg": { es: "Polisomnografía", en: "Polysomnography" },
+  "study.type.hsat": { es: "Poligrafía", en: "Home sleep apnoea test" },
+  "study.ahi": { es: "IAH (eventos/h)", en: "AHI (events/h)" },
+  "study.odi": { es: "IDO (eventos/h)", en: "ODI (events/h)" },
+  "study.nadir": { es: "SpO2 mínima (%)", en: "Lowest SpO2 (%)" },
+  "study.ct90": { es: "CT90 (% del tiempo con SpO2 < 90 %)", en: "CT90 (% of time with SpO2 < 90%)" },
+  "study.severity.normal": { es: "Normal", en: "Normal" },
+  "study.severity.mild": { es: "Leve", en: "Mild" },
+  "study.severity.moderate": { es: "Moderada", en: "Moderate" },
+  "study.severity.severe": { es: "Grave", en: "Severe" },
+  "study.adults": { es: "Los puntos de corte del IAH son para adultos.", en: "AHI cut-offs are for adults." },
+  "report.title.sleep": { es: "Informe de escalas de sueño y orofaringe", en: "Sleep and oropharynx scales report" },
+  "follow.subtitle.sleep": { es: "Valoraciones de sueño y orofaringe con la etiqueta «{0}».", en: "Sleep and oropharynx assessments with the label “{0}”." },
+  "follow.chart.ahi": { es: "IAH (eventos/h)", en: "AHI (events/h)" },
+  "follow.chart.exam": { es: "Exploración", en: "Examination" },
 };
 
 export const useLang = createModuleLang(SCALES_DICT);

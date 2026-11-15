@@ -80,6 +80,7 @@ export function AssessmentPage<P extends Pack>({
     // Clears ?id= when the page was editing an existing assessment.
     if (pack === "larynx") void navigate({ to: "/scales/laringe", search: {} });
     else if (pack === "otology") void navigate({ to: "/scales/otologia", search: {} });
+    else if (pack === "sleep") void navigate({ to: "/scales/sueno", search: {} });
     else void navigate({ to: "/scales/rinologia", search: {} });
   }
 

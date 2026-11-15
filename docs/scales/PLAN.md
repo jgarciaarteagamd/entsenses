@@ -8,8 +8,9 @@
 > Este documento es un plan de trabajo. Las definiciones de cada escala deben comprobarse contra
 > la publicación original antes de activarla (columna «Verificada» del catálogo).
 
-> **Estado (noviembre 2026):** fases 1 (núcleo + **Rinología**), 2 (**Laringe y deglución**) y 3
-> (**Otología**) hechas. Siguiente: fase 4 (Sueño y orofaringe).
+> **Estado (noviembre 2026):** fases 1 (núcleo + **Rinología**), 2 (**Laringe y deglución**), 3
+> (**Otología**) y 4 (**Sueño y orofaringe**) hechas. Siguiente: fase 5 (dibujos, exportación y escalas
+> pendientes de verificar).
 
 ---
 
@@ -43,7 +44,7 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 | `doctor_id` | Médico propietario (RLS: cada médico solo ve, crea, edita y borra lo suyo) |
 | `assessed_on` | Fecha de la exploración (puede ser anterior a hoy, para registrar una basal) |
 | `label` | Etiqueta del paciente (≤60 caracteres) |
-| `pack`, `pack_version` | Paquete (`rhinology`, `larynx`, `otology`) y versión de sus definiciones (`rhinology-1`, `larynx-1`, `otology-1`) |
+| `pack`, `pack_version` | Paquete (`rhinology`, `larynx`, `otology`, `sleep`) y versión de sus definiciones (`rhinology-1`, `larynx-1`, `otology-1`, `sleep-1`) |
 | `scales` | Lo que el médico marcó, por escala (jsonb, <20 kB) |
 | `summary` | Puntuaciones y categorías calculadas, para listar y dibujar la evolución sin recalcular (jsonb, <10 kB) |
 
@@ -59,6 +60,7 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 | `/scales/rinologia` | Nueva valoración (o edición con `?id=`): escalas activables, cálculo en vivo, SNOT-22 desde Quest |
 | `/scales/laringe` | Ídem para laringe y deglución, con el análisis de Voice de la misma etiqueta |
 | `/scales/otologia` | Ídem para otología, con los umbrales de la audiometría de Hearing de la misma etiqueta |
+| `/scales/sueno` | Ídem para sueño y orofaringe (exploración, adenoides, VOTE, estudio de sueño) |
 | `/scales/evolucion?label=&pack=` | Evolución de un paciente por paquete: gráficas (NPS, Lund-Kennedy, Lund-Mackay, SNOT-22 · RFS, AVQI, Reinke, PAS, FOIS, Murray) y tabla |
 | `/scales/informe/$id` | Informe A4 imprimible con las escalas y sus referencias |
 | Bandeja → pestaña Scales | Lista de valoraciones con sus puntuaciones principales |
@@ -159,9 +161,31 @@ Leyenda: ✅ hecha · ⏳ prevista · 🔍 hay que comprobar la definición en l
 - 🔍 **Tos:** las definiciones de los grados 3 y 4 (erosión limitada / importante de la pared externa del ático)
   proceden de la descripción habitual; el resumen del original no las detalla.
 
-### 3.4 Sueño y orofaringe (fase 4)
+### 3.4 Sueño y orofaringe (fase 4, hecha)
 
-Brodsky (amígdalas 0–4), Friedman (estadiaje), VOTE (endoscopia del sueño inducido).
+| Escala | Qué mide | Rango | Referencia | Estado |
+|---|---|---|---|---|
+| **Brodsky** | Tamaño amigdalar: % del espacio entre los pilares anteriores | 0–4 | Brodsky L. *Pediatr Clin North Am* 1989;36:1551-69. [10.1016/s0031-3955(16)36806-7](https://doi.org/10.1016/s0031-3955(16)36806-7) | ✅ |
+| **Posición lingual de Friedman** | Mallampati modificado (boca abierta, lengua en reposo) | I, IIa, IIb, III, IV | Friedman M, et al. *Laryngoscope* 1999;109:1901-7. [10.1097/00005537-199912000-00002](https://doi.org/10.1097/00005537-199912000-00002) | ✅ |
+| **Estadio de Friedman modificado** | Posición lingual + amígdalas + IMC (+ deformidad esquelética) | I–IV | Friedman M, et al. *Otolaryngol Head Neck Surg* 2002;127:13-21. [10.1067/mhn.2002.126477](https://doi.org/10.1067/mhn.2002.126477) · *Laryngoscope* 2004;114:454-9. [10.1097/00005537-200403000-00013](https://doi.org/10.1097/00005537-200403000-00013) | ✅ |
+| **Adenoides (Parikh)** | Estructura que contacta el tejido adenoideo | 1–4 | Parikh SR, et al. *Otolaryngol Head Neck Surg* 2006;135:684-7. [10.1016/j.otohns.2006.05.003](https://doi.org/10.1016/j.otohns.2006.05.003) | ✅ 🔍 |
+| **VOTE** | Endoscopia del sueño inducido: grado (0, 1, 2, X) y configuración por nivel | — | Kezirian EJ, et al. *Eur Arch Otorhinolaryngol* 2011;268:1233-6. [10.1007/s00405-011-1633-8](https://doi.org/10.1007/s00405-011-1633-8) | ✅ |
+| **IAH (AASM)** | Gravedad en adultos | < 5 · 5–14,9 · 15–29,9 · ≥ 30 | *Sleep* 1999;22:667-89 (PMID 10450601) | ✅ 🔍 |
+
+**Decisiones de la fase 4:**
+
+- **Friedman modificado:** I = posición lingual I–II y amígdalas 3–4; II = I–II con amígdalas 0–2, o III–IV con
+  amígdalas 3–4; III = III–IV con amígdalas 0–2 (todos con IMC < 40); IV = IMC > 40 o deformidad esquelética
+  (micrognatia, hipoplasia mediofacial). IIa y IIb cuentan como II. En la versión de 2002 el IMC > 40 iba al
+  estadio III; se usa la versión modificada, con estadio IV.
+- **IMC** a partir de peso y talla (no se guarda nada que identifique al paciente).
+- **VOTE:** configuraciones posibles por nivel: velo (anteroposterior, lateral, concéntrica), orofaringe
+  (lateral), base de lengua (anteroposterior), epiglotis (anteroposterior, lateral). La notación compacta es
+  del tipo «V2c O1l T2ap E0».
+- 🔍 **Parikh:** el resumen del artículo no detalla los grados; se usan las definiciones habituales (sin
+  contacto · torus tubárico · vómer · paladar blando en reposo).
+- 🔍 **IAH:** los límites exactos 15 y 30 siguen la convención habitual (15 = moderada, 30 = grave). Los
+  puntos de corte son de adultos; no se aplican a niños.
 
 ### 3.5 Cabeza y cuello (pendiente de licencia)
 
@@ -175,11 +199,11 @@ que consultar las condiciones de uso.
 | **1** | Tabla y RLS, registro del módulo, pestaña de bandeja, paquete de Rinología, evolución, informe | Hecha |
 | **2** | Laringe y deglución (RFS, Reinke, NBI, Myer-Cotton, FEES) + enlace con Voice | Hecha |
 | **3** | Otología (House-Brackmann, Sunnybrook, Sadé/Tos, EAONO/JOS, Ménière desde Hearing, Koos) | Hecha |
-| **4** | Sueño y orofaringe | Siguiente |
-| **5** | Dibujos esquemáticos por grado, exportación CSV para investigación | — |
+| **4** | Sueño y orofaringe (Brodsky, Friedman, Parikh, VOTE, IAH) | Hecha |
+| **5** | Dibujos esquemáticos por grado, exportación CSV para investigación, escalas 🔍 pendientes | Siguiente |
 
 ## 5. Pruebas
 
-- `tests/scales.rhinology.test.ts`, `tests/scales.larynx.test.ts` y `tests/scales.otology.test.ts`: cada escala con casos límite
+- `tests/scales.rhinology.test.ts`, `tests/scales.larynx.test.ts`, `tests/scales.otology.test.ts` y `tests/scales.sleep.test.ts`: cada escala con casos límite
   (mínimos, máximos, umbrales exactos de los criterios).
 - `tests/scales.rls.test.ts`: sin acceso anónimo; cada médico solo lo suyo; límites de tamaño.

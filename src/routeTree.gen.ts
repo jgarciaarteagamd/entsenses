@@ -35,6 +35,7 @@ import { Route as AuthenticatedScalesEvolucionRouteImport } from './routes/_auth
 import { Route as AuthenticatedScalesLaringeRouteImport } from './routes/_authenticated/scales.laringe'
 import { Route as AuthenticatedScalesOtologiaRouteImport } from './routes/_authenticated/scales.otologia'
 import { Route as AuthenticatedScalesRinologiaRouteImport } from './routes/_authenticated/scales.rinologia'
+import { Route as AuthenticatedScalesSuenoRouteImport } from './routes/_authenticated/scales.sueno'
 import { Route as AuthenticatedVoiceEvaluarRouteImport } from './routes/_authenticated/voice.evaluar'
 import { Route as PDoctorIdHearingRouteImport } from './routes/p.$doctorId.hearing'
 import { Route as PDoctorIdVoiceRouteImport } from './routes/p.$doctorId.voice'
@@ -186,6 +187,12 @@ const AuthenticatedScalesRinologiaRoute =
     path: '/scales/rinologia',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedScalesSuenoRoute =
+  AuthenticatedScalesSuenoRouteImport.update({
+    id: '/scales/sueno',
+    path: '/scales/sueno',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedVoiceEvaluarRoute =
   AuthenticatedVoiceEvaluarRouteImport.update({
     id: '/voice/evaluar',
@@ -262,6 +269,7 @@ export interface FileRoutesByFullPath {
   '/scales/laringe': typeof AuthenticatedScalesLaringeRoute
   '/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
+  '/scales/sueno': typeof AuthenticatedScalesSuenoRoute
   '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
   '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
@@ -296,6 +304,7 @@ export interface FileRoutesByTo {
   '/scales/laringe': typeof AuthenticatedScalesLaringeRoute
   '/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
+  '/scales/sueno': typeof AuthenticatedScalesSuenoRoute
   '/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
   '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
@@ -334,6 +343,7 @@ export interface FileRoutesById {
   '/_authenticated/scales/laringe': typeof AuthenticatedScalesLaringeRoute
   '/_authenticated/scales/otologia': typeof AuthenticatedScalesOtologiaRoute
   '/_authenticated/scales/rinologia': typeof AuthenticatedScalesRinologiaRoute
+  '/_authenticated/scales/sueno': typeof AuthenticatedScalesSuenoRoute
   '/_authenticated/voice/evaluar': typeof AuthenticatedVoiceEvaluarRoute
   '/p/$doctorId/hearing': typeof PDoctorIdHearingRoute
   '/p/$doctorId/voice': typeof PDoctorIdVoiceRoute
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/scales/laringe'
     | '/scales/otologia'
     | '/scales/rinologia'
+    | '/scales/sueno'
     | '/voice/evaluar'
     | '/p/$doctorId/hearing'
     | '/p/$doctorId/voice'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/scales/laringe'
     | '/scales/otologia'
     | '/scales/rinologia'
+    | '/scales/sueno'
     | '/voice/evaluar'
     | '/p/$doctorId/hearing'
     | '/p/$doctorId/voice'
@@ -443,6 +455,7 @@ export interface FileRouteTypes {
     | '/_authenticated/scales/laringe'
     | '/_authenticated/scales/otologia'
     | '/_authenticated/scales/rinologia'
+    | '/_authenticated/scales/sueno'
     | '/_authenticated/voice/evaluar'
     | '/p/$doctorId/hearing'
     | '/p/$doctorId/voice'
@@ -654,6 +667,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedScalesRinologiaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/scales/sueno': {
+      id: '/_authenticated/scales/sueno'
+      path: '/scales/sueno'
+      fullPath: '/scales/sueno'
+      preLoaderRoute: typeof AuthenticatedScalesSuenoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/voice/evaluar': {
       id: '/_authenticated/voice/evaluar'
       path: '/voice/evaluar'
@@ -767,6 +787,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedScalesLaringeRoute: typeof AuthenticatedScalesLaringeRoute
   AuthenticatedScalesOtologiaRoute: typeof AuthenticatedScalesOtologiaRoute
   AuthenticatedScalesRinologiaRoute: typeof AuthenticatedScalesRinologiaRoute
+  AuthenticatedScalesSuenoRoute: typeof AuthenticatedScalesSuenoRoute
   AuthenticatedVoiceEvaluarRoute: typeof AuthenticatedVoiceEvaluarRoute
   AuthenticatedScalesIndexRoute: typeof AuthenticatedScalesIndexRoute
   AuthenticatedHearingInformeIdRoute: typeof AuthenticatedHearingInformeIdRoute
@@ -788,6 +809,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedScalesLaringeRoute: AuthenticatedScalesLaringeRoute,
   AuthenticatedScalesOtologiaRoute: AuthenticatedScalesOtologiaRoute,
   AuthenticatedScalesRinologiaRoute: AuthenticatedScalesRinologiaRoute,
+  AuthenticatedScalesSuenoRoute: AuthenticatedScalesSuenoRoute,
   AuthenticatedVoiceEvaluarRoute: AuthenticatedVoiceEvaluarRoute,
   AuthenticatedScalesIndexRoute: AuthenticatedScalesIndexRoute,
   AuthenticatedHearingInformeIdRoute: AuthenticatedHearingInformeIdRoute,

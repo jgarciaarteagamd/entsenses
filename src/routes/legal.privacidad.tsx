@@ -71,7 +71,8 @@ function PrivacyES() {
           <strong>Registros e informes del profesional:</strong> cuestionarios rellenados en consulta, valoración
           perceptual de la voz, informes audiométricos (audiograma, impedanciometría, logoaudiometría, edad,
           antecedentes, exploración, juicio clínico y plan), escalas clínicas de Scales (grados marcados, puntuaciones,
-          datos analíticos que exigen los criterios, como eosinófilos o IgE, paquetes-año, fecha de la exploración y, si el
+          datos analíticos que exigen los criterios, como eosinófilos o IgE, paquetes-año, peso y talla para el IMC,
+          resultados del estudio de sueño, fecha de la exploración y, si el
           profesional lo adjunta, el resumen de un análisis de Voice o los umbrales de una audiometría de Hearing con la
           misma etiqueta) y la <strong>etiqueta</strong> seudonimizada que el
           profesional elige. <strong>Nombre, apellidos, documento y fecha de nacimiento no se guardan</strong>: se
@@ -215,7 +216,8 @@ function PrivacyEN() {
           <strong>Professional’s records and reports:</strong> questionnaires completed in clinic, perceptual voice
           ratings, audiometric reports (audiogram, impedance, speech audiometry, age, history, examination, clinical
           impression and plan), Scales clinical scales (grades chosen, scores, laboratory values required by the
-          criteria such as eosinophils or IgE, pack-years, examination date and, if the professional attaches it, the summary
+          criteria such as eosinophils or IgE, pack-years, weight and height for the BMI, sleep study results, examination
+          date and, if the professional attaches it, the summary
           of a Voice analysis or the thresholds of a Hearing audiogram with the same label) and the pseudonymised <strong>label</strong> chosen by the professional.{" "}
           <strong>Name, surname, ID and date of birth are never stored</strong>: they are typed only to print a report
           and are cleared when the page reloads.

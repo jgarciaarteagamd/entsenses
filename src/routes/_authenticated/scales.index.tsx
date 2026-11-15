@@ -57,6 +57,12 @@ function ScalesHome() {
                 {t("pack.otology")}
               </Link>
             </Button>
+            <Button asChild>
+              <Link to="/scales/sueno">
+                <Plus className="mr-1 h-4 w-4" />
+                {t("pack.sleep")}
+              </Link>
+            </Button>
           </div>
         </div>
 

@@ -50,8 +50,8 @@ function TermsES() {
         <li>
           <strong>ENT Senses Scales:</strong> registro y cálculo de escalas clínicas que puntúa el propio profesional
           (por ejemplo, puntuaciones endoscópicas y tomográficas de la rinosinusitis crónica, criterios de consenso
-          publicados, hallazgos laríngeos, escalas de la deglución, del nervio facial y estadiajes otológicos), con
-          seguimiento por paciente.
+          publicados, hallazgos laríngeos, escalas de la deglución, del nervio facial, estadiajes otológicos y
+          valoración de la vía aérea en el sueño), con seguimiento por paciente.
         </li>
       </ul>
       <p>Podrán añadirse otros módulos. El uso de la Aplicación implica la aceptación plena de los presentes Términos.</p>
@@ -229,7 +229,7 @@ function TermsEN() {
         <li>
           <strong>ENT Senses Scales:</strong> recording and scoring of clinician-rated scales (for example, endoscopic and
           CT scores of chronic rhinosinusitis, published consensus criteria, laryngeal findings, swallowing and facial
-          nerve scales and otological staging), with per-patient follow-up.
+          nerve scales, otological staging and sleep airway assessment), with per-patient follow-up.
         </li>
       </ul>
       <p>Other modules may be added. Using the App implies full acceptance of these Terms.</p>

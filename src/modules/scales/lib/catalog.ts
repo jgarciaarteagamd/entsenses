@@ -61,9 +61,12 @@ export const CATALOG: CatalogArea[] = [
   {
     id: "sleep",
     name: { es: "Sueño y orofaringe", en: "Sleep and oropharynx" },
+    route: "/scales/sueno",
     scales: [
-      { name: "Brodsky", desc: { es: "Hipertrofia amigdalar, 0–4", en: "Tonsil hypertrophy, 0–4" } },
-      { name: "Friedman · VOTE", desc: { es: "Estadiaje y endoscopia del sueño", en: "Staging and drug-induced sleep endoscopy" } },
+      { name: "Brodsky · Friedman", desc: { es: "Amígdalas, posición lingual y estadio de Friedman", en: "Tonsils, tongue position and Friedman stage" } },
+      { name: "Parikh", desc: { es: "Hipertrofia adenoidea endoscópica, 1–4", en: "Endoscopic adenoid hypertrophy, 1–4" } },
+      { name: "VOTE", desc: { es: "Endoscopia del sueño inducido", en: "Drug-induced sleep endoscopy" } },
+      { name: "IAH (AASM)", desc: { es: "Gravedad de la apnea en el estudio de sueño", en: "Apnoea severity on the sleep study" } },
     ],
   },
 ];

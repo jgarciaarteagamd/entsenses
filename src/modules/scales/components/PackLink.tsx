@@ -14,6 +14,12 @@ export const PackLink = forwardRef<HTMLAnchorElement, Props>(function PackLink({
         {children}
       </Link>
     );
+  if (pack === "sleep")
+    return (
+      <Link ref={ref} to="/scales/sueno" search={search} {...rest}>
+        {children}
+      </Link>
+    );
   if (pack === "otology")
     return (
       <Link ref={ref} to="/scales/otologia" search={search} {...rest}>

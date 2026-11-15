@@ -4,14 +4,16 @@ import { supabase } from "@/lib/supabase";
 import { RHINOLOGY_VERSION, summarizeRhinology, type RhinologyScales, type RhinologySummary } from "./rhinology";
 import { LARYNX_VERSION, summarizeLarynx, type LarynxScales, type LarynxSummary } from "./larynx";
 import { OTOLOGY_VERSION, summarizeOtology, type OtologyScales, type OtologySummary } from "./otology";
+import { SLEEP_VERSION, summarizeSleep, type SleepScales, type SleepSummary } from "./sleep";
 
-export const PACKS = ["rhinology", "larynx", "otology"] as const;
+export const PACKS = ["rhinology", "larynx", "otology", "sleep"] as const;
 export type Pack = (typeof PACKS)[number];
 
 interface PackTypes {
   rhinology: { scales: RhinologyScales; summary: RhinologySummary };
   larynx: { scales: LarynxScales; summary: LarynxSummary };
   otology: { scales: OtologyScales; summary: OtologySummary };
+  sleep: { scales: SleepScales; summary: SleepSummary };
 }
 
 /** Version of the definitions and scoring function of each pack (stored with every row). */
@@ -19,6 +21,7 @@ const PACK_DEFS: { [P in Pack]: { version: string; summarize: (s: PackTypes[P]["
   rhinology: { version: RHINOLOGY_VERSION, summarize: summarizeRhinology },
   larynx: { version: LARYNX_VERSION, summarize: summarizeLarynx },
   otology: { version: OTOLOGY_VERSION, summarize: summarizeOtology },
+  sleep: { version: SLEEP_VERSION, summarize: summarizeSleep },
 };
 
 interface RowBase {

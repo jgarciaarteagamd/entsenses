@@ -8,6 +8,7 @@ import { getAssessment } from "@/modules/scales/lib/assessments";
 import { RhinologyReport } from "@/modules/scales/components/RhinologyReport";
 import { LarynxReport } from "@/modules/scales/components/LarynxReport";
 import { OtologyReport } from "@/modules/scales/components/OtologyReport";
+import { SleepReport } from "@/modules/scales/components/SleepReport";
 import { formatDay } from "@/modules/scales/components/ScalesInbox";
 
 export const Route = createFileRoute("/_authenticated/scales/informe/$id")({
@@ -43,7 +44,7 @@ function ReportPage() {
           <>
             <header className="border-b pb-4">
               <p className="text-xs uppercase tracking-wide text-neutral-500">ENT Senses Scales</p>
-              <h1 className="text-2xl font-bold">{t(r.pack === "larynx" ? "report.title.larynx" : r.pack === "otology" ? "report.title.otology" : "report.title")}</h1>
+              <h1 className="text-2xl font-bold">{t(r.pack === "rhinology" ? "report.title" : `report.title.${r.pack}`)}</h1>
               <p className="mt-1 text-sm text-neutral-600">
                 {t("report.date")}: {formatDay(r.assessed_on, lang)}
                 {r.label && (
@@ -54,7 +55,15 @@ function ReportPage() {
                 )}
               </p>
             </header>
-            {r.pack === "larynx" ? <LarynxReport row={r} /> : r.pack === "otology" ? <OtologyReport row={r} /> : <RhinologyReport row={r} />}
+            {r.pack === "larynx" ? (
+              <LarynxReport row={r} />
+            ) : r.pack === "otology" ? (
+              <OtologyReport row={r} />
+            ) : r.pack === "sleep" ? (
+              <SleepReport row={r} />
+            ) : (
+              <RhinologyReport row={r} />
+            )}
           </>
         )}
       </main>

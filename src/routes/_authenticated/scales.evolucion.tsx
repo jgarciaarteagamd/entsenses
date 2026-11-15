@@ -360,6 +360,89 @@ function OtologyFollowup({ rows }: { rows: RowOf<"otology">[] }) {
   );
 }
 
+function SleepFollowup({ rows }: { rows: RowOf<"sleep">[] }) {
+  const { lang, t } = useLang();
+  const points = useMemo(
+    () =>
+      pointsFrom(
+        rows.map((r) => ({
+          day: r.assessed_on,
+          values: { ahi: r.summary.study?.ahi, odi: r.summary.study?.odi, nadir: r.summary.study?.nadirSpo2, brodsky: r.summary.exam?.brodsky, friedman: r.summary.exam?.friedman },
+        })),
+      ),
+    [rows],
+  );
+  const n = (x: number | null | undefined) => (x == null ? "—" : x.toLocaleString(lang === "en" ? "en-GB" : "es-ES", { maximumFractionDigits: 1 }));
+  const maxAhi = Math.max(60, ...points.map((p) => Math.max(Number(p.ahi ?? 0), Number(p.odi ?? 0))));
+  const top = Math.ceil(maxAhi / 10) * 10;
+  return (
+    <>
+      <TimeChart
+        title={t("follow.chart.ahi")}
+        points={points}
+        domain={[0, top]}
+        ticks={[0, 5, 15, 30, ...(top > 30 ? [top] : [])]}
+        series={[
+          { key: "ahi", name: t("study.ahi") },
+          { key: "odi", name: t("study.odi") },
+        ]}
+      />
+      <TimeChart title={t("study.nadir")} height="h-56" points={points} domain={[50, 100]} ticks={[50, 60, 70, 80, 90, 100]} series={[{ key: "nadir", name: t("study.nadir") }]} />
+      <TimeChart
+        title={t("follow.chart.exam")}
+        height="h-56"
+        points={points}
+        domain={[0, 4]}
+        ticks={[0, 1, 2, 3, 4]}
+        series={[
+          { key: "brodsky", name: "Brodsky (0–4)" },
+          { key: "friedman", name: "Friedman (I–IV)" },
+        ]}
+      />
+      {rows.length > 0 && (
+        <Card>
+          <CardHeader className="pb-0">
+            <CardTitle className="text-base">{t("follow.table")}</CardTitle>
+          </CardHeader>
+          <CardContent className="overflow-x-auto pt-4">
+            <table className="w-full min-w-[680px] text-sm">
+              <thead>
+                <tr className="border-b text-left text-xs text-muted-foreground">
+                  <th className="py-1.5 pr-2 font-medium">{t("follow.date")}</th>
+                  <th className={th}>Brodsky</th>
+                  <th className={th}>FTP</th>
+                  <th className={th}>Friedman</th>
+                  <th className={th}>VOTE</th>
+                  <th className={th}>IAH</th>
+                  <th className={th}>SpO2</th>
+                  <th className="py-1.5 pl-2" />
+                </tr>
+              </thead>
+              <tbody>
+                {[...rows].reverse().map((r) => {
+                  const s = r.summary;
+                  return (
+                    <tr key={r.id} className="border-b last:border-b-0">
+                      <td className="whitespace-nowrap py-2 pr-2">{formatDay(r.assessed_on, lang)}</td>
+                      <td className={td}>{s.exam?.brodsky ?? "—"}</td>
+                      <td className={td}>{s.exam?.ftp ?? "—"}</td>
+                      <td className={td}>{s.exam?.friedman ? roman(s.exam.friedman) : "—"}</td>
+                      <td className="px-2 py-2 text-xs tabular-nums">{s.vote?.notation ?? "—"}</td>
+                      <td className="px-2 py-2 text-xs tabular-nums">{s.study ? `${n(s.study.ahi)} · ${t(`study.severity.${s.study.severity}`)}` : "—"}</td>
+                      <td className={td}>{n(s.study?.nadirSpo2)}</td>
+                      <RowActions id={r.id} pack="sleep" />
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      )}
+    </>
+  );
+}
+
 function FollowupPage() {
   const { t } = useLang();
   const navigate = useNavigate();
@@ -375,7 +458,8 @@ function FollowupPage() {
   const rhino = useMemo(() => (clean ? byLabel(all, clean, "rhinology") : []), [all, clean]);
   const larynx = useMemo(() => (clean ? byLabel(all, clean, "larynx") : []), [all, clean]);
   const otology = useMemo(() => (clean ? byLabel(all, clean, "otology") : []), [all, clean]);
-  const counts: Record<Pack, number> = { rhinology: rhino.length, larynx: larynx.length, otology: otology.length };
+  const sleep = useMemo(() => (clean ? byLabel(all, clean, "sleep") : []), [all, clean]);
+  const counts: Record<Pack, number> = { rhinology: rhino.length, larynx: larynx.length, otology: otology.length, sleep: sleep.length };
   const count = counts[pack];
 
   return (
@@ -422,7 +506,7 @@ function FollowupPage() {
                 <h1 className="text-2xl font-bold">
                   {t("follow.title")} · {clean}
                 </h1>
-                <p className="text-sm text-muted-foreground">{t(pack === "larynx" ? "follow.subtitle.larynx" : pack === "otology" ? "follow.subtitle.otology" : "follow.subtitle", clean)}</p>
+                <p className="text-sm text-muted-foreground">{t(pack === "rhinology" ? "follow.subtitle" : `follow.subtitle.${pack}`, clean)}</p>
               </div>
               <Button asChild>
                 <PackLink pack={pack} label={clean}>
@@ -450,6 +534,8 @@ function FollowupPage() {
               <LarynxFollowup rows={larynx} />
             ) : pack === "otology" ? (
               <OtologyFollowup rows={otology} />
+            ) : pack === "sleep" ? (
+              <SleepFollowup rows={sleep} />
             ) : (
               <RhinologyFollowup rows={rhino} label={clean} />
             )}

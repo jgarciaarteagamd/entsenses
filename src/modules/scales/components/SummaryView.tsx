@@ -3,6 +3,7 @@ import { useLang } from "@/modules/scales/i18n";
 import type { RhinologySummary, SidedScore } from "@/modules/scales/lib/rhinology";
 import type { LarynxSummary } from "@/modules/scales/lib/larynx";
 import { roman, type OtologySummary } from "@/modules/scales/lib/otology";
+import type { SleepSummary } from "@/modules/scales/lib/sleep";
 import type { ScaleAssessmentRow } from "@/modules/scales/lib/assessments";
 import { cn } from "@/lib/utils";
 
@@ -168,6 +169,34 @@ export function useOtologyTiles(s: OtologySummary): Tile[] {
   return tiles;
 }
 
+export function useSleepTiles(s: SleepSummary): Tile[] {
+  const { lang, t } = useLang();
+  const inc = t("form.incomplete");
+  const n = (v: number) => v.toLocaleString(lang === "en" ? "en-GB" : "es-ES", { maximumFractionDigits: 1 });
+  const tiles: Tile[] = [];
+  if ("exam" in s) {
+    const e = s.exam;
+    tiles.push({ key: "brodsky", label: "Brodsky", value: e?.brodsky != null ? String(e.brodsky) : inc, detail: e?.ftp ? `FTP ${e.ftp}` : undefined });
+    if (e?.friedman) tiles.push({ key: "friedman", label: "Friedman", value: `${t("oto.stage")} ${roman(e.friedman)}`, detail: e.bmi != null ? `${t("exam.bmi")} ${n(e.bmi)}` : undefined });
+  }
+  if ("adenoid" in s) tiles.push({ key: "adenoid", label: "Parikh", value: s.adenoid == null ? inc : `${s.adenoid}/4` });
+  if ("vote" in s) {
+    const v = s.vote;
+    tiles.push({ key: "vote", label: "VOTE", value: v ? v.notation : inc, detail: v ? t("vote.obstructed", v.obstructed) : undefined });
+  }
+  if ("study" in s) {
+    const st = s.study;
+    tiles.push({
+      key: "study",
+      label: t("study.ahi"),
+      value: st ? n(st.ahi) : inc,
+      detail: st ? [t(`study.severity.${st.severity}`), st.nadirSpo2 != null ? `SpO2 ${n(st.nadirSpo2)} %` : null].filter(Boolean).join(" · ") : undefined,
+      tone: st ? (st.severity === "normal" ? "good" : st.severity === "severe" ? "bad" : "mid") : undefined,
+    });
+  }
+  return tiles;
+}
+
 export function TileGrid({ tiles, compact = false }: { tiles: Tile[]; compact?: boolean }) {
   if (!tiles.length) return null;
   return (
@@ -201,5 +230,10 @@ export function OtologySummaryView({ summary, compact = false }: { summary: Otol
 export function AssessmentSummary({ row, compact = false }: { row: ScaleAssessmentRow; compact?: boolean }) {
   if (row.pack === "larynx") return <LarynxSummaryView summary={row.summary} compact={compact} />;
   if (row.pack === "otology") return <OtologySummaryView summary={row.summary} compact={compact} />;
+  if (row.pack === "sleep") return <SleepSummaryView summary={row.summary} compact={compact} />;
   return <RhinologySummaryView summary={row.summary} compact={compact} />;
+}
+
+export function SleepSummaryView({ summary, compact = false }: { summary: SleepSummary; compact?: boolean }) {
+  return <TileGrid tiles={useSleepTiles(summary)} compact={compact} />;
 }
