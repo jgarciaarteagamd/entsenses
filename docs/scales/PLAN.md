@@ -8,8 +8,8 @@
 > Este documento es un plan de trabajo. Las definiciones de cada escala deben comprobarse contra
 > la publicación original antes de activarla (columna «Verificada» del catálogo).
 
-> **Estado (noviembre 2026):** fase 1 (núcleo del módulo + **paquete de Rinología**) hecha. Siguiente:
-> fase 2 (Laringe y deglución).
+> **Estado (noviembre 2026):** fases 1 (núcleo + **Rinología**) y 2 (**Laringe y deglución**) hechas.
+> Siguiente: fase 3 (Otología).
 
 ---
 
@@ -43,7 +43,7 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 | `doctor_id` | Médico propietario (RLS: cada médico solo ve, crea, edita y borra lo suyo) |
 | `assessed_on` | Fecha de la exploración (puede ser anterior a hoy, para registrar una basal) |
 | `label` | Etiqueta del paciente (≤60 caracteres) |
-| `pack`, `pack_version` | Paquete (`rhinology`) y versión de sus definiciones (`rhinology-1`) |
+| `pack`, `pack_version` | Paquete (`rhinology`, `larynx`) y versión de sus definiciones (`rhinology-1`, `larynx-1`) |
 | `scales` | Lo que el médico marcó, por escala (jsonb, <20 kB) |
 | `summary` | Puntuaciones y categorías calculadas, para listar y dibujar la evolución sin recalcular (jsonb, <10 kB) |
 
@@ -57,7 +57,8 @@ sobre un biológico quedan juntos, con la misma fecha y etiqueta.
 |---|---|
 | `/scales` | Catálogo por áreas (activas y previstas), últimas valoraciones, buscar por etiqueta |
 | `/scales/rinologia` | Nueva valoración (o edición con `?id=`): escalas activables, cálculo en vivo, SNOT-22 desde Quest |
-| `/scales/evolucion?label=` | Evolución de un paciente: gráfica (NPS, Lund-Kennedy modificada, Lund-Mackay, SNOT-22) y tabla |
+| `/scales/laringe` | Ídem para laringe y deglución, con el análisis de Voice de la misma etiqueta |
+| `/scales/evolucion?label=&pack=` | Evolución de un paciente por paquete: gráficas (NPS, Lund-Kennedy, Lund-Mackay, SNOT-22 · RFS, AVQI, Reinke, PAS, FOIS, Murray) y tabla |
 | `/scales/informe/$id` | Informe A4 imprimible con las escalas y sus referencias |
 | Bandeja → pestaña Scales | Lista de valoraciones con sus puntuaciones principales |
 
@@ -96,22 +97,35 @@ Leyenda: ✅ hecha · ⏳ prevista · 🔍 hay que comprobar la definición en l
   paciente las tiene; la menor necesidad de cirugía cuenta como menor necesidad de corticoides
   (ambas son tratamiento de rescate).
 
-### 3.2 Laringe y deglución (fase 2)
+### 3.2 Laringe y deglución (fase 2, hecha)
 
-| Escala | Qué mide | Referencia | Estado |
-|---|---|---|---|
-| **Reflux Finding Score (RFS)** | 8 hallazgos laríngeos, 0–26 (>7 sugiere reflujo laringofaríngeo) | Belafsky PC, et al. *Laryngoscope* 2001 🔍 | ⏳ |
-| **Edema de Reinke (Yonekawa)** | Tipos I–III según extensión del edema | Yonekawa H, 1988 🔍 (definiciones exactas pendientes) | ⏳ |
-| Leucoplasia laríngea (Ni, NBI) | Tipos I–V del patrón vascular | Ni XG, et al. 2011 🔍 | ⏳ |
-| Patrón vascular (ELS 2016) | Longitudinal / perpendicular | Arens C, et al. 2016 🔍 | ⏳ |
-| Myer-Cotton | Estenosis subglótica, grados I–IV por % de obstrucción | Myer CM, et al. 1994 🔍 | ⏳ |
-| Penetration-Aspiration Scale | FEES/VFSS, 1–8 | Rosenbek JC, et al. 1996 🔍 | ⏳ |
-| Yale Pharyngeal Residue | Vallécula y senos piriformes, 1–5 | Neubauer PD, et al. 2015 🔍 | ⏳ |
-| FOIS | Ingesta oral funcional, 1–7 | Crary MA, et al. 2005 🔍 | ⏳ |
-| Murray (secreciones) | 0–3 | Murray J, et al. 1996 🔍 | ⏳ |
+| Escala | Qué mide | Rango | Referencia | Estado |
+|---|---|---|---|---|
+| **Reflux Finding Score (RFS)** | 8 hallazgos laríngeos | 0–26; en el original, >7 se asoció a reflujo laringofaríngeo (95 % de certeza) | Belafsky PC, et al. *Laryngoscope* 2001;111:1313-7. [10.1097/00005537-200108000-00001](https://doi.org/10.1097/00005537-200108000-00001) | ✅ |
+| **Edema de Reinke (Tan)** | Grado por cuerda según la luz glótica ocupada; grado 4 en una cuerda = la otra no se gradúa | 1–4 | Tan M, et al. *Laryngoscope* 2017;127:2310-3. [10.1002/lary.26647](https://doi.org/10.1002/lary.26647) | ✅ |
+| **NBI: Ni 2011** | Tipo de asas capilares intraepiteliales | I, II, III, IV, Va, Vb, Vc | Ni XG, et al. *J Laryngol Otol* 2011;125:288-96. [10.1017/S0022215110002033](https://doi.org/10.1017/S0022215110002033) | ✅ (descriptiva) |
+| **NBI: ELS 2016** | Cambios vasculares | Sin cambios · longitudinales · perpendiculares | Arens C, et al. *Eur Arch Otorhinolaryngol* 2016;273:1207-14. [10.1007/s00405-015-3851-y](https://doi.org/10.1007/s00405-015-3851-y) | ✅ (descriptiva) |
+| **Myer-Cotton** | % de obstrucción subglótica | I ≤50 % · II 51–70 % · III >70 % con luz · IV sin luz | Myer CM, et al. *Ann Otol Rhinol Laryngol* 1994;103:319-23. [10.1177/000348949410300410](https://doi.org/10.1177/000348949410300410) | ✅ |
+| **Murray (secreciones)** | Secreciones en la FEES antes de dar alimento | 0–3 | Murray J, et al. *Dysphagia* 1996;11:99-103. [10.1007/BF00417898](https://doi.org/10.1007/BF00417898) | ✅ |
+| **Penetration-Aspiration Scale** | Por consistencia (IDDSI 0, 2–3, 4, 7); se guarda la peor | 1–8 (penetración 2–5, aspiración 6–8) | Rosenbek JC, et al. *Dysphagia* 1996;11:93-8. [10.1007/BF00417897](https://doi.org/10.1007/BF00417897) | ✅ |
+| **Yale (residuo faríngeo)** | Vallécula y senos piriformes, por consistencia | 1–5 | Neubauer PD, et al. *Dysphagia* 2015;30:521-8. [10.1007/s00455-015-9631-4](https://doi.org/10.1007/s00455-015-9631-4) | ✅ |
+| **FOIS** | Ingesta oral funcional | 1–7 | Crary MA, et al. *Arch Phys Med Rehabil* 2005;86:1516-20. [10.1016/j.apmr.2004.11.049](https://doi.org/10.1016/j.apmr.2004.11.049) | ✅ |
+| Yonekawa (Reinke) | Tipos I–III | — | Yonekawa H. *Auris Nasus Larynx* 1988;15:57-78. [10.1016/s0385-8146(88)80010-5](https://doi.org/10.1016/s0385-8146(88)80010-5) | 🔍 no incluida |
 
-Con **Voice**: el registro de Reinke mostrará al lado el último análisis acústico de la misma etiqueta
-(F0, AVQI, CPPS) para comparar antes y después de la cirugía, y los paquetes-año.
+**Decisiones de la fase 2:**
+
+- **Reinke: Tan en lugar de Yonekawa.** Las definiciones de los tipos de Yonekawa no figuran en el resumen
+  del original y las fuentes que la citan la describen de forma distinta (unas por extensión a lo largo de la
+  cuerda, otras por morfología). Tan et al. tienen definiciones cuantitativas y fiabilidad publicada. Si se
+  consigue el texto original de Yonekawa, puede añadirse como segunda clasificación.
+- **Ni y ELS son descriptivas:** se guarda la categoría elegida, sin etiqueta de benignidad/malignidad. El tipo
+  IV de Ni se acompaña de una advertencia: en una serie de 674 lesiones incluyó un 36 % de displasias
+  (Staníková L, et al. *Front Oncol* 2024;14:1222827, [10.3389/fonc.2024.1222827](https://doi.org/10.3389/fonc.2024.1222827)).
+  🔍 La redacción del tipo Va procede de revisiones que reproducen la clasificación; conviene cotejarla con el original.
+- **Voice:** la sección «Voz» adjunta un resumen (fecha, AVQI, CPPS, F0, TMF y G de GRBAS, del clínico si lo
+  valoró o estimado si no) del análisis de Voice elegido con la misma etiqueta. Se guarda una copia del
+  resumen, así que la valoración no cambia si después se borra el análisis en Voice.
+- **Paquetes-año** en la sección de Reinke, como dato de contexto.
 
 ### 3.3 Otología y base de cráneo (fase 3)
 
@@ -140,13 +154,13 @@ que consultar las condiciones de uso.
 | Fase | Contenido | Estado |
 |---|---|---|
 | **1** | Tabla y RLS, registro del módulo, pestaña de bandeja, paquete de Rinología, evolución, informe | Hecha |
-| **2** | Laringe y deglución (RFS, Reinke, leucoplasia, FEES) + enlace con Voice | Siguiente |
-| **3** | Otología (House-Brackmann, Sunnybrook, Ménière desde Hearing…) | — |
+| **2** | Laringe y deglución (RFS, Reinke, NBI, Myer-Cotton, FEES) + enlace con Voice | Hecha |
+| **3** | Otología (House-Brackmann, Sunnybrook, Ménière desde Hearing…) | Siguiente |
 | **4** | Sueño y orofaringe | — |
 | **5** | Dibujos esquemáticos por grado, exportación CSV para investigación | — |
 
 ## 5. Pruebas
 
-- `tests/scales.rhinology.test.ts`: cada escala con casos límite (mínimos, máximos, umbrales
-  exactos de los criterios).
+- `tests/scales.rhinology.test.ts` y `tests/scales.larynx.test.ts`: cada escala con casos límite
+  (mínimos, máximos, umbrales exactos de los criterios).
 - `tests/scales.rls.test.ts`: sin acceso anónimo; cada médico solo lo suyo; límites de tamaño.

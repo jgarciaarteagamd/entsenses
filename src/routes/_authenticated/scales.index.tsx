@@ -38,12 +38,20 @@ function ScalesHome() {
             <h1 className="text-2xl font-bold">{t("scales.title")}</h1>
             <p className="max-w-2xl text-sm text-muted-foreground">{t("scales.subtitle")}</p>
           </div>
-          <Button asChild>
-            <Link to="/scales/rinologia">
-              <Plus className="mr-1 h-4 w-4" />
-              {t("scales.new")}
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button asChild>
+              <Link to="/scales/rinologia">
+                <Plus className="mr-1 h-4 w-4" />
+                {t("pack.rhinology")}
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link to="/scales/laringe">
+                <Plus className="mr-1 h-4 w-4" />
+                {t("pack.larynx")}
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <section className="grid gap-4 sm:grid-cols-2">

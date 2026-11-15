@@ -2,10 +2,23 @@
 // and writes only their own rows; there is no anonymous access).
 import { supabase } from "@/lib/supabase";
 import { RHINOLOGY_VERSION, summarizeRhinology, type RhinologyScales, type RhinologySummary } from "./rhinology";
+import { LARYNX_VERSION, summarizeLarynx, type LarynxScales, type LarynxSummary } from "./larynx";
 
-export type Pack = "rhinology";
+export const PACKS = ["rhinology", "larynx"] as const;
+export type Pack = (typeof PACKS)[number];
 
-export interface ScaleAssessmentRow {
+interface PackTypes {
+  rhinology: { scales: RhinologyScales; summary: RhinologySummary };
+  larynx: { scales: LarynxScales; summary: LarynxSummary };
+}
+
+/** Version of the definitions and scoring function of each pack (stored with every row). */
+const PACK_DEFS: { [P in Pack]: { version: string; summarize: (s: PackTypes[P]["scales"]) => PackTypes[P]["summary"] } } = {
+  rhinology: { version: RHINOLOGY_VERSION, summarize: summarizeRhinology },
+  larynx: { version: LARYNX_VERSION, summarize: summarizeLarynx },
+};
+
+interface RowBase {
   id: string;
   doctor_id: string;
   created_at: string;
@@ -13,16 +26,16 @@ export interface ScaleAssessmentRow {
   /** YYYY-MM-DD */
   assessed_on: string;
   label: string | null;
-  pack: Pack;
   pack_version: string;
-  scales: RhinologyScales;
-  summary: RhinologySummary;
 }
 
-export interface AssessmentInput {
+export type RowOf<P extends Pack> = RowBase & { pack: P } & PackTypes[P];
+export type ScaleAssessmentRow = { [P in Pack]: RowOf<P> }[Pack];
+
+export interface AssessmentInput<S = RhinologyScales> {
   assessedOn: string;
   label: string | null;
-  scales: RhinologyScales;
+  scales: S;
 }
 
 export function sanitizeLabel(label: string | null | undefined): string | null {
@@ -42,31 +55,32 @@ export function todayIso(): string {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-function payload(input: AssessmentInput) {
+function payload<P extends Pack>(pack: P, input: AssessmentInput<PackTypes[P]["scales"]>) {
   if (!DATE_RE.test(input.assessedOn)) throw new Error("invalid date");
+  const def = PACK_DEFS[pack];
   return {
     assessed_on: input.assessedOn,
     label: sanitizeLabel(input.label),
-    pack_version: RHINOLOGY_VERSION,
+    pack_version: def.version,
     scales: input.scales,
-    summary: summarizeRhinology(input.scales),
+    summary: def.summarize(input.scales),
   };
 }
 
-export async function createAssessment(input: AssessmentInput): Promise<string> {
+export async function createAssessment<P extends Pack>(pack: P, input: AssessmentInput<PackTypes[P]["scales"]>): Promise<string> {
   const { data: u } = await supabase.auth.getUser();
   if (!u.user) throw new Error("not authenticated");
   const { data, error } = await supabase
     .from("scale_assessments")
-    .insert({ doctor_id: u.user.id, pack: "rhinology", ...payload(input) })
+    .insert({ doctor_id: u.user.id, pack, ...payload(pack, input) })
     .select("id")
     .single();
   if (error) throw error;
   return data.id as string;
 }
 
-export async function updateAssessment(id: string, input: AssessmentInput) {
-  const { error } = await supabase.from("scale_assessments").update(payload(input)).eq("id", id);
+export async function updateAssessment<P extends Pack>(id: string, pack: P, input: AssessmentInput<PackTypes[P]["scales"]>) {
+  const { error } = await supabase.from("scale_assessments").update(payload(pack, input)).eq("id", id);
   if (error) throw error;
 }
 
@@ -113,12 +127,11 @@ export async function listSnot22ByLabel(label: string | null): Promise<Snot22Res
   return (data ?? []) as Snot22Response[];
 }
 
-/** Assessments of one patient label, oldest first (for the follow-up view). */
-export function byLabel(rows: ScaleAssessmentRow[], label: string): ScaleAssessmentRow[] {
+/** Assessments of one patient label and pack, oldest first (for the follow-up view). */
+export function byLabel<P extends Pack>(rows: ScaleAssessmentRow[], label: string, pack: P): RowOf<P>[] {
   const l = sanitizeLabel(label);
-  return rows
-    .filter((r) => r.label === l)
-    .sort((a, b) => a.assessed_on.localeCompare(b.assessed_on) || a.created_at.localeCompare(b.created_at));
+  const mine = rows.filter((r) => r.label === l && r.pack === pack) as unknown as RowOf<P>[];
+  return mine.sort((a, b) => a.assessed_on.localeCompare(b.assessed_on) || a.created_at.localeCompare(b.created_at));
 }
 
 /** Distinct labels, most recently assessed first. */
@@ -126,4 +139,26 @@ export function distinctLabels(rows: ScaleAssessmentRow[]): string[] {
   const seen = new Set<string>();
   for (const r of rows) if (r.label) seen.add(r.label);
   return [...seen];
+}
+
+export interface VoiceResultLite {
+  id: string;
+  created_at: string;
+  metrics: { avqi?: { value?: number } | null; vowel?: { cpps?: number; f0Mean?: number } | null; speech?: { f0Mean?: number } | null; mptSeconds?: number | null };
+  estimates: { grbas?: { G?: number } };
+  clinician: { grbas?: { G?: number } } | null;
+}
+
+/** ENT Senses Voice results with the same patient label (most recent first). */
+export async function listVoiceByLabel(label: string | null): Promise<VoiceResultLite[]> {
+  const l = sanitizeLabel(label);
+  if (!l) return [];
+  const { data, error } = await supabase
+    .from("voice_results")
+    .select("id, created_at, metrics, estimates, clinician")
+    .eq("label", l)
+    .order("created_at", { ascending: false })
+    .limit(20);
+  if (error) throw error;
+  return (data ?? []) as VoiceResultLite[];
 }

@@ -47,9 +47,9 @@ import {
   type SidedScore,
   type Snot22Input,
 } from "@/modules/scales/lib/rhinology";
-import { listSnot22ByLabel, sanitizeLabel, type AssessmentInput, type ScaleAssessmentRow } from "@/modules/scales/lib/assessments";
+import { listSnot22ByLabel, sanitizeLabel, type AssessmentInput, type RowOf, type ScaleAssessmentRow } from "@/modules/scales/lib/assessments";
 import { FieldRow, NumberInput, ScaleSection, ScoreBadge, Segmented, YesNo } from "./controls";
-import { RhinologySummaryView } from "./RhinologySummaryView";
+import { RhinologySummaryView } from "./SummaryView";
 
 const fmtDate = (iso: string, lang: Lang) =>
   new Date(iso.length === 10 ? `${iso}T12:00:00` : iso).toLocaleDateString(lang === "en" ? "en-GB" : "es-ES");
@@ -580,7 +580,9 @@ function ResponseFields({
   const { lang, t } = useLang();
   const set = (p: Partial<ResponseInput>) => onChange({ ...value, ...p });
   const clean = sanitizeLabel(label);
-  const candidates = clean ? rows.filter((r) => r.label === clean && r.id !== currentId) : [];
+  const candidates = clean
+    ? rows.filter((r): r is RowOf<"rhinology"> => r.pack === "rhinology" && r.label === clean && r.id !== currentId)
+    : [];
   const baseline = candidates.find((r) => r.id === value.baselineId) ?? null;
   const r = summary.response;
 

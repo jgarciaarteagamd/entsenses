@@ -37,12 +37,13 @@ export const CATALOG: CatalogArea[] = [
   {
     id: "larynx",
     name: { es: "Laringe y deglución", en: "Larynx and swallowing" },
+    route: "/scales/laringe",
     scales: [
       { name: "Reflux Finding Score", desc: { es: "Hallazgos laríngeos de reflujo, 0–26", en: "Laryngeal reflux findings, 0–26" } },
-      { name: "Yonekawa", desc: { es: "Clasificación del edema de Reinke", en: "Reinke’s oedema classification" } },
-      { name: "Ni (NBI) · ELS 2016", desc: { es: "Leucoplasia y patrón vascular laríngeo", en: "Laryngeal leukoplakia and vascular pattern" } },
+      { name: "Tan 2017", desc: { es: "Grado del edema de Reinke, con la voz de Voice", en: "Reinke’s oedema grade, with the Voice analysis" } },
+      { name: "Ni 2011 · ELS 2016", desc: { es: "Patrón vascular con imagen de banda estrecha", en: "Vascular pattern on narrow band imaging" } },
       { name: "Myer-Cotton", desc: { es: "Estenosis subglótica", en: "Subglottic stenosis" } },
-      { name: "PAS · Yale · FOIS", desc: { es: "Deglución (FEES)", en: "Swallowing (FEES)" } },
+      { name: "Murray · PAS · Yale · FOIS", desc: { es: "Deglución (FEES)", en: "Swallowing (FEES)" } },
     ],
   },
   {

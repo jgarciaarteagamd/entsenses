@@ -24,6 +24,7 @@ export const SCALES_DICT: Dict = {
 
   // Pack names
   "pack.rhinology": { es: "Rinología", en: "Rhinology" },
+  "pack.larynx": { es: "Laringe y deglución", en: "Larynx and swallowing" },
 
   // Form
   "form.title.new": { es: "Valoración de rinología", en: "Rhinology assessment" },
@@ -190,6 +191,7 @@ export const SCALES_DICT: Dict = {
   // Follow-up
   "follow.title": { es: "Evolución", en: "Follow-up" },
   "follow.subtitle": { es: "Valoraciones de rinología y SNOT-22 de Quest con la etiqueta «{0}».", en: "Rhinology assessments and Quest SNOT-22 with the label “{0}”." },
+  "follow.subtitle.larynx": { es: "Valoraciones de laringe y deglución con la etiqueta «{0}».", en: "Larynx and swallowing assessments with the label “{0}”." },
   "follow.chart": { es: "Puntuaciones en el tiempo", en: "Scores over time" },
   "follow.table": { es: "Valoraciones", en: "Assessments" },
   "follow.date": { es: "Fecha", en: "Date" },
@@ -209,6 +211,91 @@ export const SCALES_DICT: Dict = {
     es: "Puntuaciones calculadas por ENT Senses Scales según las publicaciones citadas. No es un diagnóstico.",
     en: "Scores computed by ENT Senses Scales following the cited publications. Not a diagnosis.",
   },
+
+  // Larynx pack
+  "larynx.title.new": { es: "Valoración de laringe y deglución", en: "Larynx and swallowing assessment" },
+  "larynx.title.edit": { es: "Editar valoración de laringe y deglución", en: "Edit larynx and swallowing assessment" },
+  "scale.rfs": { es: "Reflux Finding Score (RFS)", en: "Reflux Finding Score (RFS)" },
+  "scale.rfs.desc": {
+    es: "Laringoscopia. 8 hallazgos, total 0–26. En el estudio original, una puntuación > 7 se asoció a reflujo laringofaríngeo con un 95 % de certeza.",
+    en: "Laryngoscopy. 8 findings, total 0–26. In the original study a score > 7 was associated with laryngopharyngeal reflux with 95% certainty.",
+  },
+  "rfs.above": { es: "> 7", en: "> 7" },
+  "rfs.result.above": { es: "Por encima de 7", en: "Above 7" },
+  "rfs.result.below": { es: "7 o menos", en: "7 or less" },
+  "scale.reinke": { es: "Edema de Reinke (Tan 2017)", en: "Reinke’s oedema (Tan 2017)" },
+  "scale.reinke.desc": {
+    es: "Grado por cuerda vocal según la luz glótica que ocupa la lesión (1–4). Si una cuerda es grado 4, la otra no se gradúa.",
+    en: "Grade per vocal fold by the glottic airway the lesion occupies (1–4). If one fold is grade 4, the other is not graded.",
+  },
+  "reinke.packYears": { es: "Tabaquismo (paquetes-año)", en: "Smoking (pack-years)" },
+  "reinke.max": { es: "Grado máximo", en: "Highest grade" },
+  "reinke.not_graded": { es: "No se gradúa (la otra cuerda es grado 4)", en: "Not graded (the other fold is grade 4)" },
+  "reinke.yonekawa": {
+    es: "La clasificación de Yonekawa (1988) no está incluida: sus tres tipos se describen de forma distinta en la literatura que la cita y no hemos podido contrastarlos con el original.",
+    en: "Yonekawa’s classification (1988) is not included: its three types are described differently by the papers that cite it and we could not check them against the original.",
+  },
+  "scale.nbi": { es: "Imagen de banda estrecha (Ni 2011 · ELS 2016)", en: "Narrow band imaging (Ni 2011 · ELS 2016)" },
+  "scale.nbi.desc": {
+    es: "Patrón vascular de la lesión principal. Clasificaciones descriptivas: la app no les asigna una etiqueta de benignidad o malignidad.",
+    en: "Vascular pattern of the main lesion. Descriptive classifications: the app does not attach a benign or malignant label to them.",
+  },
+  "nbi.site": { es: "Localización", en: "Site" },
+  "nbi.site.none": { es: "Sin especificar", en: "Not specified" },
+  "nbi.leukoplakia": { es: "Leucoplasia", en: "Leukoplakia" },
+  "nbi.ni": { es: "Tipo de Ni", en: "Ni type" },
+  "nbi.els": { es: "Cambios vasculares (ELS 2016)", en: "Vascular changes (ELS 2016)" },
+  "nbi.els.none": { es: "sin cambios", en: "none" },
+  "nbi.els.longitudinal": { es: "longitudinal", en: "longitudinal" },
+  "nbi.els.perpendicular": { es: "perpendicular", en: "perpendicular" },
+  "nbi.typeIV": {
+    es: "El tipo IV se consideró no maligno en el estudio original, pero en una serie amplia incluyó un 36 % de displasias (Staníková 2024): conviene seguimiento estrecho.",
+    en: "Type IV was considered non-malignant in the original study, but in a large series it included 36% dysplasia (Staníková 2024): close follow-up is advisable.",
+  },
+  "scale.stenosis": { es: "Estenosis subglótica (Myer-Cotton)", en: "Subglottic stenosis (Myer-Cotton)" },
+  "scale.stenosis.desc": {
+    es: "Porcentaje máximo de obstrucción de la luz (en el original, estimado con el tubo endotraqueal que pasa y el esperado para la edad).",
+    en: "Maximum percentage of airway obstruction (originally estimated from the endotracheal tube that passes and the one expected for age).",
+  },
+  "stenosis.pct": { es: "Obstrucción (%)", en: "Obstruction (%)" },
+  "stenosis.noLumen": { es: "Sin luz detectable", en: "No detectable lumen" },
+  "scale.voice": { es: "Voz (ENT Senses Voice)", en: "Voice (ENT Senses Voice)" },
+  "scale.voice.desc": {
+    es: "Adjunte el último análisis acústico de Voice con la misma etiqueta para seguir la voz junto a la exploración (por ejemplo, antes y después de una cirugía).",
+    en: "Attach the latest Voice acoustic analysis with the same label to follow the voice alongside the examination (for example, before and after surgery).",
+  },
+  "voice.none": {
+    es: "No hay análisis de Voice con esta etiqueta. Puede hacerlo en Voice → Evaluar en consulta, con la misma etiqueta.",
+    en: "No Voice analysis with this label. You can run one in Voice → Assess in clinic, with the same label.",
+  },
+  "voice.no_label": { es: "Escriba la etiqueta del paciente para buscar sus análisis de Voice.", en: "Type the patient label to look up their Voice analyses." },
+  "voice.attach": { es: "Adjuntar", en: "Attach" },
+  "voice.attached": { es: "Adjuntado el análisis del {0}", en: "Analysis of {0} attached" },
+  "voice.g.clinician": { es: "G (clínico)", en: "G (clinician)" },
+  "voice.g.estimate": { es: "G (estimado)", en: "G (estimated)" },
+  "voice.f0": { es: "F0 (Hz)", en: "F0 (Hz)" },
+  "voice.mpt": { es: "TMF (s)", en: "MPT (s)" },
+  "scale.secretions": { es: "Secreciones (Murray)", en: "Secretions (Murray)" },
+  "scale.secretions.desc": { es: "Endoscopia de la deglución, antes de dar alimento. 0–3.", en: "Swallowing endoscopy, before giving any food. 0–3." },
+  "scale.fees": { es: "FEES por consistencia (PAS · Yale)", en: "FEES by consistency (PAS · Yale)" },
+  "scale.fees.desc": {
+    es: "Penetration-Aspiration Scale (1–8) y residuo faríngeo de Yale en vallécula y senos piriformes (1–5). Rellene solo las consistencias probadas; se guarda la peor puntuación.",
+    en: "Penetration-Aspiration Scale (1–8) and Yale pharyngeal residue in the valleculae and pyriform sinuses (1–5). Fill in only the consistencies tested; the worst score is kept.",
+  },
+  "fees.consistency": { es: "Consistencia", en: "Consistency" },
+  "fees.pas": { es: "PAS", en: "PAS" },
+  "fees.yaleV": { es: "Yale vallécula", en: "Yale vallecula" },
+  "fees.yaleP": { es: "Yale senos piriformes", en: "Yale pyriform" },
+  "fees.class.none": { es: "Sin entrada en la vía aérea", en: "No airway entry" },
+  "fees.class.penetration": { es: "Penetración", en: "Penetration" },
+  "fees.class.aspiration": { es: "Aspiración", en: "Aspiration" },
+  "fees.worst": { es: "Peor PAS: {0} ({1})", en: "Worst PAS: {0} ({1})" },
+  "scale.fois": { es: "Functional Oral Intake Scale (FOIS)", en: "Functional Oral Intake Scale (FOIS)" },
+  "scale.fois.desc": { es: "Nivel de ingesta oral, 1–7.", en: "Level of oral intake, 1–7." },
+  "report.title.larynx": { es: "Informe de escalas de laringe y deglución", en: "Larynx and swallowing scales report" },
+  "follow.pack": { es: "Paquete", en: "Pack" },
+  "follow.chart.larynx": { es: "Laringe", en: "Larynx" },
+  "follow.chart.swallow": { es: "Deglución", en: "Swallowing" },
 };
 
 export const useLang = createModuleLang(SCALES_DICT);

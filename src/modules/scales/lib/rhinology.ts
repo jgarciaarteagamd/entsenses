@@ -3,25 +3,14 @@
 // Every grade text and threshold comes from the publication cited in `RHINOLOGY_REFERENCES`.
 // Nothing here adds interpretation of its own: the functions add up the grades and apply the
 // published rules. If a definition changes, bump RHINOLOGY_VERSION (stored with each row).
-import type { Text } from "./types";
+import { SIDES, isGrade as isGradeIn, type Grade, type Reference, type Side, type SidedScore, type Text } from "./types";
+
+export { SIDES };
+export type { Grade, Reference, Side, SidedScore };
 
 export const RHINOLOGY_VERSION = "rhinology-1";
 
-export const SIDES = ["right", "left"] as const;
-export type Side = (typeof SIDES)[number];
-
-export interface Grade<V extends number = number> {
-  value: V;
-  text: Text;
-}
-
-const isGrade = (v: unknown, max: number): v is number => typeof v === "number" && Number.isInteger(v) && v >= 0 && v <= max;
-
-export interface SidedScore {
-  right: number;
-  left: number;
-  total: number;
-}
+const isGrade = (v: unknown, max: number): v is number => isGradeIn(v, 0, max);
 
 // ---------------------------------------------------------------------------------------------
 // Nasal Polyp Score (0–4 per side)
@@ -444,12 +433,6 @@ export function incompleteScales(s: RhinologyScales): RhinologyScaleId[] {
 
 // ---------------------------------------------------------------------------------------------
 // References
-
-export interface Reference {
-  citation: string;
-  doi?: string;
-  pmid?: string;
-}
 
 export const RHINOLOGY_REFERENCES: Record<"nps" | "lk" | "mlk" | "lm" | "epos2020" | "biologics2023" | "snot22", Reference> = {
   nps: {

@@ -170,3 +170,66 @@ export function ScoreBadge({ children, muted }: { children: ReactNode; muted?: b
     </Badge>
   );
 }
+
+/** Vertical list of grades with their full definition; clicking the selected one clears it. */
+export function GradeList({
+  grades,
+  value,
+  onChange,
+  disabled,
+}: {
+  grades: { value: number; text: { es: string; en: string } }[];
+  value: number | null | undefined;
+  onChange: (v: number | null) => void;
+  disabled?: boolean;
+}) {
+  const { lang } = useLang();
+  return (
+    <div className="space-y-1.5">
+      {grades.map((g) => {
+        const active = value === g.value;
+        return (
+          <button
+            key={g.value}
+            type="button"
+            aria-pressed={active}
+            disabled={disabled}
+            onClick={() => onChange(active ? null : g.value)}
+            className={cn(
+              "flex w-full items-start gap-2 rounded-md border p-2 text-left text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40",
+              active ? "border-primary bg-primary text-primary-foreground" : "bg-background hover:bg-muted",
+            )}
+          >
+            <span className="w-5 shrink-0 text-sm font-bold tabular-nums">{g.value}</span>
+            <span>{g.text[lang]}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Citations with DOI / PubMed links. */
+export function ReferenceList({ refs }: { refs: { citation: string; doi?: string; pmid?: string }[] }) {
+  const { t } = useLang();
+  if (!refs.length) return null;
+  return (
+    <div className="space-y-1 px-1 text-[11px] text-muted-foreground">
+      <p className="font-medium">{t("form.references")}</p>
+      {refs.map((r) => (
+        <p key={r.citation}>
+          {r.citation}{" "}
+          {r.doi ? (
+            <a className="underline" href={`https://doi.org/${r.doi}`} target="_blank" rel="noreferrer">
+              doi:{r.doi}
+            </a>
+          ) : r.pmid ? (
+            <a className="underline" href={`https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/`} target="_blank" rel="noreferrer">
+              PMID {r.pmid}
+            </a>
+          ) : null}
+        </p>
+      ))}
+    </div>
+  );
+}

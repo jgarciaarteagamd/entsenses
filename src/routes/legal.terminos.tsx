@@ -49,8 +49,8 @@ function TermsES() {
         </li>
         <li>
           <strong>ENT Senses Scales:</strong> registro y cálculo de escalas clínicas que puntúa el propio profesional
-          (por ejemplo, puntuaciones endoscópicas y tomográficas de la rinosinusitis crónica y criterios de consenso
-          publicados), con seguimiento por paciente.
+          (por ejemplo, puntuaciones endoscópicas y tomográficas de la rinosinusitis crónica, criterios de consenso
+          publicados, hallazgos laríngeos y escalas de la deglución), con seguimiento por paciente.
         </li>
       </ul>
       <p>Podrán añadirse otros módulos. El uso de la Aplicación implica la aceptación plena de los presentes Términos.</p>
@@ -87,7 +87,8 @@ function TermsES() {
         <li>
           <strong>Scales.</strong> Es una herramienta de registro y cálculo: el profesional elige cada grado y la
           Aplicación suma las puntuaciones y aplica las reglas de la publicación citada. No interpreta imágenes. Cuando
-          una escala resume criterios de consenso para un tratamiento (por ejemplo, biológicos en la rinosinusitis
+          una clasificación es descriptiva (por ejemplo, el patrón vascular con imagen de banda estrecha), la
+          Aplicación no le asigna una etiqueta de benignidad o malignidad. Cuando una escala resume criterios de consenso para un tratamiento (por ejemplo, biológicos en la rinosinusitis
           crónica con pólipos), el resultado indica si se cumplen los criterios publicados y no constituye una
           prescripción ni sustituye el juicio clínico ni las condiciones de financiación aplicables.
         </li>
@@ -226,7 +227,8 @@ function TermsEN() {
         </li>
         <li>
           <strong>ENT Senses Scales:</strong> recording and scoring of clinician-rated scales (for example, endoscopic and
-          CT scores of chronic rhinosinusitis and published consensus criteria), with per-patient follow-up.
+          CT scores of chronic rhinosinusitis, published consensus criteria, laryngeal findings and swallowing scales),
+          with per-patient follow-up.
         </li>
       </ul>
       <p>Other modules may be added. Using the App implies full acceptance of these Terms.</p>
@@ -261,7 +263,9 @@ function TermsEN() {
         </li>
         <li>
           <strong>Scales.</strong> A recording and scoring tool: the professional chooses each grade and the App adds up
-          the scores and applies the rules of the cited publication. It does not interpret images. When a scale
+          the scores and applies the rules of the cited publication. It does not interpret images. When a classification is
+          descriptive (for example, the vascular pattern on narrow band imaging), the App attaches no benign or malignant
+          label to it. When a scale
           summarises consensus criteria for a treatment (for example, biologics in chronic rhinosinusitis with nasal
           polyps), the result states whether the published criteria are met; it is not a prescription and does not
           replace clinical judgement or the applicable reimbursement conditions.

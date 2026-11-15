@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useLang, type Lang } from "@/modules/scales/i18n";
 import { deleteAssessment, listMyAssessments, type ScaleAssessmentRow } from "@/modules/scales/lib/assessments";
-import { RhinologySummaryView } from "./RhinologySummaryView";
+import { AssessmentSummary } from "./SummaryView";
 
 export const ASSESSMENTS_KEY = ["scale-assessments"] as const;
 
@@ -54,14 +54,21 @@ export function AssessmentCard({ r }: { r: ScaleAssessmentRow }) {
           </div>
           <div className="flex flex-wrap gap-1">
             <Button size="sm" variant="outline" asChild>
-              <Link to="/scales/rinologia" search={{ id: r.id }}>
-                <Pencil className="mr-1 h-3.5 w-3.5" />
-                {t("list.edit")}
-              </Link>
+              {r.pack === "larynx" ? (
+                <Link to="/scales/laringe" search={{ id: r.id }}>
+                  <Pencil className="mr-1 h-3.5 w-3.5" />
+                  {t("list.edit")}
+                </Link>
+              ) : (
+                <Link to="/scales/rinologia" search={{ id: r.id }}>
+                  <Pencil className="mr-1 h-3.5 w-3.5" />
+                  {t("list.edit")}
+                </Link>
+              )}
             </Button>
             {r.label && (
               <Button size="sm" variant="outline" asChild>
-                <Link to="/scales/evolucion" search={{ label: r.label }}>
+                <Link to="/scales/evolucion" search={{ label: r.label, pack: r.pack }}>
                   <LineChart className="mr-1 h-3.5 w-3.5" />
                   {t("list.followup")}
                 </Link>
@@ -78,7 +85,7 @@ export function AssessmentCard({ r }: { r: ScaleAssessmentRow }) {
             </Button>
           </div>
         </div>
-        <RhinologySummaryView summary={r.summary} compact />
+        <AssessmentSummary row={r} compact />
       </CardContent>
     </Card>
   );
